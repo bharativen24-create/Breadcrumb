@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Breadcrumb — Pitch Deck</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script>
+/* =========================================================
+   SLIDE COPY + SPEAKER NOTES — edit wording here only
+   ========================================================= */
+const SLIDES = [
+  {
+    layout: "title",
+    time: "0:15",
+    title: "Breadcrumb",
+    tagline: "Your business already left a trail. Let's follow it.",
+    meta: "A loan front door for India's self-employed · Product Builder Challenge · Bharati · Bombay Design Centre · October 2026",
+    tags: ["Working prototype", "4 personas", "Hindi shop path"],
+    phones: ["shots/01-landing.png", "shots/06-mirror.png", "shots/07-pool.png"],
+    lens: "shots/lens-handoff.png",
+    notes: "[0:15] Hi, I'm Bharati. This is Breadcrumb: a loan front door for India's self-employed. Instead of asking people to describe their business on a form, it lets the trail their payments already left do the talking — and hands the lender an application it can actually underwrite.",
+  },
+];
+</script>
+<style>
+/* Tokens copied from the prototype's :root (Fintech UI Kit) */
+:root{
+  --primary:#2C48FF; --p1:#445DFF; --p2:#5970FF; --p3:#798BFF; --p4:#99A7FF; --p5:#CCD3FF; --p6:#E5E8FF; --p7:#F3F5FF;
+  --bg:#F4F5FA; --surface:#FFFFFF; --ink:#0E1030; --ink2:#363A58; --muted:#6F7490; --faint:#A3A7BD; --hair:#E8EAF2;
+  --green:#14996A; --green-soft:#E2F5EE; --amber:#C9860C; --amber-soft:#FBF1DD; --red:#CF4A3E; --red-soft:#FBE7E4;
+  --navy:#0A0D2B; --navy2:#12163F; --navy3:#1C2156; --lens-ink:#E8EAFF; --lens-muted:#8C92C2; --live:#5BE3A8; --lens-hair:rgba(204,211,255,.12);
+  --shadow-1:0 1px 2px rgba(14,16,48,.04), 0 2px 8px rgba(14,16,48,.04);
+  --shadow-2:0 2px 6px rgba(14,16,48,.05), 0 12px 32px rgba(14,16,48,.08);
+  --phone-shadow:0 0 0 1px rgba(10,13,43,.9), 0 30px 80px rgba(14,16,48,.22), 0 8px 24px rgba(14,16,48,.12);
+  --mono:'JetBrains Mono', ui-monospace, Menlo, monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:#05071A;overflow:hidden}
+body{font-family:Inter,'Noto Sans Devanagari',system-ui,sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased}
+
+/* ---------- stage: 1920×1080 scaled to fit ---------- */
+#viewport{position:fixed;inset:0;display:grid;place-items:center}
+#deck{position:relative;width:1920px;height:1080px;transform-origin:center center;flex:none}
+.slide{position:absolute;inset:0;overflow:hidden;background:var(--bg);opacity:0;pointer-events:none;transition:opacity .35s ease}
+.slide.on{opacity:1;pointer-events:auto}
+.slide.dark{background:var(--navy);color:var(--lens-ink)}
+
+/* ---------- shared pieces ---------- */
+.wm{display:inline-flex;align-items:center;gap:10px;font-weight:700;letter-spacing:-.02em}
+.wm .crumbs{display:flex;gap:4px;align-items:center}
+.wm .crumbs i{display:block;border-radius:50%;background:var(--primary)}
+.wm .crumbs i:nth-child(2){opacity:.55}.wm .crumbs i:nth-child(3){opacity:.25}
+.dark .wm .crumbs i{background:var(--p4)}
+.foot{position:absolute;left:96px;right:96px;bottom:44px;display:flex;justify-content:space-between;align-items:center;font-size:18px;color:var(--faint)}
+.foot .wm{font-size:20px;color:var(--ink2)} .foot .wm .crumbs i{width:6px;height:6px}
+.dark .foot{color:var(--lens-muted)} .dark .foot .wm{color:var(--lens-ink)}
+.foot .n{font-family:var(--mono);font-size:16px}
+.tag{display:inline-flex;align-items:center;gap:8px;height:40px;padding:0 18px;border-radius:999px;font-size:18px;font-weight:600;white-space:nowrap}
+.tag-blue{background:var(--p6);color:var(--primary)} .tag-green{background:var(--green-soft);color:var(--green)} .tag-amber{background:var(--amber-soft);color:var(--amber)}
+.mono{font-family:var(--mono)}
+
+/* phone: the prototype's own frame */
+.phone{position:absolute;width:var(--w);padding:calc(var(--w) * 10 / 380);border-radius:calc(var(--w) * 48 / 380);background:var(--navy);box-shadow:var(--phone-shadow)}
+.phone::before{content:"";position:absolute;top:calc(var(--w) * 20 / 380);left:50%;transform:translateX(-50%);width:calc(var(--w) * 96 / 380);height:calc(var(--w) * 26 / 380);border-radius:20px;background:var(--navy);z-index:2}
+.phone img{display:block;width:100%;aspect-ratio:360/800;border-radius:calc(var(--w) * 38 / 380);background:var(--bg)}
+.lenscard{position:absolute;border-radius:28px;overflow:hidden;background:var(--navy);box-shadow:0 30px 80px rgba(10,13,43,.35), 0 0 0 1px rgba(204,211,255,.08)}
+.lenscard img{display:block;width:100%}
+
+/* dotted breadcrumb trail (7px spacing like .prog-line) */
+.trail path{fill:none;stroke-width:3.2;stroke-linecap:round;stroke-dasharray:0.1 7}
+
+/* ---------- title slide ---------- */
+.s-title .art{position:absolute;right:-560px;bottom:-640px;width:1300px;height:1300px;opacity:.13}
+.s-title .art2{position:absolute;left:-520px;top:-560px;width:900px;height:900px;opacity:.06}
+.s-title .left{position:absolute;left:120px;top:0;bottom:0;width:780px;display:flex;flex-direction:column;justify-content:center}
+.s-title .big{font-size:110px;line-height:1;gap:24px;color:var(--ink)}
+.s-title .big .crumbs{gap:9px}.s-title .big .crumbs i{width:19px;height:19px}
+.s-title .tagline{margin-top:40px;font-size:48px;line-height:1.18;font-weight:600;letter-spacing:-.025em;color:var(--ink2);max-width:780px}
+.s-title .tagline b{color:var(--primary);font-weight:600}
+.s-title .tags{display:flex;gap:12px;margin-top:48px;flex-wrap:wrap}
+.s-title .meta{margin-top:56px;padding-top:28px;border-top:1px solid var(--hair);font-size:20px;line-height:1.6;color:var(--muted);max-width:760px}
+.s-title .stage-r{position:absolute;left:960px;top:0;width:980px;height:1080px}
+
+/* ---------- speaker notes + nav ---------- */
+#notes{position:fixed;left:24px;right:24px;bottom:24px;max-width:1100px;margin:0 auto;background:rgba(10,13,43,.94);color:#E8EAFF;border:1px solid rgba(204,211,255,.15);border-radius:20px;padding:18px 22px;font:16px/1.55 Inter,sans-serif;display:none;z-index:10;backdrop-filter:blur(8px)}
+#notes.on{display:block}
+#notes .k{font-family:var(--mono);font-size:12px;color:var(--lens-muted);margin-bottom:6px;letter-spacing:.06em}
+#hint{position:fixed;right:16px;bottom:12px;font:12px var(--mono);color:rgba(232,234,255,.35);z-index:9}
+
+/* print/PDF: one slide per page */
+@media print{
+  @page{size:1920px 1080px;margin:0}
+  html,body{overflow:visible;background:none}
+  #viewport{position:static;display:block}
+  #deck{transform:none!important;width:1920px;height:auto}
+  .slide{position:relative;width:1920px;height:1080px;opacity:1;break-after:page;page-break-after:always}
+  #notes,#hint{display:none!important}
+}
+</style>
+</head>
+<body>
+<div id="viewport"><div id="deck"></div></div>
+<div id="notes"></div>
+<div id="hint">← → navigate · N notes · F fullscreen</div>
+<script>
+/* ---------- shared builders ---------- */
+const wordmark = (cls = "") => `<span class="wm ${cls}"><span class="crumbs"><i></i><i></i><i></i></span>Breadcrumb</span>`;
+const phone = (src, w, x, y, rot = 0, z = 1) => `<div class="phone" style="--w:${w}px;left:${x}px;top:${y}px;transform:rotate(${rot}deg);z-index:${z}"><img src="${src}" alt=""></div>`;
+const phoneH = w => w * (10 * 2 / 380) + (w - w * 20 / 380) * 800 / 360;
+/* concentric-ellipse card art from the prototype (cardArt / Cards=card-25) */
+const ART = `<svg viewBox="-380 -380 760 760" width="100%" height="100%">${[[374.5, 377, "#A4B0FF"], [343.5, 346, "#92A0FF"], [313, 314, "#8696FF"], [270.5, 273, "#798BFF"], [230, 231, "#6D81FF"], [192, 194, "#5970FF"], [145.5, 145, "#445DFF"], [111, 110, "#314DFF"]].map(r => `<ellipse cx="0" cy="0" rx="${r[0]}" ry="${r[1]}" fill="${r[2]}"/>`).join("")}</svg>`;
+const foot = (i, dark) => `<div class="foot">${wordmark()}<span class="n">${String(i + 1).padStart(2, "0")} / ${String(SLIDES.length).padStart(2, "0")}</span></div>`;
+
+/* ---------- layouts ---------- */
+const LAYOUTS = {
+  title(s, i) {
+    const w = 330, h = phoneH(w);
+    return `
+      <div class="art">${ART}</div><div class="art2">${ART}</div>
+      <div class="left">
+        <div class="wm big"><span class="crumbs"><i></i><i></i><i></i></span>${s.title}</div>
+        <p class="tagline">${s.tagline.replace("trail", "<b>trail</b>")}</p>
+        <div class="tags">${s.tags.map((t, k) => `<span class="tag ${k ? "tag-blue" : "tag-green"}">${t}</span>`).join("")}</div>
+        <p class="meta">${s.meta}</p>
+      </div>
+      <div class="stage-r">
+        <svg class="trail" width="980" height="1080" style="position:absolute;inset:0;z-index:0">
+          <path d="M 120 930 C 230 1010, 330 930, 400 880 S 560 820, 640 860 S 800 930, 880 870" stroke="#99A7FF"/>
+        </svg>
+        <div class="lenscard" style="left:575px;top:122px;width:330px;transform:rotate(5deg);z-index:1"><img src="${s.lens}" alt=""></div>
+        ${phone(s.phones[0], w, 20, 1080 / 2 - h / 2 + 40, -7, 2)}
+        ${phone(s.phones[1], w, 250, 1080 / 2 - h / 2 - 20, -1.5, 3)}
+        ${phone(s.phones[2], w, 490, 1080 / 2 - h / 2 + 30, 4.5, 4)}
+      </div>
+      ${foot(i)}`;
+  },
+};
+
+/* ---------- deck engine ---------- */
+const deck = document.getElementById("deck");
+deck.innerHTML = SLIDES.map((s, i) => `<section class="slide s-${s.layout} ${s.dark ? "dark" : ""}" data-i="${i}">${LAYOUTS[s.layout](s, i)}</section>`).join("");
+const slides = [...deck.children];
+let cur = Math.min(slides.length - 1, Math.max(0, (parseInt(location.hash.slice(1)) || 1) - 1));
+function fit() { const k = Math.min(innerWidth / 1920, innerHeight / 1080); deck.style.transform = `scale(${k})`; }
+function show(n) {
+  cur = Math.max(0, Math.min(slides.length - 1, n));
+  slides.forEach((el, i) => el.classList.toggle("on", i === cur));
+  const s = SLIDES[cur];
+  document.getElementById("notes").innerHTML = `<div class="k">SLIDE ${cur + 1} · TARGET ${s.time}</div>${s.notes}`;
+  history.replaceState(null, "", "#" + (cur + 1));
+}
+addEventListener("resize", fit);
+addEventListener("keydown", e => {
+  if (["ArrowRight", "PageDown", " "].includes(e.key)) show(cur + 1);
+  else if (["ArrowLeft", "PageUp"].includes(e.key)) show(cur - 1);
+  else if (e.key.toLowerCase() === "n") document.getElementById("notes").classList.toggle("on");
+  else if (e.key.toLowerCase() === "f") { document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen(); }
+  else if (e.key === "Home") show(0); else if (e.key === "End") show(slides.length - 1);
+});
+document.getElementById("viewport").addEventListener("click", e => show(cur + (e.clientX < innerWidth / 3 ? -1 : 1)));
+fit(); show(cur);
+</script>
+</body>
+</html>
