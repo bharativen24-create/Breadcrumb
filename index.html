@@ -1,0 +1,1366 @@
+<!doctype html>
+<html lang="en-IN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Breadcrumb</title>
+<meta name="description" content="Breadcrumb — see what your business can borrow, from the trail your payments already left. Clickable prototype.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* =========================================================
+   Design tokens — taken from the Fintech UI Kit
+   Primary #2C48FF · tint ramp #445DFF → #E5E8FF
+   Duotone icon fills #CCD3FF / #99A7FF · pill buttons · 18px cards · Inter
+   ========================================================= */
+:root{
+  --primary:#2C48FF; --primary-press:#2139E0;
+  --p1:#445DFF; --p2:#5970FF; --p3:#798BFF; --p4:#99A7FF; --p5:#CCD3FF; --p6:#E5E8FF; --p7:#F3F5FF;
+  --bg:#F4F5FA; --surface:#FFFFFF; --ink:#0E1030; --ink2:#363A58; --muted:#6F7490; --faint:#A3A7BD; --hair:#E8EAF2;
+  --green:#14996A; --green-soft:#E2F5EE; --amber:#C9860C; --amber-soft:#FBF1DD; --red:#CF4A3E; --red-soft:#FBE7E4;
+  --navy:#0A0D2B; --navy2:#12163F; --navy3:#1C2156; --lens-ink:#E8EAFF; --lens-muted:#8C92C2; --lens-hair:rgba(204,211,255,.12);
+  --r-card:18px; --r-lg:24px; --r-pill:999px;
+  --shadow-1:0 1px 2px rgba(14,16,48,.04), 0 2px 8px rgba(14,16,48,.04);
+  --shadow-2:0 2px 6px rgba(14,16,48,.05), 0 12px 32px rgba(14,16,48,.08);
+  --ease:cubic-bezier(.2,.8,.2,1);
+  --mono:'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{font-family:Inter,system-ui,-apple-system,'Segoe UI',sans-serif;background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased;font-size:15px;line-height:1.5;overflow:hidden}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;-webkit-tap-highlight-color:transparent}
+input{font:inherit;color:inherit}
+.num{font-variant-numeric:tabular-nums;font-feature-settings:"tnum" 1}
+b,strong{font-weight:600}
+
+/* ---------- stage (desktop: phone + lens) ---------- */
+.stage{height:100vh;height:100dvh;display:flex;align-items:center;justify-content:center;gap:40px;padding:24px;
+  background:radial-gradient(1200px 700px at 30% 20%, #FFFFFF 0%, var(--bg) 55%, #ECEEF7 100%)}
+.phone{position:relative;width:390px;height:min(844px, calc(100dvh - 48px));border-radius:48px;background:var(--navy);padding:10px;
+  box-shadow:0 0 0 1px rgba(10,13,43,.9), 0 30px 80px rgba(14,16,48,.22), 0 8px 24px rgba(14,16,48,.12);flex:none}
+.phone::before{content:"";position:absolute;top:20px;left:50%;transform:translateX(-50%);width:96px;height:26px;border-radius:20px;background:var(--navy);z-index:30}
+.app{position:relative;width:100%;height:100%;border-radius:38px;overflow:hidden;background:var(--bg);display:flex;flex-direction:column}
+
+/* ---------- top bar ---------- */
+.topbar{position:relative;flex:none;height:56px;margin-top:40px;padding:0 16px;display:grid;grid-template-columns:48px 1fr 48px;align-items:center}
+.iconbtn{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;color:var(--ink);transition:background .2s}
+.iconbtn:hover{background:var(--p7)}
+.iconbtn[disabled]{opacity:0;pointer-events:none}
+.wordmark{justify-self:center;display:flex;align-items:center;gap:8px;font-weight:700;font-size:17px;letter-spacing:-.02em}
+.wordmark .crumbs{display:flex;gap:3px;align-items:center}
+.wordmark .crumbs i{display:block;width:5px;height:5px;border-radius:50%;background:var(--primary)}
+.wordmark .crumbs i:nth-child(2){opacity:.55}.wordmark .crumbs i:nth-child(3){opacity:.25}
+.lens-pill{display:none;position:absolute;right:16px;top:12px;height:32px;padding:0 12px;border-radius:var(--r-pill);background:var(--navy);color:#fff;font-size:12px;font-weight:600;white-space:nowrap;align-items:center;gap:6px}
+.lens-pill .dot{width:6px;height:6px;border-radius:50%;background:#5BE3A8}
+
+/* ---------- trail progress ---------- */
+.progress{flex:none;padding:4px 28px 10px;transition:opacity .25s}
+.progress.hide{opacity:0;height:0;padding:0;overflow:hidden}
+.prog-row{position:relative;display:flex;justify-content:space-between;align-items:center;height:14px}
+.prog-line{position:absolute;left:6px;right:6px;top:50%;height:2px;transform:translateY(-50%);
+  background-image:radial-gradient(circle, var(--p5) 1px, transparent 1.3px);background-size:7px 2px;background-repeat:repeat-x}
+.prog-fill{position:absolute;left:6px;top:50%;height:2px;transform:translateY(-50%);transition:width .5s var(--ease);
+  background-image:radial-gradient(circle, var(--primary) 1px, transparent 1.3px);background-size:7px 2px;background-repeat:repeat-x}
+.prog-dot{position:relative;z-index:1;width:12px;height:12px;border-radius:50%;background:var(--surface);border:2px solid var(--p5);transition:all .3s var(--ease)}
+.prog-dot.done{background:var(--primary);border-color:var(--primary)}
+.prog-dot.now{border-color:var(--primary);box-shadow:0 0 0 4px var(--p6)}
+.prog-labels{display:flex;justify-content:space-between;margin-top:6px}
+.prog-labels span{width:12px;display:flex;justify-content:center;font-size:11px;color:var(--faint);font-weight:500;white-space:nowrap}
+.prog-labels span.on{color:var(--ink2)}
+
+/* ---------- scrolling screen ---------- */
+.scroll{flex:1;overflow-y:auto;overflow-x:hidden;scrollbar-width:none;position:relative}
+.scroll::-webkit-scrollbar{display:none}
+.screen{padding:12px 24px 24px;min-height:100%;display:flex;flex-direction:column}
+.screen.enter{animation:enter .32s var(--ease) both}
+.screen.enter-back{animation:enterBack .32s var(--ease) both}
+@keyframes enter{from{opacity:0;transform:translateX(14px)}to{opacity:1;transform:none}}
+@keyframes enterBack{from{opacity:0;transform:translateX(-14px)}to{opacity:1;transform:none}}
+.foot{margin-top:auto;padding-top:28px;font-size:11px;line-height:1.5;color:var(--faint);text-align:center}
+
+.eyebrow{font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--primary);margin-bottom:10px}
+h1.h{font-size:28px;line-height:1.18;font-weight:700;letter-spacing:-.025em}
+h2.h{font-size:24px;line-height:1.22;font-weight:700;letter-spacing:-.022em}
+.sub{margin-top:10px;color:var(--muted);font-size:15px;line-height:1.55}
+.why{display:flex;gap:8px;align-items:flex-start;margin-top:14px;color:var(--muted);font-size:13px;line-height:1.5}
+.why svg{flex:none;margin-top:2px}
+.gap-s{height:12px}.gap{height:20px}.gap-l{height:28px}
+
+/* ---------- CTA ---------- */
+.cta-bar{flex:none;padding:12px 24px 24px;background:linear-gradient(to top, var(--bg) 70%, rgba(244,245,250,0));position:relative;z-index:2}
+.cta-bar:empty{display:none}
+.btn{width:100%;height:58px;border-radius:var(--r-pill);font-size:16px;font-weight:500;display:flex;align-items:center;justify-content:center;gap:10px;transition:background .2s, transform .12s, opacity .2s, box-shadow .2s}
+.btn:active{transform:scale(.985)}
+.btn-primary{background:var(--primary);color:#fff;box-shadow:0 6px 18px rgba(44,72,255,.24)}
+.btn-primary:hover{background:var(--primary-press)}
+.btn-primary[disabled]{background:var(--p5);box-shadow:none;cursor:not-allowed;color:#fff}
+.btn-secondary{background:var(--p6);color:var(--primary)}
+.btn-secondary:hover{background:var(--p5)}
+.btn-ghost{height:48px;color:var(--primary);font-weight:500;font-size:15px}
+.btn-sm{height:44px;font-size:14px;width:auto;padding:0 18px}
+.link{color:var(--primary);font-weight:500;font-size:14px;display:inline-flex;align-items:center;gap:6px;min-height:44px}
+
+/* ---------- cards ---------- */
+.card{background:var(--surface);border-radius:var(--r-card);box-shadow:var(--shadow-1);border:1px solid var(--hair)}
+.card.pad{padding:18px}
+.choice{width:100%;text-align:left;display:flex;align-items:center;gap:14px;padding:16px;min-height:72px;border-radius:var(--r-card);background:var(--surface);
+  border:1.5px solid var(--hair);box-shadow:var(--shadow-1);transition:border-color .2s, box-shadow .2s, transform .12s, background .2s}
+.choice:hover{border-color:var(--p5)}
+.choice:active{transform:scale(.99)}
+.choice.sel{border-color:var(--primary);box-shadow:0 0 0 4px var(--p6)}
+.choice .ttl{font-weight:600;font-size:16px;letter-spacing:-.01em}
+.choice .dsc{color:var(--muted);font-size:13px;margin-top:2px;line-height:1.45}
+.choice .radio{margin-left:auto;flex:none;width:22px;height:22px;border-radius:50%;border:2px solid var(--p5);display:grid;place-items:center;transition:all .2s}
+.choice.sel .radio{border-color:var(--primary);background:var(--primary)}
+.choice.sel .radio::after{content:"";width:8px;height:8px;border-radius:50%;background:#fff}
+.stack{display:flex;flex-direction:column;gap:12px}
+.ico{flex:none;width:52px;height:52px;border-radius:16px;background:var(--p7);display:grid;place-items:center}
+.ico img{width:34px;height:auto;max-height:34px;object-fit:contain}
+.ico svg{width:34px;height:34px}
+
+.persona-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.persona{flex-direction:column;align-items:flex-start;gap:12px;padding:16px;min-height:168px}
+.persona .ico{width:56px;height:56px}
+.persona .ttl{font-size:15px}
+.persona .dsc{font-size:12.5px}
+.persona .tick{position:absolute;top:12px;right:12px;width:22px;height:22px;border-radius:50%;background:var(--primary);display:grid;place-items:center;opacity:0;transform:scale(.6);transition:all .2s var(--ease)}
+.persona{position:relative}
+.persona.sel .tick{opacity:1;transform:none}
+
+.opt{width:100%;min-height:58px;padding:0 20px;border-radius:var(--r-card);background:var(--surface);border:1.5px solid var(--hair);text-align:left;font-weight:500;font-size:16px;
+  display:flex;align-items:center;justify-content:space-between;box-shadow:var(--shadow-1);transition:all .2s var(--ease)}
+.opt:hover{border-color:var(--p5)}
+.opt.sel{border-color:var(--primary);background:var(--p7);color:var(--primary)}
+.opt .chev{color:var(--faint)}
+.opt.sel .chev{color:var(--primary)}
+
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{min-height:44px;padding:0 16px;border-radius:var(--r-pill);background:var(--surface);border:1.5px solid var(--hair);font-size:14px;font-weight:500;display:inline-flex;align-items:center;gap:8px;transition:all .2s}
+.chip:hover{border-color:var(--p5)}
+.chip.sel{background:var(--primary);border-color:var(--primary);color:#fff}
+.tag{display:inline-flex;align-items:center;gap:6px;height:24px;padding:0 10px;border-radius:var(--r-pill);font-size:11.5px;font-weight:600;letter-spacing:.01em;white-space:nowrap}
+.tag-blue{background:var(--p6);color:var(--primary)}
+.tag-green{background:var(--green-soft);color:var(--green)}
+.tag-amber{background:var(--amber-soft);color:var(--amber)}
+.tag-ink{background:var(--navy);color:#fff}
+
+/* ---------- inputs ---------- */
+.field{display:flex;flex-direction:column;gap:6px}
+.field label{font-size:13px;font-weight:500;color:var(--ink2)}
+.input{height:56px;border-radius:16px;border:1.5px solid var(--hair);background:var(--surface);padding:0 16px;font-size:16px;outline:none;transition:border-color .2s, box-shadow .2s;width:100%}
+.input:focus{border-color:var(--primary);box-shadow:0 0 0 4px var(--p6)}
+.input-row{display:flex;gap:8px}
+.input-wrap{position:relative;flex:1}
+.input-wrap .prefix{position:absolute;left:16px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:16px}
+.input-wrap .input{padding-left:52px}
+textarea.input{height:96px;padding:14px 16px;resize:none;line-height:1.5}
+.otp{letter-spacing:.5em;font-variant-numeric:tabular-nums;text-align:center;font-weight:600}
+.verified{display:inline-flex;align-items:center;gap:6px;color:var(--green);font-size:13px;font-weight:600}
+
+/* ---------- AI card ---------- */
+.ai{border-radius:var(--r-card);background:var(--surface);border:1px solid var(--hair);padding:16px;box-shadow:var(--shadow-1)}
+.ai-head{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:600;color:var(--primary);margin-bottom:8px;letter-spacing:.02em}
+.ai-head .spark{width:22px;height:22px;border-radius:8px;background:var(--p6);display:grid;place-items:center}
+.ai-text{font-size:15px;line-height:1.6;color:var(--ink2);min-height:1.6em}
+.ai-text.typing::after{content:"";display:inline-block;width:2px;height:1.05em;background:var(--primary);margin-left:2px;vertical-align:-2px;animation:blink 1s steps(2) infinite}
+@keyframes blink{50%{opacity:0}}
+.ai-line{margin-top:12px;font-size:14px;color:var(--ink2);display:flex;gap:10px;align-items:flex-start;padding:12px 14px;border-radius:14px;background:var(--p7)}
+
+/* ---------- landing ---------- */
+.hero-visual{position:relative;height:236px;margin:4px -4px 8px}
+.hero-card{position:absolute;left:50%;top:12px;width:300px;height:189px;transform:translateX(-50%) rotate(-4deg);border-radius:18px;overflow:hidden;box-shadow:0 20px 40px rgba(44,72,255,.28)}
+.hero-card.back{transform:translateX(-46%) rotate(5deg) translateY(10px);opacity:.5;filter:saturate(.6);box-shadow:none}
+.cardface{position:absolute;inset:0;padding:20px 22px;color:#fff;display:flex;flex-direction:column}
+.cardface .lbl{font-size:12px;opacity:.75}
+.cardface .amt{font-size:28px;font-weight:700;letter-spacing:-.02em;margin-top:2px}
+.cardface .row{margin-top:auto;display:flex;justify-content:space-between;align-items:flex-end;gap:8px}
+.cardface .row .k{font-size:11px;opacity:.7}
+.cardface .row .v{font-size:13px;font-weight:600;letter-spacing:.01em}
+.cardface .brand{display:flex;justify-content:space-between;align-items:center;font-size:13px;font-weight:600}
+.cardface .brand .crumbs{display:flex;gap:3px}.cardface .brand .crumbs i{width:5px;height:5px;border-radius:50%;background:#fff;display:block}
+.cardface .brand .crumbs i:nth-child(2){opacity:.6}.cardface .brand .crumbs i:nth-child(3){opacity:.3}
+.trust-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:22px}
+.trust{background:var(--surface);border:1px solid var(--hair);border-radius:16px;padding:12px 10px;font-size:12px;line-height:1.35;color:var(--ink2);font-weight:500;display:flex;flex-direction:column;gap:8px}
+.trust .ck{width:24px;height:24px;border-radius:50%;background:var(--green-soft);display:grid;place-items:center}
+
+/* ---------- mirror / chart ---------- */
+.bignum{font-size:40px;line-height:1.1;font-weight:700;letter-spacing:-.03em}
+.bignum small{font-size:16px;font-weight:500;color:var(--muted);letter-spacing:0;margin-left:4px}
+.chart{margin-top:18px;padding:16px 14px 10px}
+.chart svg{display:block;width:100%;height:auto;overflow:visible}
+.bar{transform-box:fill-box;transform-origin:50% 100%;animation:grow .6s var(--ease) both}
+@keyframes grow{from{transform:scaleY(0)}to{transform:scaleY(1)}}
+.legend{display:flex;gap:14px;font-size:11.5px;color:var(--muted);margin-top:8px;padding:0 4px}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{width:8px;height:8px;border-radius:3px;display:block}
+.insights{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.insight{display:inline-flex;align-items:center;gap:8px;min-height:36px;padding:6px 12px;border-radius:12px;background:var(--surface);border:1px solid var(--hair);font-size:13px;color:var(--ink2)}
+.insight i{width:8px;height:8px;border-radius:50%;flex:none}
+.notice{display:flex;gap:12px;align-items:flex-start;padding:14px 16px;border-radius:16px;font-size:14px;line-height:1.5}
+.notice.amber{background:var(--amber-soft);color:#6D4A07}
+.notice.blue{background:var(--p7);color:var(--ink2);border:1px solid var(--p6)}
+.notice.green{background:var(--green-soft);color:#0B5A3D}
+.notice svg{flex:none;margin-top:2px}
+
+/* ---------- loader ---------- */
+.loader{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding-bottom:30px}
+.loader .ico{width:84px;height:84px;border-radius:28px;background:var(--surface);box-shadow:var(--shadow-2);margin-bottom:28px}
+.loader .ico img{width:46px;max-height:46px;animation:bob 1.6s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(-4px) rotate(-6deg)}}
+.trail-svg{width:100%;height:auto;margin:6px 0 24px}
+.status{height:24px;font-weight:600;font-size:17px;letter-spacing:-.01em;position:relative;width:100%}
+.status span{position:absolute;left:0;right:0;opacity:0;transform:translateY(8px);transition:all .35s var(--ease)}
+.status span.on{opacity:1;transform:none}
+.mdot{opacity:0;animation:pop .35s var(--ease) both}
+@keyframes pop{from{opacity:0;transform:scale(.3)}to{opacity:1;transform:scale(1)}}
+.mdot{transform-box:fill-box;transform-origin:center}
+
+/* ---------- pool ---------- */
+.pool-card{position:relative;height:200px;border-radius:18px;overflow:hidden;box-shadow:0 18px 36px rgba(44,72,255,.24)}
+.pool-track{position:relative;height:48px;border-radius:14px;overflow:hidden;background:repeating-linear-gradient(135deg, var(--p7) 0 8px, var(--p6) 8px 16px);border:1px solid var(--p6)}
+.pool-fill{position:absolute;left:0;top:0;bottom:0;background:var(--primary);border-radius:14px 0 0 14px;transition:width .15s linear;display:flex;align-items:center;padding-left:14px;color:#fff;font-size:12px;font-weight:600;white-space:nowrap;overflow:hidden}
+.pool-fill.full{border-radius:14px}
+.pool-free{position:absolute;right:14px;top:50%;transform:translateY(-50%);font-size:12px;font-weight:600;color:var(--primary);white-space:nowrap}
+.slider-head{display:flex;justify-content:space-between;align-items:baseline;margin:22px 0 4px}
+.slider-head .q{font-weight:600;font-size:15px}
+.slider-head .v{font-weight:700;font-size:22px;letter-spacing:-.02em;color:var(--primary)}
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:44px;background:transparent;cursor:pointer;--pct:33%}
+input[type=range]::-webkit-slider-runnable-track{height:6px;border-radius:6px;background:linear-gradient(to right, var(--primary) var(--pct), var(--p6) var(--pct))}
+input[type=range]::-moz-range-track{height:6px;border-radius:6px;background:var(--p6)}
+input[type=range]::-moz-range-progress{height:6px;border-radius:6px;background:var(--primary)}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:28px;height:28px;border-radius:50%;background:#fff;border:2px solid var(--primary);box-shadow:0 2px 8px rgba(44,72,255,.3);margin-top:-11px}
+input[type=range]::-moz-range-thumb{width:24px;height:24px;border-radius:50%;background:#fff;border:2px solid var(--primary);box-shadow:0 2px 8px rgba(44,72,255,.3)}
+.range-ends{display:flex;justify-content:space-between;font-size:12px;color:var(--faint);margin-top:-4px}
+.stat-rows{margin-top:18px}
+.stat{display:flex;gap:12px;align-items:flex-start;padding:14px 0;border-top:1px solid var(--hair)}
+.stat:first-child{border-top:0;padding-top:4px}
+.stat .sw{flex:none;width:12px;height:12px;border-radius:4px;margin-top:5px}
+.stat .t{font-size:14px;color:var(--ink2);line-height:1.5}
+.stat .t b{color:var(--ink)}
+.stat .t .m{display:block;color:var(--muted);font-size:13px}
+.fees{display:flex;gap:12px;align-items:flex-start;font-size:13.5px;color:var(--ink2);line-height:1.5}
+
+/* ---------- route ---------- */
+.route{flex-direction:column;align-items:stretch;gap:0;padding:18px}
+.route .top{display:flex;align-items:center;gap:12px}
+.route .rate{margin-top:14px;display:flex;align-items:baseline;gap:6px}
+.route .rate b{font-size:26px;font-weight:700;letter-spacing:-.02em}
+.route .rate span{color:var(--muted);font-size:13px}
+.route .dsc{margin-top:6px}
+.route .sub-act{margin-top:10px;font-size:13px;color:var(--primary);font-weight:500;display:inline-flex;align-items:center;gap:6px;min-height:36px}
+
+/* ---------- timeline ---------- */
+.timeline{position:relative;padding-left:30px}
+.timeline::before{content:"";position:absolute;left:8px;top:10px;bottom:10px;width:2px;
+  background-image:radial-gradient(circle, var(--p4) 1px, transparent 1.3px);background-size:2px 7px;background-repeat:repeat-y}
+.tl{position:relative;padding:0 0 18px}
+.tl:last-child{padding-bottom:0}
+.tl::before{content:"";position:absolute;left:-27px;top:4px;width:14px;height:14px;border-radius:50%;background:var(--surface);border:2px solid var(--primary)}
+.tl:first-child::before{background:var(--primary)}
+.tl .w{font-size:12px;font-weight:600;color:var(--primary);letter-spacing:.02em}
+.tl .d{font-size:14px;color:var(--ink2);margin-top:2px;line-height:1.5}
+
+/* ---------- summary rows ---------- */
+.rows .r{display:flex;justify-content:space-between;gap:16px;padding:13px 0;border-top:1px solid var(--hair);font-size:14px}
+.rows .r:first-child{border-top:0;padding-top:0}
+.rows .r:last-child{padding-bottom:0}
+.rows .r span{color:var(--muted)}
+.rows .r b{text-align:right}
+.success-badge{width:64px;height:64px;border-radius:22px;background:var(--green-soft);display:grid;place-items:center;margin-bottom:18px}
+
+/* ---------- sheets ---------- */
+.sheet-layer{position:absolute;inset:0;z-index:40;pointer-events:none}
+.scrim{position:absolute;inset:0;background:rgba(10,13,43,.42);opacity:0;transition:opacity .25s}
+.sheet{position:absolute;left:0;right:0;bottom:0;max-height:88%;overflow-y:auto;background:var(--surface);border-radius:28px 28px 0 0;padding:10px 24px 28px;
+  transform:translateY(100%);transition:transform .32s var(--ease);scrollbar-width:none}
+.sheet::-webkit-scrollbar{display:none}
+.sheet-layer.open{pointer-events:auto}
+.sheet-layer.open .scrim{opacity:1}
+.sheet-layer.open .sheet{transform:none}
+.grab{width:40px;height:4px;border-radius:4px;background:var(--hair);margin:0 auto 16px}
+.sheet h3{font-size:21px;font-weight:700;letter-spacing:-.02em;line-height:1.25}
+.sheet .sub{font-size:14px}
+.sheet-close{position:absolute;top:14px;right:14px}
+.consent-list{margin-top:18px;border-radius:var(--r-card);border:1px solid var(--hair);overflow:hidden}
+.consent-item{display:flex;gap:12px;padding:14px 16px;font-size:14px;line-height:1.5;color:var(--ink2);border-top:1px solid var(--hair)}
+.consent-item:first-child{border-top:0}
+.consent-item .ci{flex:none;width:28px;height:28px;border-radius:50%;display:grid;place-items:center}
+.consent-item b{color:var(--ink);display:block;font-size:13px;margin-bottom:1px}
+.banks{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px}
+.bank{display:flex;flex-direction:column;align-items:center;gap:8px;padding:14px 6px;border-radius:16px;border:1.5px solid var(--hair);background:var(--surface);font-size:12px;font-weight:500;text-align:center;line-height:1.3;transition:all .2s;min-height:96px}
+.bank:hover{border-color:var(--p5)}
+.bank.sel{border-color:var(--primary);box-shadow:0 0 0 4px var(--p6)}
+.bank .mono{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;color:#fff;font-weight:700;font-size:13px;letter-spacing:.02em}
+.step-steps{display:flex;flex-direction:column;gap:16px;margin-top:18px}
+.how{display:flex;gap:14px;align-items:flex-start}
+.how .n{flex:none;width:32px;height:32px;border-radius:50%;background:var(--p6);color:var(--primary);display:grid;place-items:center;font-weight:700;font-size:14px}
+.how b{display:block;font-size:15px}
+.how span{font-size:14px;color:var(--muted)}
+.factor{display:flex;gap:10px;align-items:flex-start;padding:10px 0;border-top:1px solid var(--hair);font-size:14px;color:var(--ink2)}
+.factor:first-child{border-top:0}
+.factor .sg{flex:none;width:22px;height:22px;border-radius:50%;display:grid;place-items:center;font-weight:700;font-size:14px;line-height:1}
+.lever{width:100%;display:flex;align-items:center;gap:12px;padding:14px;border-radius:16px;background:var(--p7);border:1px solid var(--p6);text-align:left;font-size:14px;margin-top:8px;transition:background .2s}
+.lever:hover{background:var(--p6)}
+.lever b{color:var(--primary)}
+.dropzone{margin-top:18px;border:1.5px dashed var(--p4);border-radius:var(--r-card);background:var(--p7);padding:24px 16px;text-align:center}
+.file{display:flex;align-items:center;gap:12px;padding:14px;border-radius:16px;border:1px solid var(--hair);margin-top:18px}
+.file .bar2{height:4px;border-radius:4px;background:var(--p6);margin-top:8px;overflow:hidden}
+.file .bar2 i{display:block;height:100%;background:var(--primary);width:0;transition:width 1.1s var(--ease)}
+.label-s{font-size:13px;font-weight:600;color:var(--ink2);margin:20px 0 8px}
+
+/* ---------- toast ---------- */
+.toast{position:absolute;left:16px;right:16px;bottom:96px;z-index:60;background:var(--navy);color:#fff;border-radius:16px;padding:14px 16px;font-size:14px;display:flex;gap:10px;align-items:center;
+  box-shadow:0 12px 30px rgba(10,13,43,.3);opacity:0;transform:translateY(10px);transition:all .25s var(--ease);pointer-events:none}
+.toast.on{opacity:1;transform:none}
+
+/* =========================================================
+   Lender Lens — behind-the-scenes panel
+   ========================================================= */
+.lens{width:440px;height:min(844px, calc(100dvh - 48px));border-radius:28px;background:var(--navy);color:var(--lens-ink);display:flex;flex-direction:column;overflow:hidden;
+  box-shadow:0 30px 80px rgba(10,13,43,.25);flex:none}
+.lens-head{padding:22px 24px 16px;border-bottom:1px solid var(--lens-hair);display:flex;justify-content:space-between;align-items:center}
+.lens-head .t{font-weight:600;font-size:15px;display:flex;gap:10px;align-items:center}
+.lens-head .live{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:11px;color:#5BE3A8;background:rgba(91,227,168,.1);padding:4px 8px;border-radius:999px}
+.lens-head .live i{width:6px;height:6px;border-radius:50%;background:#5BE3A8;animation:pulse 1.6s infinite}
+@keyframes pulse{50%{opacity:.3}}
+.lens-body{flex:1;overflow-y:auto;padding:18px 24px 24px;scrollbar-width:thin;scrollbar-color:var(--navy3) transparent}
+.lens-sec{padding:16px 0;border-top:1px solid var(--lens-hair)}
+.lens-sec:first-child{border-top:0;padding-top:0}
+.lens-k{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--lens-muted);font-weight:600;margin-bottom:10px}
+.lens-v{font-size:14px;line-height:1.5}
+.lens-mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.score{display:flex;align-items:center;gap:18px}
+.score-ring{position:relative;width:84px;height:84px;flex:none}
+.score-ring svg{width:84px;height:84px;transform:rotate(-90deg)}
+.score-ring circle{transition:stroke-dashoffset .6s var(--ease), stroke .4s}
+.score-ring .n{position:absolute;inset:0;display:grid;place-items:center;font-family:var(--mono);font-size:24px;font-weight:600}
+.score .lab{font-size:18px;font-weight:600}
+.score .hint{font-size:12.5px;color:var(--lens-muted);margin-top:2px;line-height:1.45}
+.signals{display:flex;flex-direction:column;gap:6px;margin-top:14px}
+.sig{display:flex;justify-content:space-between;font-size:12.5px;color:var(--lens-muted)}
+.sig.on{color:var(--lens-ink)}
+.sig .p{font-family:var(--mono)}
+.sig.on .p{color:#5BE3A8}
+.conf{display:flex;align-items:center;gap:10px}
+.conf .pill{font-family:var(--mono);font-size:12px;padding:5px 10px;border-radius:8px;background:var(--navy3);color:var(--lens-ink)}
+.conf .pill.ok{background:rgba(91,227,168,.12);color:#5BE3A8}
+.conf .pill.warn{background:rgba(255,196,94,.12);color:#FFC45E}
+.notes{display:flex;flex-direction:column;gap:8px}
+.note{display:flex;gap:10px;font-size:13px;line-height:1.5;padding:10px 12px;border-radius:12px;background:var(--navy2)}
+.note i{flex:none;width:6px;height:6px;border-radius:50%;margin-top:7px}
+.kv{display:grid;grid-template-columns:1fr auto;gap:8px 12px;font-size:13px}
+.kv span{color:var(--lens-muted)}
+.kv b{font-family:var(--mono);font-weight:500;text-align:right;color:var(--lens-ink)}
+.kv b.hl{color:#5BE3A8}
+.capbar{margin-top:12px;height:8px;border-radius:8px;background:var(--navy3);overflow:hidden}
+.capbar i{display:block;height:100%;background:var(--p3);border-radius:8px;transition:width .3s}
+.handoff{background:var(--navy2);border:1px solid var(--lens-hair);border-radius:18px;padding:16px}
+.handoff .hd{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.handoff .nm{font-weight:600;font-size:16px}
+.handoff .sum{margin-top:12px;padding-top:12px;border-top:1px solid var(--lens-hair);font-size:13px;line-height:1.55;color:var(--lens-ink)}
+.lens-empty{font-size:13px;color:var(--lens-muted);line-height:1.5}
+.lens-sheet .sheet{background:var(--navy);color:var(--lens-ink);padding:0}
+.lens-sheet .grab{background:var(--navy3);margin:10px auto 0}
+
+/* ---------- demo controls ---------- */
+.demo-btn{position:fixed;left:20px;bottom:20px;z-index:80;height:40px;padding:0 16px;border-radius:999px;background:var(--surface);border:1px solid var(--hair);box-shadow:var(--shadow-2);
+  font-size:13px;font-weight:600;display:flex;align-items:center;gap:8px;color:var(--ink2)}
+.demo{position:fixed;left:20px;bottom:72px;z-index:80;width:300px;background:var(--surface);border:1px solid var(--hair);border-radius:20px;box-shadow:0 20px 50px rgba(14,16,48,.18);padding:18px;
+  opacity:0;transform:translateY(8px);pointer-events:none;transition:all .22s var(--ease)}
+.demo.open{opacity:1;transform:none;pointer-events:auto}
+.demo h4{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:14px 0 8px;font-weight:600}
+.demo h4:first-child{margin-top:0}
+.demo .chips .chip{min-height:36px;font-size:13px;padding:0 12px}
+.toggle{display:flex;justify-content:space-between;align-items:center;width:100%;min-height:40px;font-size:14px;text-align:left}
+.sw2{width:40px;height:24px;border-radius:999px;background:var(--hair);position:relative;transition:background .2s;flex:none}
+.sw2::after{content:"";position:absolute;left:3px;top:3px;width:18px;height:18px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.2);transition:transform .2s var(--ease)}
+.toggle.on .sw2{background:var(--primary)}
+.toggle.on .sw2::after{transform:translateX(16px)}
+
+/* ---------- mobile ---------- */
+@media (max-width: 980px){
+  .stage{padding:0;gap:0;display:block;background:var(--bg)}
+  .phone{width:100%;height:100vh;height:100dvh;border-radius:0;padding:0;box-shadow:none;background:var(--bg)}
+  .phone::before{display:none}
+  .app{border-radius:0}
+  .topbar{margin-top:env(safe-area-inset-top, 0px)}
+  .lens{display:none}
+  .lens-pill{display:inline-flex}
+  .wordmark{justify-self:start;margin-left:2px}
+  .topbar.home .wordmark{margin-left:-46px}
+  .demo-btn{display:none}
+  .demo{left:12px;right:12px;width:auto;bottom:12px}
+  .cta-bar{padding-bottom:calc(20px + env(safe-area-inset-bottom, 0px))}
+}
+@media (max-width: 360px){
+  .screen{padding-left:18px;padding-right:18px}
+  h1.h{font-size:25px}
+  .persona-grid{gap:10px}
+}
+@media (prefers-reduced-motion: reduce){
+  *{animation-duration:.01ms !important;transition-duration:.01ms !important}
+}
+</style>
+</head>
+<body>
+<div class="stage">
+  <div class="phone">
+    <div class="app" id="app">
+      <header class="topbar">
+        <button class="iconbtn" id="backBtn" data-act="back" aria-label="Back">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+        </button>
+        <div class="wordmark"><span class="crumbs"><i></i><i></i><i></i></span>Breadcrumb</div>
+        <button class="lens-pill" data-act="openLens"><span class="dot"></span>Lender view</button>
+      </header>
+      <div class="progress" id="progress"></div>
+      <main class="scroll" id="scroll"></main>
+      <div class="cta-bar" id="cta"></div>
+      <div class="toast" id="toast"></div>
+      <div class="sheet-layer" id="sheetLayer"><div class="scrim" data-act="closeSheet"></div><div class="sheet" id="sheet"></div></div>
+    </div>
+  </div>
+  <aside class="lens" id="lensPanel" aria-label="Lender Lens">
+    <div class="lens-head"><div class="t">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#99A7FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>
+      Lender Lens <span style="color:var(--lens-muted);font-weight:400;font-size:13px">· Kestrel Finance</span></div>
+      <span class="live"><i></i>LIVE</span></div>
+    <div class="lens-body" id="lensBody"></div>
+  </aside>
+</div>
+<div class="sheet-layer lens-sheet" id="lensSheet" style="position:fixed;z-index:70"><div class="scrim" data-act="closeLens"></div>
+  <div class="sheet"><div class="grab"></div>
+    <div class="lens-head" style="border-bottom:1px solid var(--lens-hair)"><div class="t">Lender Lens</div>
+      <div style="display:flex;gap:8px;align-items:center"><button class="tag tag-blue" style="height:30px" data-act="openDemo">Demo controls</button><button class="iconbtn" data-act="closeLens" aria-label="Close" style="color:#fff"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg></button></div></div>
+    <div class="lens-body" id="lensBodyM"></div>
+  </div>
+</div>
+<button class="demo-btn" data-act="toggleDemo">
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"/></svg>Demo</button>
+<div class="demo" id="demo"></div>
+
+<script>
+/* =========================================================
+   Kit assets (Fintech UI Kit — duotone icons, embedded)
+   ========================================================= */
+const KIT_ICONS = {
+"safe": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADgAAAAvCAYAAAC2VQk9AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAOdEVYdFNvZnR3YXJlAEZpZ21hnrGWYwAABPBJREFUeAHdmk9vG0UYxl+7zh+HGDk4xEqUiFRIyaU9AAcEFyROHEBCHDn1K/QTwDdAfALUE0cqwRlxQxzgAkLCEtQVgahWQk3ipvWmiTs/z053szszu+tsqsSPZO16/84zzzvP+87Yla++GTWDoXwmIrdkJE2ZBlSkXxnJ3Zl5uV07fiJfCOSmCUqokeKkhOtXRxX5WKYXt6pTE5Y2KG615LF6XaT9ilxJ9PZFjp6cPZYi2G6JtK6wpt1/zn6vypSjlueiw0ci+32933jp8im82xMZHqtPkD6XSXBnV+TBfvR9/6EiPBDZXJdLgf6ByL899/la1s1xcgao2VicTMnaNZFFFQXX1HZ2RuTkRCRQvR8EaYPIA+73vs93ktB0AfJ5CULq1ZYObz4uQPLwKAy5QEqBl6Cvd55m9JzB6op2ZhTLwuys6rRZ3XFESRlEvQRbS5G5JLG8JF7MqYa+vqHz6iSAZLMh8veuuw154E0ThNNKK318McNJIbe1OTk5A1THzIgC3zU+ZLroxqre9kKzgZjPQQ05wi0Le0qZuRn/uARrK3q49CyG13xZd8AwNKpBwjdy5cGF+Wg/q+GEZR5yP/4i8mtHk/vkA03UB0jSeJvTroUKk8KSBEutZFDXFZbGkdn+/FtUUvEdsiaXjRP2cfp+QnF9VQojl4J5seYYKz/8JNK5F5rWw/R5zvFBTQiz/fD9dOiaNONLX0mURhD1XKHZ3dFbQ64+r8cOYXlyKnKgGvz/wVmVudY2Nhlvh/ckN8oj6Ekba+2IJA1MKo1TYxB/dPUWuIysEVZBJznzcGlj0OWEqGEjZ1SiIgKov70Z2T4G5AL5MS9KUTDusknshuYBAUOOY/ECmfu3roeVTFOng/uqU25u2Z85NrKcyb8UBV3J9rvvtcEA0wmUXsnqH+vfi03HANd8/W10PI5agVZfGEFCME6kHhIMju3PeBzmt3g08Iz7O3IulELQNuBRIh5ihpgrnI1y8RxISUjongelEBw6VHnnTfV5Q+9jJnQEam8kEjZjytS2JpUwXj/9yG5eT08lN0oxGazdND6J7eu6ckFBQhZypAWckBDEWJ6rF0QzB59ygwKJvrQ04ZqNj92zrfdxx7irkjsNOch2utF9r60Xf5cNpSV6QtCVC7sxo0BFnJGQNJVM/yBdfmEuNhW5LigwCS5NQULLVV2Y/LccjjMaiJIU3ExoDTlznrUa1xzQVsv6UJqCkDNjLAkKZ1NEs6VK6fwVOStl2Y0t3RHGsGzTpyAoPrsvdbrEGHNV+iZ82b6rnPXmtv5OKnjv7UhliLnmhtSqRZFLwfigzop/wo6aMmvS+9YNHYYYTdZkF7A+63o34U4bbeaTqSAPji8VECIdz3QlOSvwAdXykIOAbX0WmIVftrZ3eglCxvZgwtD1QlCEpA+Ma9zUt3KdNW3yEjx67D6XlWwhh5nQ+5MQpRN//9NebBfBhS/8mrzXWFAVzLJ/asX7iBpbXpwUF7bwG8fY3kOLp5yDJCZkfpsg2Q8G7pr2PPASNAu/yfVIqpBJf0KD0FidkhQqZeF3oa7HI1X8UkMvGF0W0BaWE0kREy/8nkexF4F2+PPChS/8XkakFOztCX+/uJJ48F/6WIogsZz8p8JVRpX/dcm0osJfuU7ljkwpKiJ3q3ND+Vzt35kqJRWX0Ui+nJmT288Ay5buPqLfbMMAAAAASUVORK5CYII=",
+"bell": "data:image/png;base64,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",
+"house": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADwAAAA7CAYAAAAn+enKAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAOdEVYdFNvZnR3YXJlAEZpZ21hnrGWYwAABPdJREFUeAHtmm9vFEUcx3+zd9eCCm5SUlOouqRGo4kJMb4A+wq0T0zKE+GBoI+kr6D1FcgTY6wmLQ9sfQbvQN5BeYSB2HBRgQC5UCDA3ZW9Yb6dTm93b2Zv9nZnS4/7JJdud3Y389n5/5sl2gd+W+eL+NE+wKhkltf5Cic6g2OPaOnbefYjlUipwlHZSAZWz82zs1QSpQivXOb+dpMuC9kvSJ+J0qSdC+/ItugvzukUpWfkau0QzZ2dY1vkEKfCv6zzoMJEyfaR3csMo2u1cZpNSi//wU+JBv8T2VKhhXNfs2u6pCo5ArKiU0LJBsm0sTH5t92On8eLQW0Q9859P8/q6jzzyO8YmoOOTki+Kc0jByhZcRgk0w4fJvpkhuijoCseBdK4F88gBxQu3E8WopWKlMXxG4e0jwlcSRcqnCY74XdlFZD+8GS50oUJ/yw6Fo/RBhlkg+m4rALnIO0f1T52R/qF5pmDUogwZKsVUbK8t7OYnJCyaUB65j35YjRAeoUKIrfw72v8G5Ps1CTRu1NkDV4MXpBLcg1LkA0ZrQrZHiB7fJIygxeEEr97n5wwcAkv/8l/2JHVMKisAvdO5bg/jYGEsbQT4+VFXZqNbGtb/tJwJZ25SkNWzHqWdGnTojq+Y2iDL0KiBw2ie+IXhvIchqVjvllMvbgiq3cm4TTZ96dl5nW0xBTyZr13Kon/7wiZrcdyaNINW0VLWwubZJFJlOwx33wvMgs5XIteWNWChlgi/HeX6FlTlvzxlJIeF7Wh/j/lxkoYC/dOYuEOIIDZE6aMJlC6jd21D3rg6FirhiBI32/IF6ErZaDuyyvdt9PSRSmAjSx43uxer5tYTO5Kol3368hw/8cfmF+KDcYSTotSqIm/brWTRHVQNplU16aBeTfa+81bdtcn0ZbwXpQipyxQNQBt+FmzNx3nVMbHa2QFpLHENOVBvNtFOOjSeoSxOjGFZLLKqswdeVMeb/4r27QCxzgH3j6a7blpeUFBwUEnHQvxpC3vBpFVoHSvb3ZLEi8Ax6rE8z77Rr13yAMIGYWc4tETdeBKtl/G3hLyJ0+4efYudTHCzCrpHWHbKEURPHnazRgkVXXPi600K1PWNWgm6L11nSPtSnueHGODZGq1RlcOkixQ0RPGSReiDTxOX3nn59mSMI/t74j/L302QwsHSVaBPNdaNCsa65VYAqeF86fZxb1O69c1fkEMUou8Q5e+O80ubGzwIKzSLTqAfP4pk33TGl8VVfjLjuypr+JcbFjCuKWi/ibh6ERhEMZqciEAsGR83qRCiHZ+ShhEnYBxq0UnjEVA3sk7MoZ2Bq7/U5xwNPAQFU6SaT2sZkloJ5WMsZKw07tA2AsEWE4p057b3ra7fqAgHmLIwYls9zQeitpxW5+GaOWg4zFqXCPDfqOTvaVXmZHwsDMSHnZGwsPOSHjYcfIVT3JRUFRUowicCP+9GQ+1YHf/VcGJsH9EbpApEKpFLMtE22L71AQWD1lwIow9pJ5PHVKEi9gks2VfO63xHKHZJLb9hLNPD21QgYAyeT2HpRXsJyU2zm7cJh/tsMhqZwLD2KPHVBhii/dM9H8Rnt3aFtsuCMRXsbPf1uzsP3oif4hGTPjkDPTe2FDLExjUEPuQLWSyKovI7IKn29mPcsfR91IKfA5RsKwZEYaGeED7SKtN5cHJHy0ehp2R8LDzEoH57vK3oo1LAAAAAElFTkSuQmCC",
+"megaphone": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAD0AAAArCAYAAADL7YBvAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAOdEVYdFNvZnR3YXJlAEZpZ21hnrGWYwAABMlJREFUeAHtmk1vG0Ucxp/ZdV4qUgiU16oS9gUJ0ZRYaXu2PwBKckEtHGIfWlRxSPsJ4n6CtgeEEg62D5CKS8qZQ1yJExDZagtICBFLBSoFVazaIhzHu8Pzt+PISXa9flvXhv6klb3rmdU+M/+3mTUwwHx3V8e+/kavL69qvXxTX0OPUBgw8pt6svIICWVglqexx38DP2/WflMmohffVwV0SQgDgoh1nmDRfoLLFDzp1sa23a+3y1MXLSZsKMxSbIKnPRHlx1MTLWLpW0v8GtMafaWvog/6K3rIZ6s65sg9NSwTKGoFKzSOQnJeWQfb9kV0K/7aLaESCuVxrMOA5TjI2sCtCy6Cq229brJyUy/S6lIcua4fcus34FiA3ppeowWVMM2ZTo6P4VbSQ2wdV9Gfruow/ew6BhwxaSbd2fJ2LQiaChkKzvj1M9wuciTCGAIunFe5isaNio04ZzmuHXzVSr99M10PNNZjzP56H0PBpfOqiDbZE/39HT3HQJOWQBNyMfojR4DjrwCm2fyG1iP68EMEwusvY5ofOXRJVV7+nl6wNTLNGr52jE7zPHyRQQlK9ORRXNu4q1+YmVJX0QWh/E86bFf8g9YfW8B2Gb7QNQJFMsrGPT05c1Jd8WsrUd0tkiveIM1InWi82Fjk94Lwic5TVuOzvBUBjj5X+26GEIm+7e3PkoEYpdd5ZCpAttH3DQqeRguI2b70ov8xOoq+UCnvnygPwozqKQrfXFnVaRkIuSg+3ZLoN16t+bUf/5SAH39B4Bgm3qx/p5iY6ZZm1f44xTZLbJttuQwt05+3d/zbiTn2G5pujmISRm0BE969XPzonIq4tRfRObRQ/EtEDioqd4SD242nFJ7hR6Y66wpLdNuwV1eD0fA2hg/LsN3ztcz6xXMqPjqOqFfnUIjpyhnBQrOREZgjceI4fHn4F/BgC4HCZePVaLR5JdZs0WGws2XvYF7WoU3ugYkJYGzE/2ilgOkYBxYFXzlzUnW1GNrbGMzndZgzvi4z7panJWVJjmylDOVe1j56ladlUSHmiy7Zi9675hKRbRxWXgv8nmhsKEJE0H+BQ0vLM1Mqd/93ZDEEyHq6XnAI6bSeXP5Cz/n1c19Pc+uFhm9hwJHnNDXW6tVWaRxzVJRe+VI3LbhcRSeTynI0okoh13iMmChM0K+9jnoJ6tKviACQ57QV5pl2Y1JqMv9aDFIFbWOt0QIO0tYbjo0fdIK7E2mv32Ul9uBPWKNjiBxMGRt32FdVY0UMbdBKIPvkcz3NgV1kfk7KuRQoHIQYc/X1/uyGciOxVDq82J85VauYvs3radbNl1EbgJ7w8YfVVz3J+vnuwOS82hsIAPqZZzA5G1WF06dUwqwgwgHK0vyL6DOBiNaG/yxKihTxxg5jh0ayn+IDES0mLn7VSlOpCMX0uRMSEfHowR6YHz0VzU1FCzJjPIwO3mSI+NNTKu5UuFjQwdUKPQ1k3K288V5cpdAl4vf8SLA0TtkOUjT9d5k1spc+6L4EFQbm/bQbu6VxAj0mGJ8ecJ6J/r/wTLQfXFI3/WcPC/4ihoC2RJ99p5pKcm6/SUXltVk3aLRt3qyZD5WMci77bH6bdYNCx3+eq/4VyuBrEwdF7qgWpJzEkPAvhi7avViTqFgAAAAASUVORK5CYII=",
+"dept": "data:image/png;base64,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",
+"license": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAAAUCAYAAAA9djs/AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAOdEVYdFNvZnR3YXJlAEZpZ21hnrGWYwAAA55JREFUeAHNWM1OE1EU/u60lkZDUoPBICSWpYmGEt0LTyDdiS7obCDGBfAEyBMAGw110bIQiJvKE7SsxVhgR2Io8S9BCVUU29L2ek7bkUrvTKedUv2Sk7lz597be77zCwItwMa2jNNjCO1FwuWGPnhDpOAAGhzizZYMof3KM4YKeUzBISwJeLYiQ5GY9FmtkSbKH/0syzljwOoj3d8fXikZyBSaxeYQfZxBE/i8D+zslmX/QL0mXwCyJ40L77MDNpw3gzQZaIZ0GTJbpySAmXNJTBaB4UwGPmIxjgZw+F09rsa3I+DgsHHhfXZwkkU844WPdXAJzJl5spIANzBWEFh7NCpStCBOpOt23MnAlcun485L6jUuOrjjQq1c7QKudZtLl8/6t8OrcpLvWpCYdpEjsA5SYi2XUecLJQHEWogeUQ4DIZDgQ1wNhEM3KeHvBa73lS+tgtsk+Ao2XdwMsghRUTzB7+z+ngzmITCpWl9zjee0gZROVZQeIyaXmFFOduOjIoo6OP4FbO8AqY/A3ofyOJtTrMtSkjyulU9fynubTaATD8Q8PyPsBcAsG07XRVpIJMMvZQD1CChKBMhl1nksBQLMpCYxQul+AXXAir57D+SqFObxTqrWsuzKPd3mctGLpkHGWs/RnfnuNPZX9NpEAfUJIFfxCTJCJEJJQyJdmQsUBZKogx/HfytvgOfSZ5KXy6XOAYbw96ZB1hbaaYnkBEjGTBpkVMN2I6Rp8NVbk3cYv62CJiqGswF3zQxZndjyc9wsrkhjLknu40cdcAZXuS5b04lLNwoOY3rsGe96sKSL/49HV6E2B5CrUAjc5TGHAmfR0pzAPdgAl72z0k7lGXxXqmSJ8AsZ4IRemRtQhXENAUbiKMUN1U+uBNUlBRbgCtBMc9OI1KsOi8tyhDzYV7qzRqWPqhjPky4BQ49quE3OWeLGwZPFfM6Lt1w+KIvrKPcHCbMfdxNbHg/OFTaSo59CIGiU7olRoRv9jGqxkgBuHFhxaiWj9KprBcSIvX4aP4EFuLbvf0XL0ddjP4yMPoBifpesP2209ZSfg6r1SgJKCXBZLlC7Ghu/LwbpkGHYgK+zLP8D8kUEHz8UycVVGSP3X+LGTrVOWB3ydFlOkeu8MtvM2NiSUTpljMdc683++GH096LVSNy5JUyNw71MrgMhwytUsCTADl5vEkka5vAPQMaJ3r4pdDiA4/8IuYuUJyqZts1IaCeYhUP8BsTj5Xsf4PzaAAAAAElFTkSuQmCC",
+"search": "data:image/png;base64,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",
+"history": "data:image/png;base64,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",
+"user": "data:image/png;base64,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",
+"car": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADMAAAAuCAYAAACF6SFvAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAOdEVYdFNvZnR3YXJlAEZpZ21hnrGWYwAAA2FJREFUeAHdms9PE0EUx7+zrYBQdEkTjCDahoREExM4eMeTR4k3T8LRk/EvMP4Fnj2JJ4/6J/QupAZMTDjYRhFitUkjP4TSdpy3dbe7szNTotnubj8JaffN7M57u9/3ZmYLg4H323yZAc/E12XETymTxdrSTVbVdWC6ho0tviJa3yJhcODunduspGqzdCcxCy+QQCyGV9o2lZHkxTkKSCDkF/mnasuqjCL6R+Ikj9ER4MYsYqO6CzTPesciN1bER0nup8yZzY+84n8y03lg7ipiY68G7NcCpkYmh+JSkTX8xpDMKPFlieWnECuTEyGT3TrEomwMBSMS/77/mCQ2PoZYoWBGLgRtlApyv1AwvOPo0ePyJBKBfSl4LNSzUq5w228LBLO5xVdFFtmmi8SFwg+7fRCczAPBcBaWmEKvsUB+ZDKSkeGJ/9ALplx2HllAYrlxJIq8HTIt+qXmBdPJBANxTo65ismopNY57vntBcOl6pAkibmopCYKlue3E0z5Ey9AWhknTWIuCqktu1JzgumchZf4SZOYi6q6to6wSp9OMGmQmItKaox3qzAjibVbqPgbqXPcs76J4xOg3Q7axFptKutITFpuUseDI6QKkprFFWucNEJSYxvb/p1Lusn260Bya/zq5hEl3yALA43typ1yuN86URtMS+TN5y/B3NnH4DZqu2Kw7/WgjW7k/HXFGu0vluliqiJQq3d3flFCu0o5EIL8qX7Tn6cM5rQJ1Bv6k2p1RMpPw9gk+dMzdZsymN8nMEKlW3fB/6XZ7P6ZONRMG8pgdJr0k7UQCecZW95Cuyhdosphumhu4nyD/gtu1dQxYlhqaZ9MYVY/WDHid2g0tu5mmSqpVixU0xeKwEXfGo2eyK357t2JEro+jZObCI5N/tiGFyxDtQKIKI3jIbQCiKrkRsGoVNW8YGii3Kn2r/FJgnJrodDdTBKezGhWT1MgBPm7/6N3nPqcyfgi8GQ2M52+HSbJ7Eq+d+wF40yU15Bqhqo0D9c8s1Mxdxgbxeu5GawjZr7uYfXk1PzyJdsv4UV79cE99e/ug+TlG/UvzH6GLGcYGkgDvL+flnh59sHUoYP484XoMLOfjGHdEvPkmvjyLtwq7gTH08cP9f94M0iEHyXyR3ytym3C/1Kb4/kfi3Hw5gRopMUAAAAASUVORK5CYII="
+};
+
+
+/* =========================================================
+   DATA — all copy, persona logic and mock numbers live here
+   ========================================================= */
+const DATA = {
+  brand: {
+    name: "Breadcrumb",
+    tagline: "Your business already left a trail. Let's follow it.",
+    lender: "Kestrel Finance Ltd",
+    lenderLine: "Lending partner: Kestrel Finance Ltd (RBI-registered NBFC)",
+    footer: "Prototype for demonstration. Kestrel Finance Ltd is fictional. Amounts, rates and fees are illustrative, not an offer.",
+  },
+  steps: ["Who", "About", "Trail", "Pool", "Lock"],
+  landing: {
+    eyebrow: "For the self-employed",
+    title: "What can your business borrow? Find out in 45 seconds.",
+    sub: "No forms full of guesses. No CIBIL check. No calls unless you ask.",
+    trust: ["No impact on your credit score", "Nobody calls you uninvited", "You choose what to share"],
+    cta: "Start my trail",
+    howLink: "How does this work?",
+    how: [
+      { t: "Tell us who you are", d: "Pick the kind of work you do. Every question after that is written for you." },
+      { t: "Let your payments speak", d: "Share your bank trail once, with consent. We show you your business the way we see it." },
+      { t: "See your credit pool", d: "A limit you draw from when you need it. Interest only on what you use." },
+    ],
+  },
+  personaScreen: {
+    title: "First, what kind of work do you do?",
+    sub: "Your questions, documents and offer will be shaped around this.",
+    freeLabel: "Doesn't fit? Describe it in your words",
+    freePlaceholder: "e.g. I run a mobile repair shop",
+  },
+  months: ["Oct", "Nov", "Dec", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep"],
+  rates: { bank: 16.5, supplier: 14.5 },
+  fees: { bank: 1.5, supplier: 1.0 },
+  starterPool: 50000,
+  trailOptions: [
+    { id: "bank", icon: "bankSvg", t: "Connect my bank", d: "Most accurate · 30 seconds · via RBI's Account Aggregator", badge: "Best estimate" },
+    { id: "pdf", icon: "history", t: "Upload a bank statement PDF", d: "Last 6–12 months" },
+    { id: "rough", icon: "search", t: "Just give me a rough idea", d: "We'll ask 2 quick questions. Estimate will be wider." },
+  ],
+  banks: [
+    { n: "Sahyadri Bank", m: "SB", c: "#2C48FF" },
+    { n: "Northstar Bank", m: "NB", c: "#0A0D2B" },
+    { n: "Indus Valley Bank", m: "IV", c: "#5970FF" },
+    { n: "Meridian Bank", m: "MB", c: "#14996A" },
+    { n: "Coastal Co-op Bank", m: "CC", c: "#798BFF" },
+    { n: "Other bank", m: "+", c: "#A3A7BD" },
+  ],
+  consent: {
+    title: "Share your bank trail, once",
+    sub: "Through an RBI-licensed Account Aggregator. You'll approve it in your bank's own screen.",
+    share: { t: "You're sharing", d: "Transactions from 1 account · last 12 months · one time only" },
+    not: { t: "We will NOT see", d: "Your contacts, SMS, photos — and we don't check your CIBIL" },
+    del: { t: "Deleted after 30 days", d: "If you don't continue, your data is deleted automatically" },
+  },
+  rough: {
+    earnLabel: "Roughly how much comes in each month?",
+    earn: [{ l: "Under ₹1 lakh", v: 75000 }, { l: "₹1–3 lakh", v: 200000 }, { l: "₹3–5 lakh", v: 400000 }, { l: "₹5 lakh+", v: 600000 }],
+    askLabel: "How much would you like?",
+    ask: [{ l: "Up to ₹2 lakh", v: 200000 }, { l: "₹2–5 lakh", v: 500000 }, { l: "₹5–10 lakh", v: 800000 }, { l: "₹10 lakh+", v: 1500000 }],
+  },
+  loader: ["Reading 12 months of payments…", "Spotting your busy season…", "Working out your pool…"],
+  loaderRough: ["Reading your answers…", "Comparing with businesses like yours…", "Working out a rough pool…"],
+  lock: {
+    title: "Keep this offer for 7 days.",
+    sub: "Just three things — so we can hold it for you. Nothing is signed.",
+    contact: ["WhatsApp", "Call me", "Don't contact me, I'll come back"],
+    slots: ["Today evening", "Tomorrow morning", "Tomorrow evening"],
+    cta: "Save my offer",
+  },
+  starterChecklist: [
+    "Route all business payments into one account",
+    "Register on Udyam (free, 10 minutes)",
+    "Repay your starter pool on time for 3 months",
+    "Come back and reconnect — most limits grow 3–5×",
+  ],
+
+  personas: {
+    shop: {
+      label: "Shop & trade", short: "Shop", examples: "Kirana, wholesale, boutique, hardware",
+      who: "Ramesh", biz: "kirana store, Chembur",
+      avg: 280000, pool: 450000, defaultDraw: 150000, overAsk: 800000, step: 5000,
+      series: [410, 330, 285, 265, 255, 290, 270, 250, 225, 195, 245, 340],
+      busiest: "October (Diwali)", slowest: "July", payers: "Paid by 1,240 different customers",
+      route: "supplier",
+      hint: "Your UPI collections and supplier payments already tell your story.",
+      supplier: { t: "Pay my supplier directly", d: "We pay your wholesaler for stock against their invoice." },
+      product: "Stock line via supplier pay (inventory credit)",
+      seasonal: "Seasonal dip in July (−30%) — suggest flexible EMI",
+      questions: [
+        { id: "pay", q: "How do customers usually pay?", o: ["Mostly UPI / cards", "About half cash", "Mostly cash"], why: "Cash isn't a problem — it just changes which proof works best for you." },
+        { id: "tenure", q: "How long has the shop been running?", o: ["Less than 1 year", "1–3 years", "3–5 years", "5+ years"], why: "Newer shops get a starter pool that grows as your trail gets longer." },
+        { id: "gst", q: "Is it GST-registered?", o: ["Yes", "No", "Not sure"], why: "Not required. GST simply helps us offer a bigger pool." },
+      ],
+      mirror: "Your shop is steady — money comes in almost every day, mostly by UPI. Sales jump around festivals and dip in the monsoon. That consistency works in your favour.",
+      whyAi: "Your pool is about 1.6× your average monthly takings. We size it so that even in your slowest month — July — the repayment stays comfortably below what comes in.",
+      factors: [["+", "12 months of steady UPI income"], ["+", "1,240 different customers — no single one you depend on"], ["gst", ""], ["−", "July dip of about 30%"]],
+      levers: [["Add GST details", "up to ₹5,20,000"], ["Connect a second account", "more accurate"]],
+      handoff: "Ramesh runs a 5-year kirana in Chembur with steady daily UPI inflow (~₹2.8L/mo). Wants stock credit before festive season; prefers supplier-pay. Confirm GST status and shop ownership.",
+    },
+    clinic: {
+      label: "Clinic & practice", short: "Clinic", examples: "Doctor, dentist, CA, architect",
+      who: "Dr. Neha", biz: "dental clinic",
+      avg: 460000, pool: 1200000, defaultDraw: 650000, overAsk: 1800000, step: 10000,
+      series: [470, 440, 540, 480, 455, 470, 430, 395, 420, 450, 465, 505],
+      busiest: "December (year-end visits)", slowest: "May (summer break)", payers: "Paid by 860 different patients",
+      route: "supplier",
+      hint: "Add your equipment quote later for a better rate.",
+      need: "New dental chair · ₹6,50,000",
+      supplier: { t: "Pay the equipment vendor", d: "We pay your equipment vendor directly against their quote." },
+      product: "Equipment financing via vendor pay",
+      seasonal: "Mild dip in May (summer break) — no action needed",
+      questions: [
+        { id: "council", q: "Are you registered with your professional council?", o: ["Yes", "In progress"], why: "Your registration is what makes practice loans cheaper than general ones." },
+        { id: "space", q: "Your practice space is…", o: ["Owned", "Rented", "I visit other clinics"], why: "Any answer works. It only changes which documents we ask for later." },
+        { id: "use", q: "What's the money mainly for?", o: ["New equipment", "Fit-out / renovation", "Running costs"], why: "Equipment can be paid straight to your vendor — at a lower rate." },
+      ],
+      mirror: "Your practice earns evenly through the year — patients pay mostly by UPI and card, with a small, predictable dip during the May holidays. A trail this regular is exactly what we like to see.",
+      whyAi: "Your pool is about 2.6× your average monthly receipts. Practices with council registration and a year of steady receipts qualify for a higher multiple, and equipment paid to a vendor carries less risk.",
+      factors: [["+", "Regular receipts in all 12 months"], ["+", "Professional registration"], ["+", "Equipment purpose — paid to vendor"], ["−", "Single account connected"]],
+      levers: [["Upload the chair quote", "vendor rate 14.5%"], ["Connect your second account", "up to ₹14,00,000"]],
+      handoff: "Dr. Neha, dentist, steady ~₹4.6L/mo receipts across 860 patients. Needs a ₹6.5L dental chair — route to vendor-pay. Collect vendor quote and council certificate.",
+    },
+    creator: {
+      label: "Creator & freelancer", short: "Creator", examples: "YouTube, Instagram, design, consulting",
+      who: "Arjun", biz: "YouTube + brand deals",
+      avg: 190000, pool: 300000, defaultDraw: 100000, overAsk: 600000, step: 5000,
+      series: [240, 360, 210, 120, 85, 150, 230, 110, 175, 140, 205, 255],
+      busiest: "November (festive brand deals)", slowest: "February", payers: "Paid by 14 brands and 3 platforms",
+      route: "bank",
+      hint: "Your platform payouts land in your bank — that's your proof.",
+      supplier: { t: "Pay my vendor directly", d: "We pay your gear or studio vendor against their quote." },
+      product: "Flexible working-capital line to bank",
+      seasonal: "Bursty income — 3 of 12 months below ₹1.2L; suggest interest-only months",
+      questions: [
+        { id: "source", q: "Where does most of your income come from?", o: ["Platform payouts", "Brand deals", "Client projects", "Clients abroad"], why: "Every source counts — they just show up differently in your bank." },
+        { id: "steady", q: "How steady is it?", o: ["Every month", "Most months", "Comes in bursts"], why: "Bursts are normal for creators. A pool is built for exactly that." },
+        { id: "tenure", q: "How long have you been doing this full-time?", o: ["Less than 1 year", "1–3 years", "3+ years"], why: "Newer creators get a starter pool that grows with your trail." },
+      ],
+      mirror: "Your income comes in bursts — big months when brand deals land, quieter ones in between. Platform payouts keep a steady floor under it. A pool suits this: draw in the quiet months, repay in the big ones.",
+      whyAi: "Your pool is about 1.6× your average month. Because income is bursty, we size it against your quieter months rather than your best ones, so repayments never squeeze you.",
+      factors: [["+", "Regular platform payouts every month"], ["+", "14 different brands — not dependent on one"], ["−", "Income varies a lot month to month"], ["−", "Single account connected"]],
+      levers: [["Link brand contracts", "up to ₹3,60,000"], ["Connect a second account", "more accurate"]],
+      handoff: "Arjun, full-time YouTuber, ~₹1.9L/mo average but bursty (Feb low, Nov high). Paid by 14 brands + 3 platforms. Prefers funds to bank. Offer interest-only flexibility.",
+    },
+    local: {
+      label: "Local services", short: "Services", examples: "Salon, repair shop, tuition, caterer",
+      who: "Salim", biz: "mobile repair shop",
+      avg: 140000, pool: 200000, defaultDraw: 60000, overAsk: 500000, step: 5000,
+      series: [190, 150, 140, 130, 128, 135, 142, 138, 112, 118, 132, 165],
+      busiest: "October (festive upgrades)", slowest: "June (monsoon)", payers: "Paid by 2,100 different customers",
+      route: "bank",
+      hint: "Small UPI payments from customers count — every one of them.",
+      supplier: { t: "Pay my supplier directly", d: "We pay your parts or equipment supplier against their invoice." },
+      product: "Small-ticket working-capital line",
+      seasonal: "Monsoon dip in June — suggest flexible EMI",
+      questions: [
+        { id: "pay", q: "How do customers usually pay?", o: ["Mostly UPI / cards", "About half cash", "Mostly cash"], why: "Cash isn't a problem — it just changes which proof works best for you." },
+        { id: "tenure", q: "How long has it been running?", o: ["Less than 1 year", "1–3 years", "3–5 years", "5+ years"], why: "Newer businesses get a starter pool that grows as your trail gets longer." },
+        { id: "space", q: "Do you have a shop or space?", o: ["Own", "Rent", "Work from home"], why: "Working from home is fine. This only changes which address proof we ask for." },
+      ],
+      mirror: "Your business runs on lots of small payments — over two thousand customers in a year, almost all by UPI. It's busiest around festivals and slows a little in the monsoon. That spread of customers is a real strength.",
+      whyAi: "Your pool is about 1.4× your average month. Many small customers make your income dependable, and we keep the limit where your slowest month — June — still covers repayments easily.",
+      factors: [["+", "2,100 different customers — very spread out"], ["+", "Money in on most days of the month"], ["−", "No Udyam / GST registration yet"], ["−", "Monsoon dip in June"]],
+      levers: [["Register on Udyam (free)", "up to ₹2,40,000"], ["Connect a second account", "more accurate"]],
+      handoff: "Salim runs a mobile repair shop with ~₹1.4L/mo across 2,100 small UPI customers. Wants working capital to bank account. Suggest Udyam registration to lift limit.",
+    },
+  },
+  classify: [
+    { p: "local", re: /salon|parlou?r|repair|tuition|coach|cater|tailor|mechanic|laundry|gym|service|plumb|electric|beaut|spa|driver/i },
+    { p: "clinic", re: /doctor|dent|clinic|\bca\b|chartered|architect|physio|lawyer|advocate|\bvet|ayurved|hospital|practice|consultant doctor/i },
+    { p: "creator", re: /youtub|insta|creator|influenc|design|freelanc|consult|writer|photograph|video|develop|editor|artist|podcast/i },
+    { p: "shop", re: /shop|store|kirana|wholesale|boutique|hardware|trader|trading|retail|garment|sweet|grocer|distribut/i },
+  ],
+};
+
+/* =========================================================
+   Helpers
+   ========================================================= */
+const $ = (s, r = document) => r.querySelector(s);
+const inr = n => "₹" + Math.round(n).toLocaleString("en-IN");
+const lakh = n => { const l = n / 100000; return "₹" + (Number.isInteger(+l.toFixed(1)) ? (+l.toFixed(1)).toFixed(0) : l.toFixed(1)) + " lakh"; };
+const r10k = n => Math.round(n / 10000) * 10000;
+const esc = s => String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const md = s => esc(s).replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
+const plain = s => s.replace(/\*\*/g, "");
+const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+
+const I = {
+  check: (c = "#fff", s = 14) => `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="${c}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>`,
+  chev: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>`,
+  arrow: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>`,
+  info: (c = "#99A7FF") => `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="${c}" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></svg>`,
+  close: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>`,
+  spark: `<svg width="13" height="13" viewBox="0 0 24 24" fill="#2C48FF"><path d="M12 2l2.2 6.3L20 10.5l-5.8 2.2L12 19l-2.2-6.3L4 10.5l5.8-2.2z"/></svg>`,
+  lock: (c = "#2C48FF") => `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="${c}" stroke-width="2" stroke-linecap="round"><rect x="4" y="11" width="16" height="10" rx="2.5"/><path d="M8 11V7a4 4 0 018 0v4"/></svg>`,
+  eyeOff: `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#CF4A3E" stroke-width="2.2" stroke-linecap="round"><path d="M3 3l18 18M10.6 5.1A10 10 0 0112 5c6.5 0 10 7 10 7a17 17 0 01-3.2 4.2M6.6 6.6C3.8 8.4 2 12 2 12s3.5 7 10 7c1.6 0 3-.4 4.3-1"/></svg>`,
+  clock: `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#C9860C" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>`,
+  upload: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4M6 10l6-6 6 6M4 20h16"/></svg>`,
+  share: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg>`,
+  pdf: `<svg width="34" height="34" viewBox="0 0 40 40"><rect x="7" y="3" width="26" height="34" rx="5" fill="#CCD3FF"/><rect x="12" y="11" width="16" height="3" rx="1.5" fill="#99A7FF"/><rect x="12" y="17" width="12" height="3" rx="1.5" fill="#99A7FF"/><rect x="12" y="23" width="14" height="3" rx="1.5" fill="#fff"/></svg>`,
+};
+
+/* Duotone persona / bank icons drawn in the kit's icon style (#CCD3FF base, #99A7FF detail, white highlights) */
+const SVGI = {
+  shop: `<svg viewBox="0 0 48 48"><path d="M6 18l4-10h28l4 10z" fill="#99A7FF"/><path d="M6 18h36v3a5 5 0 01-9 3 5 5 0 01-9 0 5 5 0 01-9 0 5 5 0 01-9-3z" fill="#CCD3FF"/><rect x="9" y="24" width="30" height="17" rx="2" fill="#CCD3FF"/><rect x="13" y="28" width="9" height="13" rx="1.5" fill="#99A7FF"/><rect x="26" y="28" width="9" height="7" rx="1.5" fill="#fff"/><rect x="4" y="40" width="40" height="3" rx="1.5" fill="#99A7FF"/></svg>`,
+  clinic: `<svg viewBox="0 0 48 48"><rect x="6" y="10" width="36" height="31" rx="6" fill="#CCD3FF"/><rect x="17" y="5" width="14" height="8" rx="3" fill="#99A7FF"/><circle cx="24" cy="25.5" r="10" fill="#fff"/><path d="M21.5 19.5h5v3.5H30v5h-3.5v3.5h-5V28H18v-5h3.5z" fill="#99A7FF"/></svg>`,
+  local: `<svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="19" fill="#CCD3FF"/><path d="M29.5 12.5a7 7 0 00-8.8 8.9L12.6 29.5a3 3 0 004.2 4.2l8.1-8.1a7 7 0 008.9-8.8l-4.1 4.1-3.6-.6-.6-3.6z" fill="#99A7FF"/><circle cx="14.8" cy="31.6" r="1.4" fill="#fff"/></svg>`,
+  bankSvg: `<svg viewBox="0 0 48 48"><path d="M24 5l19 10H5z" fill="#99A7FF"/><rect x="5" y="15" width="38" height="3.5" fill="#CCD3FF"/><rect x="9" y="20" width="5" height="15" rx="1.5" fill="#CCD3FF"/><rect x="17.5" y="20" width="5" height="15" rx="1.5" fill="#CCD3FF"/><rect x="26" y="20" width="5" height="15" rx="1.5" fill="#CCD3FF"/><rect x="34.5" y="20" width="5" height="15" rx="1.5" fill="#CCD3FF"/><rect x="5" y="37" width="38" height="5" rx="2" fill="#99A7FF"/><circle cx="24" cy="11" r="2" fill="#fff"/></svg>`,
+};
+const icon = key => SVGI[key] ? SVGI[key] : `<img src="${KIT_ICONS[key]}" alt="">`;
+const personaIcon = { shop: "shop", clinic: "clinic", creator: "megaphone", local: "local" };
+
+/* Card art from the kit (Cards=card-25: concentric ellipses), VISA mark removed */
+let artN = 0;
+function cardArt() {
+  const id = "ca" + (artN++);
+  const rings = [[374.5, 377, "#A4B0FF"], [343.5, 346, "#92A0FF"], [313, 314, "#8696FF"], [270.5, 273, "#798BFF"], [230, 231, "#6D81FF"], [192, 194, "#5970FF"], [145.5, 145, "#445DFF"], [111, 110, "#314DFF"]];
+  return `<svg style="position:absolute;inset:0;width:100%;height:100%" viewBox="0 0 331 209" preserveAspectRatio="xMidYMid slice"><defs><clipPath id="${id}"><rect width="331" height="209"/></clipPath></defs><g clip-path="url(#${id})">${rings.map(r => `<ellipse cx="18" cy="203" rx="${r[0]}" ry="${r[1]}" fill="${r[2]}"/>`).join("")}</g></svg>`;
+}
+
+/* =========================================================
+   State
+   ========================================================= */
+const fresh = () => ({
+  step: "landing", qi: 0, persona: null, answers: {}, freeText: "", classified: null,
+  trail: null, bank: null, consentStage: "banks", otpConsent: "", pdfStage: 0, roughEarn: null, roughAsk: null,
+  mirror: null, offNote: "", draw: null, route: null,
+  name: "", phone: "", otpSent: false, otp: "", phoneVerified: false, contact: null, slot: null, saved: false,
+  edge: { newBiz: false, cash: false, overAsk: false },
+  sheet: null, hist: [], dir: 1,
+});
+let S = fresh();
+const typed = {};   // typewriter progress per key
+const counted = {}; // count-up done per key
+let renderToken = 0;
+
+/* ---------- derived ---------- */
+const P = () => DATA.personas[S.persona] || DATA.personas.shop;
+const isNewBiz = () => S.edge.newBiz || S.answers.tenure === "Less than 1 year";
+const isCash = () => S.edge.cash || S.answers.pay === "Mostly cash";
+function offer() {
+  const p = P();
+  let max, low = null, label, kind = "full";
+  if (isNewBiz()) { max = DATA.starterPool; kind = "starter"; label = "Starter pool"; }
+  else if (S.trail === "rough") {
+    const e = S.roughEarn != null ? DATA.rough.earn[S.roughEarn].v : p.avg;
+    max = r10k(Math.min(e * 1.6, p.pool * 1.15)); low = r10k(max * 0.6); label = "Rough estimate";
+  } else if (isCash()) { max = r10k(p.pool * 0.4); low = r10k(max * 0.65); label = "Estimated from a thin trail"; kind = "thin"; }
+  else { max = p.pool; label = "Based on your verified trail"; }
+  let ask = S.edge.overAsk ? p.overAsk : (S.trail === "rough" && S.roughAsk != null ? DATA.rough.ask[S.roughAsk].v : null);
+  return { max, low, label, kind, ask, over: ask && ask > max };
+}
+function drawAmt() {
+  const o = offer(), p = P();
+  const step = o.max <= 100000 ? 5000 : p.step;
+  const def = o.kind === "starter" ? 25000 : (p.defaultDraw <= o.max * 0.8 ? p.defaultDraw : Math.round(o.max * 0.5 / step) * step);
+  return clamp(S.draw == null ? def : S.draw, step, o.max);
+}
+const routeNow = () => S.route || P().route;
+const rateNow = () => DATA.rates[S.route || (S.step === "pool" ? "bank" : routeNow())];
+const confidence = () => S.trail === "bank" ? ["Bank-verified via AA (12 months)", "ok"] : S.trail === "pdf" ? ["Statement-verified (12 months)", "ok"] : S.trail === "rough" ? ["Self-declared (rough)", "warn"] : ["Self-declared", "warn"];
+const stepIndex = () => ({ landing: -1, persona: 0, q: 1, trail: 2, loader: 2, mirror: 2, pool: 3, route: 3, lock: 4, done: 5 })[S.step];
+
+function score() {
+  const sig = [
+    ["Persona picked", S.persona ? 15 : 0],
+    ["Questions answered", Object.keys(S.answers).length * 5],
+    ["Money trail shared", S.trail === "bank" ? 25 : S.trail === "pdf" ? 20 : S.trail === "rough" ? 6 : 0],
+    ["Mirror confirmed", S.mirror === "ok" ? 10 : S.mirror === "off" ? 6 : 0],
+    ["Payout route chosen", S.route ? 5 : 0],
+    ["Phone verified", S.phoneVerified ? 15 : 0],
+    ["Contact preference", S.contact == null ? 0 : S.contact === 2 ? 2 : 6],
+    ["Offer saved", S.saved ? 4 : 0],
+  ];
+  let total = 5 + sig.reduce((a, s) => a + s[1], 0);
+  if (S.persona && isNewBiz()) total -= 12;
+  if (S.persona && isCash()) total -= 8;
+  if (S.step === "landing" && !S.persona) total = 0;
+  return { total: clamp(total, 0, 100), sig };
+}
+
+/* =========================================================
+   Rendering
+   ========================================================= */
+const foot = () => `<p class="foot">${DATA.brand.footer}</p>`;
+const btn = (label, act, opts = {}) => `<button class="btn ${opts.cls || "btn-primary"}" data-act="${act}" ${opts.dis ? "disabled" : ""} ${opts.id ? `id="${opts.id}"` : ""}>${label}</button>`;
+const why = t => `<p class="why">${I.info()}<span>${t}</span></p>`;
+const aiCard = (key, text, head = "In plain words") => `<div class="ai"><div class="ai-head"><span class="spark">${I.spark}</span>${head}</div><p class="ai-text" data-type="${key}" data-full="${esc(text)}"></p></div>`;
+const countUp = (key, to, fmt = "inr") => `<span class="num" data-count="${key}" data-to="${to}" data-fmt="${fmt}">${counted[key] ? inr(to) : "₹0"}</span>`;
+
+const Screens = {
+  landing() {
+    const L = DATA.landing;
+    return {
+      body: `
+      <div class="hero-visual">
+        <div class="hero-card back">${cardArt()}</div>
+        <div class="hero-card">${cardArt()}
+          <div class="cardface">
+            <div class="brand"><span style="display:flex;gap:8px;align-items:center"><span class="crumbs"><i></i><i></i><i></i></span>Credit pool</span><span style="opacity:.8;font-weight:500;font-size:12px">Kestrel Finance</span></div>
+            <div style="margin-top:22px" class="lbl">Up to</div><div class="amt num">₹4,50,000</div>
+            <div class="row"><div><div class="k">Interest on unused</div><div class="v">₹0</div></div><div style="text-align:right"><div class="k">Time to know</div><div class="v">45 sec</div></div></div>
+          </div>
+        </div>
+      </div>
+      <p class="eyebrow">${L.eyebrow}</p>
+      <h1 class="h">${L.title}</h1>
+      <p class="sub">${L.sub}</p>
+      <div class="trust-row">${L.trust.map(t => `<div class="trust"><span class="ck">${I.check("#14996A", 13)}</span>${t}</div>`).join("")}</div>
+      <div style="text-align:center;margin-top:14px"><button class="link" data-act="sheet:how">${L.howLink}</button></div>
+      ${foot()}`,
+      cta: btn(`${L.cta} ${I.arrow}`, "start"),
+    };
+  },
+
+  persona() {
+    const D = DATA.personaScreen;
+    const cards = Object.entries(DATA.personas).map(([k, p]) => `
+      <button class="choice persona ${S.persona === k ? "sel" : ""}" data-act="persona:${k}">
+        <span class="tick">${I.check("#fff", 12)}</span>
+        <span class="ico">${icon(personaIcon[k])}</span>
+        <span><span class="ttl" style="display:block">${p.label}</span><span class="dsc" style="display:block">${p.examples}</span></span>
+      </button>`).join("");
+    const cls = S.classified;
+    return {
+      body: `
+      <h2 class="h">${D.title}</h2><p class="sub">${D.sub}</p>
+      <div class="gap"></div>
+      <div class="persona-grid">${cards}</div>
+      <p class="label-s" style="margin-top:22px">${D.freeLabel}</p>
+      <div class="input-row">
+        <input class="input" id="freeText" placeholder="${D.freePlaceholder}" value="${esc(S.freeText)}" autocomplete="off">
+        <button class="btn btn-secondary" style="width:56px;flex:none;height:56px;border-radius:16px" data-act="classify" aria-label="Find my fit">${I.arrow}</button>
+      </div>
+      ${cls ? `<div class="ai" style="margin-top:12px"><div class="ai-head"><span class="spark">${I.spark}</span>Understood</div><p class="ai-text" data-type="cls-${cls.id}" data-full="${esc(cls.line)}"></p></div>` : ""}
+      ${foot()}`,
+      // LLM call goes here — classify free-text description into one of the 4 personas
+      cta: btn("Continue", "toQuestions", { dis: !S.persona }),
+    };
+  },
+
+  q() {
+    const p = P(), q = p.questions[S.qi];
+    return {
+      body: `
+      <p class="eyebrow">${p.label} · ${S.qi + 1} of ${p.questions.length}</p>
+      <h2 class="h">${q.q}</h2>
+      ${why(q.why)}
+      <div class="gap-l"></div>
+      <div class="stack">${q.o.map(o => `<button class="opt ${S.answers[q.id] === o ? "sel" : ""}" data-act="answer:${q.id}:${esc(o)}">${o}<span class="chev">${S.answers[q.id] === o ? I.check("#2C48FF", 16) : I.chev}</span></button>`).join("")}</div>
+      ${foot()}`,
+      cta: "",
+    };
+  },
+
+  trail() {
+    const p = P();
+    return {
+      body: `
+      <h2 class="h">Let your business speak for itself.</h2>
+      <p class="sub">Instead of guessing numbers, let us read the trail your payments already left.</p>
+      <div class="notice blue" style="margin-top:18px">${I.spark}<span>${p.hint}</span></div>
+      <div class="gap"></div>
+      <div class="stack">${DATA.trailOptions.map(o => `
+        <button class="choice ${S.trail === o.id ? "sel" : ""}" data-act="trailOpt:${o.id}">
+          <span class="ico">${icon(o.icon)}</span>
+          <span style="flex:1;min-width:0"><span style="display:flex;gap:8px;align-items:center;flex-wrap:wrap"><span class="ttl">${o.t}${o.id === "bank" ? " <span style='color:var(--muted);font-weight:500'>(recommended)</span>" : ""}</span></span>
+            <span class="dsc" style="display:block">${o.d}</span>
+            ${o.badge ? `<span class="tag tag-green" style="margin-top:8px">${I.check("#14996A", 11)}${o.badge}</span>` : ""}</span>
+          <span class="chev" style="color:var(--faint)">${I.chev}</span>
+        </button>`).join("")}</div>
+      <p class="why" style="justify-content:center">${I.lock("#99A7FF")}<span>Read-only. We can never move money from your account.</span></p>
+      ${foot()}`,
+      cta: "",
+    };
+  },
+
+  loader() {
+    const lines = S.trail === "rough" ? DATA.loaderRough : DATA.loader;
+    const W = 342, H = 92, pts = DATA.months.map((m, i) => [14 + i * ((W - 28) / 11), 44 + Math.sin(i * 0.9) * 16 - (i === 0 ? 0 : 0)]);
+    const d = pts.map((p, i) => (i ? "L" : "M") + p[0].toFixed(1) + " " + p[1].toFixed(1)).join(" ");
+    return {
+      body: `
+      <div class="loader">
+        <div class="ico">${icon("search")}</div>
+        <svg class="trail-svg" viewBox="0 0 ${W} ${H}">
+          <defs><clipPath id="ldClip"><rect x="0" y="0" width="0" height="${H}"><animate attributeName="width" from="0" to="${W}" dur="2.8s" fill="freeze" calcMode="spline" keySplines=".4 0 .2 1"/></rect></clipPath></defs>
+          <path d="${d}" fill="none" stroke="#E5E8FF" stroke-width="2" stroke-dasharray="1 7" stroke-linecap="round"/>
+          <path d="${d}" fill="none" stroke="#2C48FF" stroke-width="2.4" stroke-dasharray="1 7" stroke-linecap="round" clip-path="url(#ldClip)"/>
+          ${pts.map((p, i) => `<circle class="mdot" cx="${p[0]}" cy="${p[1]}" r="4.5" fill="#2C48FF" style="animation-delay:${(i / 11 * 2.6).toFixed(2)}s"/>`).join("")}
+          ${pts.map((p, i) => `<text x="${p[0]}" y="${H - 4}" text-anchor="middle" font-size="9.5" fill="#A3A7BD" font-family="Inter" font-weight="500">${DATA.months[i]}</text>`).join("")}
+        </svg>
+        <div class="status" id="status">${lines.map((l, i) => `<span class="${i === 0 ? "on" : ""}">${l}</span>`).join("")}</div>
+        <p class="sub" style="font-size:13px;margin-top:8px">${S.trail === "rough" ? "Using only what you told us" : "Your data stays encrypted and read-only"}</p>
+      </div>`,
+      cta: "",
+    };
+  },
+
+  mirror() {
+    const p = P(), cash = isCash(), k = cash ? 0.45 : 1;
+    const series = p.series.map(v => v * k), max = Math.max(...series), min = Math.min(...series);
+    const bi = series.indexOf(max), si = series.indexOf(min);
+    const W = 314, H = 150, top = 14, base = 124, bw = 16, gap = (W - bw * 12) / 11;
+    const xs = series.map((_, i) => i * (bw + gap));
+    const hgt = v => (v / (max * 1.08)) * (base - top);
+    const tops = series.map((v, i) => [xs[i] + bw / 2, base - hgt(v) - 8]);
+    const d = tops.map((t, i) => (i ? "L" : "M") + t[0].toFixed(1) + " " + t[1].toFixed(1)).join(" ");
+    const avg = p.avg * k;
+    const summary = cash
+      ? "Your trail is thin — most of your money moves in cash, so your bank only sees part of your business. That's okay. We've made a smaller, safe offer today, and adding GST or a second account will show us the rest."
+      : p.mirror;
+    return {
+      body: `
+      <h2 class="h">Here's your business, the way we see it.</h2>
+      <div class="gap"></div>
+      <div class="card pad">
+        <p style="font-size:13px;color:var(--muted);font-weight:500">Average money in${cash ? " (seen in bank)" : ""}</p>
+        <div class="bignum" style="margin-top:4px">${countUp("avg-" + S.persona + cash, avg)}<small>a month</small></div>
+        <div style="margin-top:8px;display:flex;gap:8px;flex-wrap:wrap"><span class="tag ${S.trail === "pdf" ? "tag-blue" : "tag-green"}">${I.check(S.trail === "pdf" ? "#2C48FF" : "#14996A", 11)}${S.trail === "pdf" ? "From your statement" : "Bank-verified"} · 12 months</span>${cash ? `<span class="tag tag-amber">Thin trail</span>` : ""}</div>
+        <div class="chart" style="padding:18px 0 0">
+          <svg viewBox="0 0 ${W} ${H}">
+            <defs><clipPath id="mClip"><rect x="-10" y="0" width="0" height="${H}"><animate attributeName="width" from="0" to="${W + 20}" begin=".5s" dur="1.4s" fill="freeze" calcMode="spline" keySplines=".4 0 .2 1"/></rect></clipPath></defs>
+            <line x1="0" x2="${W}" y1="${base}" y2="${base}" stroke="#E8EAF2"/>
+            ${series.map((v, i) => `<rect class="bar" x="${xs[i]}" y="${base - hgt(v)}" width="${bw}" height="${hgt(v)}" rx="5" fill="${i === bi ? "#14996A" : i === si ? "#C9860C" : (cash ? "#99A7FF" : "#2C48FF")}" style="animation-delay:${i * 35}ms"/>`).join("")}
+            <path d="${d}" fill="none" stroke="#99A7FF" stroke-width="2" stroke-dasharray="1 6" stroke-linecap="round" clip-path="url(#mClip)"/>
+            ${series.map((v, i) => `<text x="${xs[i] + bw / 2}" y="${H - 6}" text-anchor="middle" font-size="9.5" font-family="Inter" font-weight="${i === bi || i === si ? 600 : 500}" fill="${i === bi ? "#14996A" : i === si ? "#C9860C" : "#A3A7BD"}">${DATA.months[i]}</text>`).join("")}
+          </svg>
+          <div class="legend"><span><i style="background:#14996A"></i>Best month</span><span><i style="background:#C9860C"></i>Slowest</span><span><i style="background:${cash ? "#99A7FF" : "#2C48FF"}"></i>Money in</span></div>
+        </div>
+      </div>
+      <div class="insights">
+        <span class="insight"><i style="background:#14996A"></i>Busiest: ${p.busiest}</span>
+        <span class="insight"><i style="background:#C9860C"></i>Slowest: ${p.slowest}</span>
+        <span class="insight"><i style="background:#2C48FF"></i>${cash ? "Most customers pay in cash" : p.payers}</span>
+      </div>
+      ${cash ? `<div class="notice amber" style="margin-top:14px">${I.info("#C9860C")}<span><b>Your trail is thin — most of your money moves in cash.</b> Add GST returns or a second account later to unlock more. This is never a dead end.</span></div>` : ""}
+      <div class="gap-s"></div>
+      ${aiCard("mirror-" + S.persona + cash, summary)}
+      ${foot()}`,
+      // LLM call goes here — summarise the 12-month money trail in plain language
+      cta: btn("Looks right", "mirrorOk") + `<button class="btn btn-ghost" style="width:100%;margin-top:4px" data-act="sheet:off">Something's off</button>`,
+    };
+  },
+
+  pool() {
+    const p = P(), o = offer(), d = drawAmt(), rate = DATA.rates.bank;
+    const step = o.max <= 100000 ? 5000 : p.step;
+    const pct = d / o.max * 100;
+    const starter = o.kind === "starter";
+    return {
+      body: `
+      <h2 class="h">${starter ? "Here's a starter pool to begin your trail." : `You could have a credit pool of up to <span style="color:var(--primary)">${countUp("pool-" + o.max, o.max)}</span>`}</h2>
+      <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap">
+        <span class="tag ${o.label === "Based on your verified trail" ? "tag-green" : o.kind === "starter" ? "tag-blue" : "tag-amber"}">${o.label === "Based on your verified trail" ? I.check("#14996A", 11) : ""}${o.label}</span>
+        ${o.low ? `<span class="tag tag-blue">Likely ${lakh(o.low)} – ${lakh(o.max)}</span>` : ""}
+      </div>
+      ${S.mirror === "off" ? `<div class="notice green" style="margin-top:14px">${I.check("#14996A", 15)}<span>Thanks — a person will check this before your offer is final.</span></div>` : ""}
+      ${o.over ? `<div class="notice amber" style="margin-top:14px">${I.info("#C9860C")}<span>You asked for <b>${lakh(o.ask)}</b>. Today we can do <b>${lakh(o.max)}</b> — <button class="link" style="min-height:0;font-size:14px;display:inline" data-act="sheet:why">here's what would unlock more</button>.</span></div>` : ""}
+      ${p.need && !starter ? `<div class="notice blue" style="margin-top:14px">${I.spark}<span>Your need: <b>${p.need}</b>. We've set it below — change it any time.</span></div>` : ""}
+      <div class="gap"></div>
+      <div class="pool-card">${cardArt()}
+        <div class="cardface">
+          <div class="brand"><span style="display:flex;gap:8px;align-items:center"><span class="crumbs"><i></i><i></i><i></i></span>${starter ? "Starter pool" : "Your credit pool"}</span><span style="opacity:.8;font-weight:500;font-size:12px">Kestrel Finance</span></div>
+          <div style="margin-top:20px" class="lbl">Available to draw</div><div class="amt num">${starter ? inr(o.max) : countUp("pool2-" + o.max, o.max)}</div>
+          <div class="row"><div><div class="k">Interest on unused</div><div class="v">₹0</div></div><div style="text-align:right"><div class="k">Draw &amp; repay</div><div class="v">Any time</div></div></div>
+        </div>
+      </div>
+      <div class="slider-head"><span class="q">How much do you need right now?</span><span class="v num" id="drawV">${inr(d)}</span></div>
+      <input type="range" id="drawR" min="${step}" max="${o.max}" step="${step}" value="${d}" style="--pct:${(d - step) / (o.max - step) * 100}%" aria-label="Amount you need now">
+      <div class="range-ends num"><span>${inr(step)}</span><span>${inr(o.max)}</span></div>
+      <div class="gap-s"></div>
+      <div class="pool-track"><div class="pool-fill ${pct >= 99.9 ? "full" : ""}" id="poolFill" style="width:${pct}%"><span id="poolFillT">${pct > 28 ? "In use" : ""}</span></div><span class="pool-free" id="poolFree">${pct < 72 ? "₹0 interest" : ""}</span></div>
+      <div class="card pad stat-rows">
+        <div class="stat"><span class="sw" style="background:var(--primary)"></span><span class="t">You pay interest on <b class="num" id="sDraw">${inr(d)}</b><span class="m num" id="sInt">about ${inr(Math.round(d * rate / 100 / 12 / 10) * 10)}/month interest at ${rate}% p.a.</span></span></div>
+        <div class="stat"><span class="sw" style="background:repeating-linear-gradient(135deg,#F3F5FF 0 3px,#CCD3FF 3px 6px)"></span><span class="t"><b class="num" id="sFree">${inr(o.max - d)}</b> waiting for you<span class="m">₹0 interest until you use it</span></span></div>
+      </div>
+      ${starter ? `
+        <div class="card pad" style="margin-top:14px">
+          <p style="font-weight:600;font-size:15px">Here's how to grow it in 6 months</p>
+          <div class="stack" style="gap:10px;margin-top:12px">${DATA.starterChecklist.map((c, i) => `<div style="display:flex;gap:12px;font-size:14px;color:var(--ink2)"><span class="how"><span class="n" style="width:24px;height:24px;font-size:12px">${i + 1}</span></span>${c}</div>`).join("")}</div>
+        </div>` : ""}
+      <div style="margin-top:6px"><button class="link" data-act="sheet:why">${I.info("#2C48FF")}Why this amount?</button></div>
+      <div class="fees card pad" style="margin-top:4px">${I.info("#6F7490")}<span><b>Fees, plainly:</b> one-time setup fee of ${DATA.fees.bank}% of the amount you use the first time. No interest on unused money. No prepayment charges.</span></div>
+      ${foot()}`,
+      cta: btn("Continue", "toRoute"),
+    };
+  },
+
+  route() {
+    const p = P(), r = routeNow(), d = drawAmt();
+    const card = (id, title, desc, rate, badge, extra) => `
+      <button class="choice route ${r === id ? "sel" : ""}" data-act="route:${id}">
+        <span class="top"><span class="ico" style="width:44px;height:44px;border-radius:14px">${id === "supplier" ? icon(S.persona === "clinic" ? "clinic" : "shop") : icon("bankSvg")}</span>
+          <span class="ttl" style="flex:1">${title}</span><span class="radio"></span></span>
+        ${badge ? `<span style="margin-top:12px"><span class="tag tag-green">${badge}</span>${p.route === id ? ` <span class="tag tag-blue">Best fit for you</span>` : ""}</span>` : (p.route === id ? `<span style="margin-top:12px"><span class="tag tag-blue">Best fit for you</span></span>` : "")}
+        <span class="rate"><b class="num">${rate}%</b><span>p.a. · setup fee ${DATA.fees[id]}%</span></span>
+        <span class="dsc">${desc}</span>
+        ${extra || ""}
+      </button>`;
+    const saving = Math.round(d * (DATA.rates.bank - DATA.rates.supplier) / 100 / 12 / 10) * 10;
+    return {
+      body: `
+      <h2 class="h">Where should we send it?</h2>
+      <p class="sub">Paying your ${S.persona === "clinic" ? "vendor" : "supplier"} directly saves you about <b class="num" style="color:var(--green)">${inr(saving)}/month</b> on ${inr(d)}.</p>
+      <div class="gap"></div>
+      <div class="stack">
+        ${card("supplier", p.supplier.t, p.supplier.d, DATA.rates.supplier, "Lower rate", `<span class="sub-act" data-act="quoteLater">${I.upload}Upload quote later</span>`)}
+        ${card("bank", "Send to my bank account", "Use it however your business needs.", DATA.rates.bank, "")}
+      </div>
+      <p class="why" style="justify-content:center">${I.info()}<span>You can choose differently each time you withdraw.</span></p>
+      ${foot()}`,
+      cta: btn("Continue", "toLock"),
+    };
+  },
+
+  lock() {
+    const L = DATA.lock, c = S.contact;
+    const step2 = c === 1 ? `${S.slot != null ? L.slots[S.slot] : "Your chosen time"}` : c === 0 ? "On WhatsApp" : c === 2 ? "Whenever you're ready" : "Your chosen time";
+    const step2d = c === 2 ? "Come back with your saved link — nobody calls you" : c === 0 ? "Riya from Kestrel Finance messages you to confirm 2 details" : "Riya from Kestrel Finance confirms 2 details (10 min)";
+    return {
+      body: `
+      <h2 class="h">${L.title}</h2><p class="sub">${L.sub}</p>
+      <div class="gap"></div>
+      <div class="stack" style="gap:16px">
+        <div class="field"><label for="nm">Your name</label><input class="input" id="nm" value="${esc(S.name)}" placeholder="As on your PAN" autocomplete="name"></div>
+        <div class="field"><label for="ph">Mobile number</label>
+          <div class="input-row"><div class="input-wrap"><span class="prefix">+91</span><input class="input num" id="ph" inputmode="numeric" maxlength="10" value="${esc(S.phone)}" placeholder="98XXX XXXXX" ${S.phoneVerified ? "disabled" : ""}></div>
+          ${S.phoneVerified ? "" : `<button class="btn btn-secondary btn-sm" style="height:56px;border-radius:16px" id="sendOtp" data-act="sendOtp" ${S.phone.length === 10 ? "" : "disabled"}>${S.otpSent ? "Resend" : "Send OTP"}</button>`}</div>
+          ${S.phoneVerified ? `<span class="verified">${I.check("#14996A", 13)}Number verified</span>` : ""}
+        </div>
+        ${S.otpSent && !S.phoneVerified ? `<div class="field"><label for="otp">Enter the 6-digit code <span style="color:var(--faint);font-weight:400">(any 6 digits in this demo)</span></label><input class="input otp" id="otp" inputmode="numeric" maxlength="6" placeholder="••••••" value="${esc(S.otp)}"></div>` : ""}
+      </div>
+      <p class="label-s" style="margin-top:24px">How should we reach you?</p>
+      <div class="chips">${L.contact.map((t, i) => `<button class="chip ${c === i ? "sel" : ""}" data-act="contact:${i}">${t}</button>`).join("")}</div>
+      ${c === 1 ? `<p class="label-s">Pick a time</p><div class="chips">${L.slots.map((t, i) => `<button class="chip ${S.slot === i ? "sel" : ""}" data-act="slot:${i}">${t}</button>`).join("")}</div>` : ""}
+      <div class="card pad" style="margin-top:24px">
+        <p style="font-weight:600;font-size:15px;margin-bottom:14px">What happens next</p>
+        <div class="timeline">
+          <div class="tl"><div class="w">Today</div><div class="d">Your offer is saved, nothing is signed</div></div>
+          <div class="tl"><div class="w">${step2}</div><div class="d">${step2d}</div></div>
+          <div class="tl"><div class="w">Before anything is final</div><div class="d">You get a Key Fact Statement with every fee in plain words</div></div>
+          <div class="tl"><div class="w">After you sign</div><div class="d">You still get a cooling-off day to cancel without penalty</div></div>
+        </div>
+      </div>
+      ${foot()}`,
+      cta: btn(L.cta, "save", { dis: !lockReady(), id: "saveBtn" }),
+    };
+  },
+
+  done() {
+    const p = P(), o = offer(), r = routeNow();
+    const until = new Date(Date.now() + 7 * 864e5).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" });
+    const contact = S.contact === 1 ? `Call · ${DATA.lock.slots[S.slot]}` : DATA.lock.contact[S.contact];
+    return {
+      body: `
+      <div class="success-badge">${I.check("#14996A", 28)}</div>
+      <h2 class="h">Your trail is saved.</h2>
+      <p class="sub">Your offer is held until <b style="color:var(--ink)">${until}</b>. Nothing is signed, and nothing moves without you.</p>
+      <div class="gap"></div>
+      <div class="pool-card" style="height:190px">${cardArt()}
+        <div class="cardface">
+          <div class="brand"><span style="display:flex;gap:8px;align-items:center"><span class="crumbs"><i></i><i></i><i></i></span>${o.kind === "starter" ? "Starter pool" : "Credit pool"}</span><span style="opacity:.8;font-weight:500;font-size:12px">Valid till ${until}</span></div>
+          <div style="margin-top:20px" class="lbl">Up to</div><div class="amt num">${inr(o.max)}</div>
+          <div class="row"><div><div class="k">Pool holder</div><div class="v">${esc(S.name.toUpperCase() || p.who.toUpperCase())}</div></div><div style="text-align:right"><div class="k">Rate</div><div class="v">${DATA.rates[r]}% p.a.</div></div></div>
+        </div>
+      </div>
+      <div class="card pad rows" style="margin-top:16px">
+        <div class="r"><span>Your work</span><b>${p.label}</b></div>
+        <div class="r"><span>Pool</span><b class="num">${inr(o.max)}${o.low ? " (est.)" : ""}</b></div>
+        <div class="r"><span>Using first</span><b class="num">${inr(drawAmt())}</b></div>
+        <div class="r"><span>Money goes to</span><b>${r === "supplier" ? (S.persona === "clinic" ? "Equipment vendor" : "Your supplier") : "Your bank account"}</b></div>
+        <div class="r"><span>We'll reach you</span><b>${contact}</b></div>
+      </div>
+      <div class="stack" style="margin-top:16px;gap:8px">
+        <button class="btn btn-secondary" data-act="shareCA">${I.share}Share with my CA</button>
+        <button class="btn btn-ghost" data-act="reset">Start over</button>
+      </div>
+      ${foot()}`,
+      cta: "",
+    };
+  },
+};
+
+/* ---------- sheets ---------- */
+const Sheets = {
+  how() {
+    return `<h3>How Breadcrumb works</h3><p class="sub">${DATA.brand.tagline}</p>
+      <div class="step-steps">${DATA.landing.how.map((h, i) => `<div class="how"><span class="n">${i + 1}</span><div><b>${h.t}</b><span>${h.d}</span></div></div>`).join("")}</div>
+      <div class="notice blue" style="margin-top:20px">${I.lock()}<span>${DATA.brand.lenderLine}</span></div>
+      <div style="height:16px"></div>${btn("Got it", "closeSheet")}`;
+  },
+  consent() {
+    const C = DATA.consent;
+    if (S.consentStage === "otp") {
+      const b = DATA.banks[S.bank];
+      return `<div style="display:flex;gap:12px;align-items:center"><span class="mono" style="width:44px;height:44px;border-radius:14px;background:${b.c};color:#fff;display:grid;place-items:center;font-weight:700">${b.m}</span><div><h3 style="font-size:18px">${b.n}</h3><p style="font-size:13px;color:var(--muted)">Account Aggregator consent</p></div></div>
+        <div class="consent-list" style="margin-top:16px"><div class="consent-item"><span class="ci" style="background:var(--p6)">${I.check("#2C48FF", 13)}</span><span><b>Savings / current ••4821</b>Transactions · 12 months · view once</span></div></div>
+        <div class="field" style="margin-top:18px"><label for="aaOtp">OTP sent to your bank-linked mobile <span style="color:var(--faint);font-weight:400">(any 6 digits)</span></label><input class="input otp" id="aaOtp" inputmode="numeric" maxlength="6" placeholder="••••••" value="${esc(S.otpConsent)}"></div>
+        <div style="height:18px"></div>${btn(`${I.lock("#fff")}Share once`, "shareOnce", { dis: S.otpConsent.length !== 6, id: "shareBtn" })}
+        <button class="btn btn-ghost" style="width:100%" data-act="consentBack">Choose a different bank</button>`;
+    }
+    return `<div style="display:flex;gap:14px;align-items:center"><span class="ico" style="width:56px;height:56px">${icon("safe")}</span><div><h3>${C.title}</h3></div></div>
+      <p class="sub">${C.sub}</p>
+      <div class="consent-list">
+        <div class="consent-item"><span class="ci" style="background:var(--p6)">${I.check("#2C48FF", 13)}</span><span><b>${C.share.t}</b>${C.share.d}</span></div>
+        <div class="consent-item"><span class="ci" style="background:var(--red-soft)">${I.eyeOff}</span><span><b>${C.not.t}</b>${C.not.d}</span></div>
+        <div class="consent-item"><span class="ci" style="background:var(--amber-soft)">${I.clock}</span><span><b>${C.del.t}</b>${C.del.d}</span></div>
+      </div>
+      <p class="label-s">Choose your bank</p>
+      <div class="banks">${DATA.banks.map((b, i) => `<button class="bank ${S.bank === i ? "sel" : ""}" data-act="bank:${i}"><span class="mono" style="background:${b.c}">${b.m}</span>${b.n}</button>`).join("")}</div>
+      <div style="height:18px"></div>${btn("Continue", "consentNext", { dis: S.bank == null })}
+      <p class="why" style="justify-content:center;font-size:12px">${I.info()}<span>You can revoke this consent any time from your bank's app.</span></p>`;
+  },
+  pdf() {
+    const st = S.pdfStage;
+    return `<h3>Upload a bank statement</h3><p class="sub">A PDF of your main business account, last 6–12 months. Password-protected files are fine.</p>
+      ${st === 0 ? `<div class="dropzone"><span class="ico" style="margin:0 auto 12px;background:#fff">${I.pdf}</span><p style="font-weight:600">Choose a PDF</p><p style="font-size:13px;color:var(--muted);margin-top:2px">Up to 10 MB</p><div style="height:14px"></div><button class="btn btn-primary btn-sm" style="margin:0 auto" data-act="pickPdf">${I.upload}Choose file</button></div>`
+      : `<div class="file"><span class="ico" style="width:44px;height:44px">${I.pdf}</span><div style="flex:1;min-width:0"><p style="font-weight:600;font-size:14px">statement_oct25-sep26.pdf</p><p style="font-size:12px;color:var(--muted)">${st === 1 ? "Reading…" : "12 months · 2,316 transactions found"}</p><div class="bar2"><i id="pdfBar" style="width:${st === 2 ? 100 : 0}%"></i></div></div>${st === 2 ? `<span class="ci" style="width:28px;height:28px;border-radius:50%;background:var(--green-soft);display:grid;place-items:center">${I.check("#14996A", 13)}</span>` : ""}</div>`}
+      <p class="why">${I.lock("#99A7FF")}<span>We only read transactions. Deleted after 30 days if you don't continue.</span></p>
+      <div style="height:14px"></div>${btn("Use this statement", "pdfGo", { dis: st !== 2 })}`;
+  },
+  rough() {
+    const R = DATA.rough;
+    return `<h3>Just a rough idea</h3><p class="sub">Two quick taps. Your estimate will be a range, not a number.</p>
+      <p class="label-s">${R.earnLabel}</p><div class="chips">${R.earn.map((e, i) => `<button class="chip ${S.roughEarn === i ? "sel" : ""}" data-act="rEarn:${i}">${e.l}</button>`).join("")}</div>
+      <p class="label-s">${R.askLabel}</p><div class="chips">${R.ask.map((e, i) => `<button class="chip ${S.roughAsk === i ? "sel" : ""}" data-act="rAsk:${i}">${e.l}</button>`).join("")}</div>
+      <div style="height:22px"></div>${btn("See my estimate", "roughGo", { dis: S.roughEarn == null || S.roughAsk == null })}`;
+  },
+  off() {
+    return `<h3>What looks off?</h3><p class="sub">Tell us in a line. A real person will check it before anything is final.</p>
+      <div style="height:16px"></div><textarea class="input" id="offNote" placeholder="e.g. October also includes a one-time family transfer">${esc(S.offNote)}</textarea>
+      <div style="height:16px"></div>${btn("Send and continue", "offGo")}`;
+  },
+  why() {
+    const p = P(), o = offer();
+    const factors = p.factors.map(f => f[0] === "gst" ? (S.answers.gst === "Yes" ? ["+", "GST-registered"] : ["−", "No GST yet"]) : f);
+    if (isCash()) factors.unshift(["−", "Most income moves in cash — bank sees less"]);
+    if (isNewBiz()) factors.unshift(["−", "Business is under 1 year old"]);
+    if (S.trail === "rough") factors.unshift(["−", "Based on your answers, not your bank trail"]);
+    const ai = isNewBiz() ? "Because your business is less than a year old, we start with a small starter pool. Rules, not guesses, set this: once you have six months of trail and on-time repayments, the pool is recalculated — usually several times larger."
+      : S.trail === "rough" ? "This is a range because it's based on your answers rather than your bank trail. Connecting your bank takes 30 seconds and usually narrows the range to a single, firm number."
+      : p.whyAi;
+    const levers = S.trail === "rough" ? [["Connect my bank", "firm number in 30 sec"], ...p.levers.slice(0, 1)] : p.levers;
+    return `<h3>Why ${inr(o.max)}?</h3><p class="sub">Rules decide the amount. Here they are, explained.</p>
+      <div style="height:16px"></div>${aiCard("why-" + S.persona + o.max, ai, "Your pool, explained")}
+      <p class="label-s">What counted</p>
+      <div class="card" style="padding:4px 16px">${factors.map(f => `<div class="factor"><span class="sg" style="background:${f[0] === "+" ? "var(--green-soft);color:var(--green)" : "var(--amber-soft);color:var(--amber)"}">${f[0] === "+" ? "+" : "−"}</span>${f[1]}</div>`).join("")}</div>
+      <p class="label-s">Ways to unlock more</p>
+      ${levers.map(l => `<button class="lever" data-act="lever"><span style="flex:1">${l[0]} → <b>${l[1]}</b></span><span style="color:var(--primary)">${I.chev}</span></button>`).join("")}
+      <div style="height:18px"></div>${btn("Got it", "closeSheet")}`;
+    // LLM call goes here — answer "why is my pool this size?" using the rule outputs above
+  },
+};
+
+/* ---------- Lender Lens ---------- */
+function lensHTML() {
+  const sc = score(), t = sc.total;
+  const lab = t >= 70 ? "Sales-ready" : t >= 35 ? "Warm" : "Cold";
+  const col = t >= 70 ? "#5BE3A8" : t >= 35 ? "#FFC45E" : "#99A7FF";
+  const C = 2 * Math.PI * 36;
+  const [conf, ck] = confidence();
+  if (!S.persona) {
+    return `<div class="lens-sec"><div class="lens-k">Lead quality</div><div class="score"><div class="score-ring"><svg viewBox="0 0 84 84"><circle cx="42" cy="42" r="36" fill="none" stroke="#1C2156" stroke-width="7"/></svg><span class="n">0</span></div><div><div class="lab">Waiting for a visitor</div><div class="hint">This panel shows what Kestrel Finance sees, live, as the borrower moves through Breadcrumb.</div></div></div></div>
+      <div class="lens-sec"><div class="lens-k">What we capture</div><p class="lens-empty">Nothing yet. No phone number, no name, no bureau pull — until the borrower chooses to share.</p></div>`;
+  }
+  const p = P(), o = offer(), d = drawAmt(), r = S.route || (stepIndex() >= 3 ? routeNow() : null);
+  const fee = d * DATA.fees[r || "bank"] / 100, mi = d * DATA.rates[r || "bank"] / 100 / 12;
+  const notes = [];
+  if (r === "supplier") notes.push(["#5BE3A8", "Vendor-pay selected: funds can't be diverted"]);
+  if (S.trail && S.trail !== "rough" && !isNewBiz()) notes.push(["#FFC45E", p.seasonal]);
+  if (isCash()) notes.push(["#FFC45E", "Cash-heavy: verified inflow understates business — request GST / 2nd account"]);
+  if (isNewBiz()) notes.push(["#99A7FF", "Under 1 year: starter limit, nurture track (6-month re-score)"]);
+  if (o.over) notes.push(["#99A7FF", `Ask exceeds eligibility by ${inr(o.ask - o.max)} — upsell path via GST / vendor quote`]);
+  if (S.mirror === "off") notes.push(["#FF8A7A", `User flagged mirror data${S.offNote ? `: “${esc(S.offNote.slice(0, 70))}”` : ""} — manual check before KFS`]);
+  if (S.trail === "rough") notes.push(["#FFC45E", "Self-declared only — verify before sanction"]);
+  if (S.answers.gst && S.answers.gst !== "Yes") notes.push(["#99A7FF", "No GST — limit capped; GST would lift pool to ₹5.2L"]);
+  const showHandoff = stepIndex() >= 4;
+  const name = S.name.trim() || p.who;
+  return `
+    <div class="lens-sec"><div class="lens-k">Lead quality</div>
+      <div class="score"><div class="score-ring"><svg viewBox="0 0 84 84"><circle cx="42" cy="42" r="36" fill="none" stroke="#1C2156" stroke-width="7"/><circle cx="42" cy="42" r="36" fill="none" stroke="${col}" stroke-width="7" stroke-linecap="round" stroke-dasharray="${C}" stroke-dashoffset="${C * (1 - t / 100)}"/></svg><span class="n">${t}</span></div>
+        <div><div class="lab" style="color:${col}">${lab}</div><div class="hint">${lab === "Sales-ready" ? "Verified cash flow + reachable. Route to sales." : lab === "Warm" ? "Engaged. Needs trail or verification." : "Early signal only."}</div></div></div>
+      <div class="signals">${sc.sig.map(s => `<div class="sig ${s[1] ? "on" : ""}"><span>${s[0]}</span><span class="p">${s[1] ? "+" + s[1] : "—"}</span></div>`).join("")}</div>
+    </div>
+    <div class="lens-sec"><div class="lens-k">Data confidence</div><div class="conf"><span class="pill ${ck}">${conf}</span></div>
+      ${S.trail && S.trail !== "rough" ? `<div class="kv" style="margin-top:12px"><span>Verified avg inflow</span><b class="num">${inr(p.avg * (isCash() ? .45 : 1))}/mo</b><span>Months of trail</span><b>12</b></div>` : ""}</div>
+    <div class="lens-sec"><div class="lens-k">Persona &amp; suggested product</div><div class="lens-v"><b style="font-weight:600">${p.label}</b> → ${isNewBiz() ? "Starter line, nurture track" : p.product}</div>
+      ${Object.keys(S.answers).length ? `<div class="kv" style="margin-top:12px">${p.questions.filter(q => S.answers[q.id]).map(q => `<span>${q.q.replace(/\?$/, "").replace("…", "").slice(0, 34)}</span><b style="font-family:Inter">${S.answers[q.id]}</b>`).join("")}</div>` : ""}</div>
+    <div class="lens-sec"><div class="lens-k">Risk notes</div>${notes.length ? `<div class="notes">${notes.map(n => `<div class="note"><i style="background:${n[0]}"></i><span>${n[1]}</span></div>`).join("")}</div>` : `<p class="lens-empty">No flags yet.</p>`}</div>
+    ${stepIndex() >= 3 ? `<div class="lens-sec"><div class="lens-k">Revenue view <span style="text-transform:none;letter-spacing:0;font-weight:400">· illustrative</span></div>
+      <div class="kv"><span>Pool approved</span><b>${inr(o.max)}</b><span>Drawn today</span><b>${inr(d)}</b><span>Setup fee earned (${DATA.fees[r || "bank"]}%)</span><b class="hl">${inr(fee)}</b><span>Expected interest / month</span><b class="hl">${inr(mi)}</b><span>Rate</span><b>${DATA.rates[r || "bank"]}% p.a.</b></div>
+      <div class="capbar"><i style="width:${d / o.max * 100}%"></i></div>
+      <p style="font-size:12.5px;color:var(--lens-muted);margin-top:8px">Capital committed today: <span class="lens-mono" style="color:var(--lens-ink)">${inr(d)}</span> (not ${inr(o.max)})</p></div>` : ""}
+    ${showHandoff ? `<div class="lens-sec"><div class="lens-k">Sales handoff ${S.saved ? `<span style="color:#5BE3A8;text-transform:none;letter-spacing:0">· sent to queue</span>` : ""}</div>
+      <div class="handoff"><div class="hd"><span class="nm">${esc(name)}</span><span class="tag" style="background:rgba(91,227,168,.12);color:#5BE3A8">${S.phoneVerified ? "Phone verified" : "Unverified"}</span></div>
+        <div class="kv"><span>Persona</span><b style="font-family:Inter">${p.label}</b><span>Verified avg inflow</span><b>${S.trail === "rough" ? "—" : inr(p.avg * (isCash() ? .45 : 1))}</b><span>Pool</span><b>${inr(o.max)}</b><span>Route</span><b style="font-family:Inter">${routeNow() === "supplier" ? "Vendor / supplier pay" : "Bank transfer"}</b><span>Contact</span><b style="font-family:Inter">${S.contact == null ? "—" : S.contact === 1 ? "Call · " + (S.slot != null ? DATA.lock.slots[S.slot] : "slot pending") : S.contact === 2 ? "Do not call" : "WhatsApp"}</b>${S.phoneVerified ? `<span>Mobile</span><b>+91 ${S.phone.slice(0, 5)} ${S.phone.slice(5)}</b>` : ""}</div>
+        <div class="sum"><span style="color:#99A7FF;font-size:11px;font-weight:600;letter-spacing:.06em;display:block;margin-bottom:4px">AI SUMMARY FOR CALLER</span>${esc(p.handoff.replace(p.who, name))}${S.mirror === "off" ? " Borrower flagged data — check note first." : ""}</div>
+        <!-- LLM call goes here — one-line caller summary from the lead record -->
+      </div></div>` : ""}`;
+}
+
+function demoHTML() {
+  const e = S.edge;
+  return `<h4>Persona shortcut</h4><div class="chips">${Object.entries(DATA.personas).map(([k, p]) => `<button class="chip ${S.persona === k ? "sel" : ""}" data-act="demoP:${k}">${p.short}</button>`).join("")}</div>
+    <h4>Edge states</h4>
+    <button class="toggle ${e.newBiz ? "on" : ""}" data-act="edge:newBiz">New business (&lt;1 year)<span class="sw2"></span></button>
+    <button class="toggle ${e.cash ? "on" : ""}" data-act="edge:cash">Mostly cash / thin trail<span class="sw2"></span></button>
+    <button class="toggle ${e.overAsk ? "on" : ""}" data-act="edge:overAsk">Asked for more than eligible<span class="sw2"></span></button>
+    <p style="font-size:12px;color:var(--muted);margin-top:6px">“Something's off” lives on the mirror screen.</p>
+    <h4>Jump to</h4><div class="chips">${[["persona", "Who"], ["trail", "Trail"], ["mirror", "Mirror"], ["pool", "Pool"], ["lock", "Lock"]].map(([s, l]) => `<button class="chip" data-act="jump:${s}">${l}</button>`).join("")}</div>
+    <div style="height:14px"></div><button class="btn btn-secondary" style="height:44px;font-size:14px" data-act="reset">Reset demo</button>`;
+}
+
+/* ---------- progress ---------- */
+function progressHTML() {
+  const idx = stepIndex();
+  if (idx < 0) return "";
+  const w = Math.min(idx, 4) / 4 * 100;
+  return `<div class="prog-row"><div class="prog-line"></div><div class="prog-fill" style="width:calc((100% - 12px) * ${w / 100})"></div>
+    ${DATA.steps.map((s, i) => `<span class="prog-dot ${i < idx ? "done" : i === idx ? "now" : ""}"></span>`).join("")}</div>
+    <div class="prog-labels">${DATA.steps.map((s, i) => `<span class="${i <= idx ? "on" : ""}">${s}</span>`).join("")}</div>`;
+}
+
+/* ---------- main render ---------- */
+let lastStepKey = null;
+function render() {
+  const token = ++renderToken;
+  const key = S.step + (S.step === "q" ? S.qi : "");
+  const scr = Screens[S.step]();
+  const scroll = $("#scroll");
+  const isNew = key !== lastStepKey;
+  const prevTop = scroll.scrollTop;
+  scroll.innerHTML = `<div class="screen ${isNew ? (S.dir > 0 ? "enter" : "enter-back") : ""}">${scr.body}</div>`;
+  if (isNew) scroll.scrollTop = 0; else scroll.scrollTop = prevTop;
+  lastStepKey = key;
+  $("#cta").innerHTML = scr.cta;
+  const pr = $("#progress"); pr.innerHTML = progressHTML(); pr.classList.toggle("hide", S.step === "landing");
+  const back = $("#backBtn"); back.disabled = S.step === "landing" || S.step === "loader" || S.step === "done"; $(".topbar").classList.toggle("home", S.step === "landing" || S.step === "done");
+  renderSheet();
+  renderLens();
+  $("#demo").innerHTML = demoHTML();
+  bindInputs();
+  runTypers(token);
+  runCounts();
+  if (S.step === "loader") runLoader(token);
+}
+function renderSheet() {
+  const layer = $("#sheetLayer");
+  if (S.sheet) { $("#sheet").innerHTML = `<div class="grab"></div><button class="iconbtn sheet-close" data-act="closeSheet" aria-label="Close">${I.close}</button>${Sheets[S.sheet]()}`; requestAnimationFrame(() => layer.classList.add("open")); }
+  else layer.classList.remove("open");
+}
+function renderLens() { const h = lensHTML(); $("#lensBody").innerHTML = h; $("#lensBodyM").innerHTML = h; }
+
+/* ---------- typewriter (simulated streaming) ---------- */
+function runTypers(token) {
+  document.querySelectorAll("[data-type]").forEach(el => {
+    const key = el.dataset.type, full = el.dataset.full, txt = plain(full);
+    if (typed[key] >= txt.length) { el.innerHTML = md(full); return; }
+    let i = typed[key] || 0; el.classList.add("typing");
+    const tick = () => {
+      if (token !== renderToken) return;
+      i = Math.min(txt.length, i + 2); typed[key] = i;
+      el.textContent = txt.slice(0, i);
+      if (i < txt.length) setTimeout(tick, 16); else { el.classList.remove("typing"); el.innerHTML = md(full); }
+    };
+    setTimeout(tick, i ? 0 : 450);
+  });
+}
+function runCounts() {
+  document.querySelectorAll("[data-count]").forEach(el => {
+    const key = el.dataset.count, to = +el.dataset.to;
+    if (counted[key]) { el.textContent = inr(to); return; }
+    counted[key] = true;
+    const t0 = performance.now(), dur = 1000;
+    const f = now => { const k = Math.min(1, (now - t0) / dur), e = 1 - Math.pow(1 - k, 3); el.textContent = inr(k < 1 ? Math.round(to * e / 1000) * 1000 : to); if (k < 1) requestAnimationFrame(f); };
+    requestAnimationFrame(f);
+  });
+}
+function runLoader(token) {
+  const spans = [...document.querySelectorAll("#status span")]; let i = 0;
+  const iv = setInterval(() => {
+    if (token !== renderToken) return clearInterval(iv);
+    i++; if (i < spans.length) spans.forEach((s, j) => s.classList.toggle("on", j === i));
+  }, 1050);
+  setTimeout(() => { clearInterval(iv); if (token !== renderToken) return; go(S.trail === "rough" ? "pool" : "mirror", { noHist: true }); }, 3300);
+}
+
+/* ---------- inputs that must not re-render on every keystroke ---------- */
+function lockReady() { return S.name.trim().length > 1 && S.phoneVerified && S.contact != null && (S.contact !== 1 || S.slot != null); }
+function bindInputs() {
+  const ft = $("#freeText"); if (ft) { ft.oninput = e => S.freeText = e.target.value; ft.onkeydown = e => { if (e.key === "Enter") act("classify"); }; }
+  const nm = $("#nm"); if (nm) nm.oninput = e => { S.name = e.target.value; $("#saveBtn").disabled = !lockReady(); renderLens(); };
+  const ph = $("#ph"); if (ph) ph.oninput = e => { e.target.value = e.target.value.replace(/\D/g, "").slice(0, 10); S.phone = e.target.value; const b = $("#sendOtp"); if (b) b.disabled = S.phone.length !== 10; };
+  const otp = $("#otp"); if (otp) otp.oninput = e => { e.target.value = e.target.value.replace(/\D/g, "").slice(0, 6); S.otp = e.target.value; if (S.otp.length === 6) { S.phoneVerified = true; render(); toast("Number verified"); } };
+  const aa = $("#aaOtp"); if (aa) aa.oninput = e => { e.target.value = e.target.value.replace(/\D/g, "").slice(0, 6); S.otpConsent = e.target.value; $("#shareBtn").disabled = S.otpConsent.length !== 6; };
+  const on = $("#offNote"); if (on) on.oninput = e => S.offNote = e.target.value;
+  const rg = $("#drawR"); if (rg) rg.oninput = e => { S.draw = +e.target.value; updatePool(); };
+}
+function updatePool() {
+  const o = offer(), d = drawAmt(), rate = DATA.rates.bank, rg = $("#drawR");
+  const pct = d / o.max * 100, min = +rg.min;
+  rg.style.setProperty("--pct", ((d - min) / (o.max - min) * 100) + "%");
+  $("#drawV").textContent = inr(d); $("#sDraw").textContent = inr(d); $("#sFree").textContent = inr(o.max - d);
+  $("#sInt").textContent = `about ${inr(Math.round(d * rate / 100 / 12 / 10) * 10)}/month interest at ${rate}% p.a.`;
+  const f = $("#poolFill"); f.style.width = pct + "%"; f.classList.toggle("full", pct >= 99.9);
+  $("#poolFillT").textContent = pct > 28 ? "In use" : ""; $("#poolFree").textContent = pct < 72 ? "₹0 interest" : "";
+  renderLens();
+}
+
+/* ---------- toast ---------- */
+let toastT;
+function toast(msg) { const t = $("#toast"); t.innerHTML = `${I.check("#5BE3A8", 15)}<span>${msg}</span>`; t.classList.add("on"); clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove("on"), 2600); }
+
+/* =========================================================
+   Actions
+   ========================================================= */
+function go(step, opts = {}) {
+  if (!opts.noHist) S.hist.push({ step: S.step, qi: S.qi });
+  S.dir = 1; S.step = step; if (opts.qi != null) S.qi = opts.qi; S.sheet = null; render();
+}
+function back() {
+  if (S.sheet) { S.sheet = null; return render(); }
+  let h = S.hist.pop();
+  while (h && h.step === "loader") h = S.hist.pop();
+  if (!h) return;
+  S.dir = -1; S.step = h.step; S.qi = h.qi; render();
+}
+function classify(text) {
+  // LLM call goes here — classify the free-text business description into a persona
+  const t = text.trim(); if (!t) return null;
+  const hit = DATA.classify.find(c => c.re.test(t));
+  const id = hit ? hit.p : "local";
+  const desc = t.replace(/^(i\s+(run|own|have|am|do)\s+(a|an)?\s*|i'?m\s+(a|an)\s+)/i, "").replace(/[.!]+$/, "");
+  const line = hit ? `Sounds like **${DATA.personas[id].label}** — ${/^(a|an|the)\s/i.test(desc) ? "" : "a "}${desc.toLowerCase()}. Got it.` : `Closest fit looks like **${DATA.personas[id].label}**. You can pick another above if it isn't right.`;
+  return { id, line: line, key: Date.now() };
+}
+function act(a, el) {
+  const [cmd, ...args] = a.split(":"); const arg = args.join(":");
+  switch (cmd) {
+    case "start": return go("persona");
+    case "back": return back();
+    case "sheet": S.sheet = arg; if (arg === "consent") S.consentStage = "banks"; if (arg === "pdf") S.pdfStage = 0; return render();
+    case "closeSheet": S.sheet = null; return render();
+    case "persona": if (S.persona !== arg) { S.answers = {}; S.draw = null; S.route = null; } S.persona = arg; return render();
+    case "classify": { const c = classify(S.freeText); if (!c) return; S.classified = { ...c, id: c.id + c.key }; if (S.persona !== c.id) { S.answers = {}; S.draw = null; S.route = null; } S.persona = c.id; render(); setTimeout(() => document.querySelector('#scroll .ai')?.scrollIntoView({ behavior: 'smooth', block: 'center' }), 60); return; }
+    case "toQuestions": return go("q", { qi: 0 });
+    case "answer": {
+      const [qid, ...rest] = args; S.answers[qid] = rest.join(":").replace(/&amp;/g, "&");
+      render();
+      setTimeout(() => { if (S.qi < P().questions.length - 1) go("q", { qi: S.qi + 1 }); else go("trail"); }, 260);
+      return;
+    }
+    case "trailOpt": S.sheet = arg === "bank" ? "consent" : arg; if (arg === "bank") { S.consentStage = "banks"; } if (arg === "pdf") S.pdfStage = 0; return render();
+    case "bank": S.bank = +arg; return render();
+    case "consentNext": S.consentStage = "otp"; render(); setTimeout(() => $("#aaOtp")?.focus(), 350); return;
+    case "consentBack": S.consentStage = "banks"; return render();
+    case "shareOnce": S.trail = "bank"; S.mirror = null; S.sheet = null; return go("loader");
+    case "pickPdf": S.pdfStage = 1; render(); setTimeout(() => { const b = $("#pdfBar"); if (b) b.style.width = "100%"; }, 50); setTimeout(() => { if (S.sheet === "pdf") { S.pdfStage = 2; render(); } }, 1300); return;
+    case "pdfGo": S.trail = "pdf"; S.mirror = null; return go("loader");
+    case "rEarn": S.roughEarn = +arg; return render();
+    case "rAsk": S.roughAsk = +arg; return render();
+    case "roughGo": S.trail = "rough"; S.mirror = null; S.draw = null; return go("loader");
+    case "mirrorOk": S.mirror = "ok"; return go("pool");
+    case "offGo": S.mirror = "off"; S.sheet = null; return go("pool");
+    case "lever": toast("Saved — you can add this after saving your offer"); return;
+    case "toRoute": return go("route");
+    case "route": S.route = arg; return render();
+    case "quoteLater": toast("Noted — add the quote any time before we pay"); return;
+    case "toLock": if (!S.route) S.route = routeNow(); return go("lock");
+    case "sendOtp": S.otpSent = true; render(); toast("Code sent to +91 " + S.phone.slice(0, 5) + " " + S.phone.slice(5)); setTimeout(() => $("#otp")?.focus(), 50); return;
+    case "contact": S.contact = +arg; if (S.contact !== 1) S.slot = null; return render();
+    case "slot": S.slot = +arg; return render();
+    case "save": if (!lockReady()) return; S.saved = true; return go("done");
+    case "shareCA": toast("Link copied — it shows your summary only, and expires in 7 days"); return;
+    case "reset": Object.keys(typed).forEach(k => delete typed[k]); Object.keys(counted).forEach(k => delete counted[k]); S = fresh(); lastStepKey = null; $("#demo").classList.remove("open"); closeLens(); return render();
+    case "openLens": $("#lensSheet").classList.add("open"); return;
+    case "closeLens": return closeLens();
+    case "toggleDemo": $("#demo").classList.toggle("open"); return;
+    case "openDemo": closeLens(); $("#demo").classList.add("open"); return;
+    case "edge": S.edge[arg] = !S.edge[arg]; S.draw = null; if (!S.persona) S.persona = "shop"; return render();
+    case "demoP": S.persona = arg; S.answers = {}; S.draw = null; S.route = null; S.trail = S.trail || "bank"; S.hist = [{ step: "landing", qi: 0 }, { step: "persona", qi: 0 }, { step: "trail", qi: 0 }]; S.dir = 1; S.step = "mirror"; S.mirror = null; return render();
+    case "jump": {
+      if (!S.persona) S.persona = "shop";
+      if (["mirror", "pool", "lock"].includes(arg) && !S.trail) S.trail = "bank";
+      if (arg === "lock" && !S.route) S.route = routeNow();
+      S.sheet = null; return go(arg);
+    }
+  }
+}
+function closeLens() { $("#lensSheet").classList.remove("open"); }
+
+document.addEventListener("click", e => {
+  const el = e.target.closest("[data-act]"); if (!el || el.disabled) return;
+  const a = el.dataset.act;
+  if (!a.startsWith("toggleDemo") && !el.closest("#demo") && !a.startsWith("openDemo")) $("#demo").classList.remove("open");
+  act(a, el);
+});
+document.addEventListener("click", e => { if (!e.target.closest("#demo") && !e.target.closest("[data-act]")) $("#demo").classList.remove("open"); }, true);
+document.addEventListener("keydown", e => { if (e.key === "Escape") { if (S.sheet) act("closeSheet"); closeLens(); $("#demo").classList.remove("open"); } });
+
+render();
+</script>
+</body>
+</html>
