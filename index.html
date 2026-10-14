@@ -7,7 +7,7 @@
 <meta name="description" content="Breadcrumb — see what your business can borrow, from the trail your payments already left. Clickable prototype.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 /* =========================================================
    Design tokens — taken from the Fintech UI Kit
@@ -28,7 +28,7 @@
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%}
-body{font-family:Inter,system-ui,-apple-system,'Segoe UI',sans-serif;background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased;font-size:15px;line-height:1.5;overflow:hidden}
+body{font-family:Inter,'Noto Sans Devanagari',system-ui,-apple-system,'Segoe UI',sans-serif;background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased;font-size:15px;line-height:1.5;overflow:hidden}
 button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;-webkit-tap-highlight-color:transparent}
 input{font:inherit;color:inherit}
 .num{font-variant-numeric:tabular-nums;font-feature-settings:"tnum" 1}
@@ -341,6 +341,53 @@ input[type=range]::-moz-range-thumb{width:24px;height:24px;border-radius:50%;bac
 .qtotal{display:flex;justify-content:space-between;align-items:baseline;margin-top:12px;padding-top:12px;border-top:1px solid var(--hair);font-size:13px;color:var(--muted)}
 .qtotal b{font-size:16px;color:var(--ink)}
 
+/* ---------- lender lockup, language, resume, welcome ---------- */
+.lockup{display:flex;align-items:center;justify-content:center;gap:8px;font-size:12px;color:var(--muted);font-weight:500;margin:-4px 0 14px}
+.lockup svg{flex:none}
+.lockup.sm{justify-content:flex-start;margin:12px 0 0;font-size:12.5px}
+.topbar-r{justify-self:end;display:flex;align-items:center}
+.lang-sw{display:inline-flex;padding:3px;border-radius:999px;background:var(--surface);border:1px solid var(--hair);gap:2px}
+.lang-sw button{height:28px;min-width:34px;padding:0 9px;border-radius:999px;font-size:12px;font-weight:600;color:var(--muted);transition:all .2s}
+.lang-sw button.on{background:var(--primary);color:#fff}
+.langask{margin-top:14px;padding:14px 16px;border-radius:var(--r-card);background:var(--p7);border:1px solid var(--p6)}
+.langask p{font-size:13px;color:var(--ink2);margin-bottom:10px}
+.langask .chip.hi{font-size:15px}
+.resume{margin-bottom:14px;border-color:var(--p5)}
+.welcome{border-color:var(--green);box-shadow:0 0 0 4px var(--green-soft)}
+.boost{display:flex;justify-content:space-between;align-items:center;margin-top:14px;padding:12px 14px;border-radius:14px;background:var(--green-soft);font-size:13px;color:#0B5A3D}
+.boost .num{display:inline-flex;align-items:center;gap:6px;font-size:14px}
+.boost s{color:var(--muted)}
+.boost b{font-size:17px;color:var(--green)}
+.link.quiet{color:var(--muted);font-weight:500;text-decoration:underline;text-underline-offset:3px;text-decoration-color:var(--hair)}
+.gst-ok{display:inline-flex;align-items:center;gap:4px;color:var(--green);font-weight:500}
+.qrow .qt .gst-ok{display:flex;font-size:11.5px;margin-top:1px}
+.gst-col{display:flex;flex-direction:column;align-items:flex-end;gap:2px}
+.gst-col .num{font-size:12px;color:var(--muted);font-weight:500}
+.app[lang=hi] h1.h,.app[lang=hi] h2.h,.app[lang=hi] .sheet h3{letter-spacing:0;line-height:1.38}
+.app[lang=hi] .eyebrow{letter-spacing:.02em}
+.app[lang=hi] .sub,.app[lang=hi] .ai-text{line-height:1.65}
+.app[lang=hi] .prog-labels span{font-size:10.5px}
+/* lens tabs + funnel */
+.lens-tabs{display:flex;gap:4px;padding:4px;border-radius:12px;background:var(--navy2);margin-bottom:18px}
+.lens-tabs button{flex:1;height:34px;border-radius:9px;font-size:13px;font-weight:600;color:var(--lens-muted)}
+.lens-tabs button.on{background:var(--navy3);color:var(--lens-ink)}
+.fn-note{font-size:12px;color:#FFC45E;margin:-2px 0 12px}
+.fn{display:grid;grid-template-columns:96px 1fr 1fr;gap:8px 10px;align-items:center}
+.fn-h{font-size:12px;font-weight:600;color:var(--lens-ink);display:flex;align-items:center;gap:6px}
+.fn-h i{width:8px;height:8px;border-radius:2px;display:block}
+.fn-l{font-size:12px;color:var(--lens-muted);line-height:1.3}
+.fn-c{display:flex;align-items:center;gap:6px;height:24px;cursor:default}
+.fn-c i{display:block;height:100%;border-radius:2px 4px 4px 2px;min-width:3px;transition:width .4s var(--ease)}
+.fn-c b{font-family:var(--mono);font-size:12px;font-weight:500;color:var(--lens-ink)}
+.fn-unit{font-size:11.5px;color:var(--lens-muted);margin-top:10px}
+.tiles{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.tile{background:var(--navy2);border:1px solid var(--lens-hair);border-radius:14px;padding:12px;display:flex;flex-direction:column;gap:6px}
+.tile .tt{font-size:12.5px;font-weight:600;line-height:1.3}
+.tile .tv{font-size:15px}
+.tile .tv s{color:var(--lens-muted)}
+.tile .tv b{color:#5BE3A8;font-weight:600}
+.tile .td{font-size:11.5px;color:var(--lens-muted);line-height:1.4}
+
 /* ---------- toast (css) ---------- */
 .toast{position:absolute;left:16px;right:16px;bottom:96px;z-index:60;background:var(--navy);color:#fff;border-radius:16px;padding:14px 16px;font-size:14px;display:flex;gap:10px;align-items:center;
   box-shadow:0 12px 30px rgba(10,13,43,.3);opacity:0;transform:translateY(10px);transition:all .25s var(--ease);pointer-events:none}
@@ -419,6 +466,10 @@ input[type=range]::-moz-range-thumb{width:24px;height:24px;border-radius:50%;bac
   .topbar{margin-top:env(safe-area-inset-top, 0px)}
   .lens{display:none}
   .lens-pill{display:inline-flex}
+  .topbar-r{position:absolute;right:62px;top:14px}
+  .topbar.has-lang .lens-pill{width:36px;height:36px;padding:0;justify-content:center;top:10px;font-size:0;gap:0}
+  .topbar.has-lang .lens-pill .dot{width:8px;height:8px}
+  .lockup{justify-content:flex-start}
   .wordmark{justify-self:start;margin-left:2px}
   .topbar.home .wordmark{margin-left:-46px}
   .demo-btn{display:none}
@@ -444,6 +495,7 @@ input[type=range]::-moz-range-thumb{width:24px;height:24px;border-radius:50%;bac
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
         </button>
         <div class="wordmark"><span class="crumbs"><i></i><i></i><i></i></span>Breadcrumb</div>
+        <div class="topbar-r" id="langSw"></div>
         <button class="lens-pill" data-act="openLens"><span class="dot"></span>Lender view</button>
       </header>
       <div class="progress" id="progress"></div>
@@ -498,10 +550,10 @@ const DATA = {
     name: "Breadcrumb",
     tagline: "Your business already left a trail. Let's follow it.",
     lender: "Kestrel Finance Ltd",
+    lenderShort: "Kestrel Finance",
     lenderLine: "Lending partner: Kestrel Finance Ltd (RBI-registered NBFC)",
-    footer: "Prototype for demonstration. Kestrel Finance Ltd is fictional. Amounts, rates and fees are illustrative, not an offer.",
+    lockup: "Lending by Kestrel Finance · RBI-registered NBFC",
   },
-  steps: ["Who", "About", "Trail", "Pool", "Lock"],
   landing: {
     eyebrow: "For the self-employed",
     title: "What can your business borrow? Find out in 45 seconds.",
@@ -514,62 +566,435 @@ const DATA = {
       { t: "Let your payments speak", d: "Share your bank trail once, with consent. We show you your business the way we see it." },
       { t: "See your credit pool", d: "A limit you draw from when you need it. Interest only on what you use." },
     ],
+    howTitle: "How Breadcrumb works",
+    gotIt: "Got it",
+    heroCard: { pool: "Credit pool", upTo: "Up to", amt: "₹4,50,000", unused: "Interest on unused", time: "Time to know", timeV: "45 sec" },
+    vendorBanner: { t: "Financing your purchase from Sharma Dental Supplies", d: "Their quote comes with you — we'll pay them directly." },
+    returning: { t: "Welcome back — you were 2 steps from your offer.", d: "Pick up where you left off?", cont: "Continue", fresh: "Start fresh" },
   },
   personaScreen: {
     title: "First, what kind of work do you do?",
     sub: "Your questions, documents and offer will be shaped around this.",
     freeLabel: "Doesn't fit? Describe it in your words",
     freePlaceholder: "e.g. I run a mobile repair shop",
+    understood: "Understood",
+    clsHit: "Sounds like **{label}** — {desc}. Got it.",
+    clsMiss: "Closest fit looks like **{label}**. You can pick another above if it isn't right.",
+    continue: "Continue",
+    langAsk: "हिंदी में देखें?",
+    langEn: "Continue in English",
+    langNote: "Prefer Hindi? The rest of your path can be in simple Hindi.",
   },
-  months: ["Apr", "May", "Jun", "Jul", "Aug", "Sep"],
-  trailMonths: 6,
+  langSwitch: { en: "EN", hi: "हिं" },
   rates: { bank: 16.5, supplier: 14.5 },
   fees: { bank: 1.5, supplier: 1.0 },
   starterPool: 50000,
-  trailOptions: [
-    { id: "bank", icon: "bankSvg", t: "Connect my bank", d: "Most accurate · 30 seconds · via RBI's Account Aggregator", badge: "Best estimate" },
-    { id: "pdf", icon: "history", t: "Upload a bank statement PDF", d: "Last 6 months of your business account" },
-    { id: "rough", icon: "search", t: "Just give me a rough idea", d: "We'll ask 2 quick questions. Estimate will be wider." },
-  ],
+  existingBoost: 1.1,
+  trailIcons: { bank: "bankSvg", pdf: "history", rough: "search" },
   banks: [
     { n: "Sahyadri Bank", m: "SB", c: "#2C48FF" },
     { n: "Northstar Bank", m: "NB", c: "#0A0D2B" },
     { n: "Indus Valley Bank", m: "IV", c: "#5970FF" },
     { n: "Meridian Bank", m: "MB", c: "#14996A" },
     { n: "Coastal Co-op Bank", m: "CC", c: "#798BFF" },
-    { n: "Other bank", m: "+", c: "#A3A7BD" },
+    { n: "", m: "+", c: "#A3A7BD", other: true },
   ],
-  bankSafety: ["Used only to check your eligibility", "Read-only — no one can move your money", "Deleted in 30 days if you stop"],
-  consent: {
-    title: "Breadcrumb would like to read your bank statement",
-    sub: "To check what you're eligible for, we need to see the last 6 months of transactions from your business account — through RBI's Account Aggregator framework.",
-    use: { t: "Used only for your eligibility", d: "To work out your credit pool. Never for marketing, never sold, never shared outside Kestrel Finance" },
-    promise: "Your information is used only to understand your eligibility and will never be misused. You can withdraw this consent at any time.",
-    share: { t: "You're sharing", d: "Transactions from 1 account · last 6 months · one time only" },
-    not: { t: "We will NOT see or do", d: "Your contacts, SMS or photos. No CIBIL check. We can never move money from your account" },
-    del: { t: "Deleted after 30 days", d: "If you don't continue, your data is deleted automatically" },
-  },
   rough: {
-    earnLabel: "Roughly how much comes in each month?",
-    earn: [{ l: "Under ₹1 lakh", v: 75000 }, { l: "₹1–3 lakh", v: 200000 }, { l: "₹3–5 lakh", v: 400000 }, { l: "₹5 lakh+", v: 600000 }],
-    askLabel: "How much would you like?",
-    ask: [{ l: "Up to ₹2 lakh", v: 200000 }, { l: "₹2–5 lakh", v: 500000 }, { l: "₹5–10 lakh", v: 800000 }, { l: "₹10 lakh+", v: 1500000 }],
+    earn: [75000, 200000, 400000, 600000],
+    ask: [200000, 500000, 800000, 1500000],
   },
-  loader: ["Reading 6 months of payments…", "Spotting your busy season…", "Working out your pool…"],
-  loaderRough: ["Reading your answers…", "Comparing with businesses like yours…", "Working out a rough pool…"],
-  lock: {
-    title: "Keep this offer for 7 days.",
-    sub: "Just three things — so we can hold it for you. Nothing is signed.",
-    contact: ["WhatsApp", "Call me", "Don't contact me, I'll come back"],
-    slots: ["Today evening", "Tomorrow morning", "Tomorrow evening"],
-    cta: "Save my offer",
-  },
-  starterChecklist: [
-    "Route all business payments into one account",
-    "Register on Udyam (free, 10 minutes)",
-    "Repay your starter pool on time for 3 months",
-    "Come back and reconnect — most limits grow 3–5×",
+  sources: [
+    { id: "direct", l: "Direct" },
+    { id: "vendor", l: "Vendor checkout" },
+    { id: "ca", l: "CA referral" },
   ],
+
+  /* ---------- user-facing copy, per screen, English + Hindi ---------- */
+  ui: {
+    en: {
+      steps: ["Who", "About", "Trail", "Pool", "Lock"],
+      footer: "Prototype for demonstration. Kestrel Finance Ltd is fictional. Amounts, rates and fees are illustrative, not an offer.",
+      lakh: "lakh",
+      common: { continue: "Continue", gotIt: "Got it", back: "Back", pa: "p.a." },
+      q: { eyebrow: "{label} · {n} of {total}" },
+      trail: {
+        title: "Let your business speak for itself.",
+        sub: "Instead of guessing numbers, let us read the trail your payments already left.",
+        recommended: "(recommended)",
+        options: {
+          bank: { t: "Connect my bank", d: "Most accurate · 30 seconds · via RBI's Account Aggregator", badge: "Best estimate" },
+          pdf: { t: "Upload a bank statement PDF", d: "Last 6 months of your business account" },
+          rough: { t: "Just give me a rough idea", d: "We'll ask 2 quick questions. Estimate will be wider." },
+        },
+        bankLead: "We read your last 6 months of transactions only to check what you're eligible for.",
+        safety: ["Used only to check your eligibility", "Read-only — no one can move your money", "Deleted in 30 days if you stop"],
+        readOnly: "Read-only. We can never move money from your account.",
+      },
+      consent: {
+        title: "Breadcrumb would like to read your bank statement",
+        sub: "To check what you're eligible for, we need to see the last 6 months of transactions from your business account — through RBI's Account Aggregator framework.",
+        share: { t: "You're sharing", d: "Transactions from 1 account · last 6 months · one time only" },
+        use: { t: "Used only for your eligibility", d: "To work out your credit pool. Never for marketing, never sold, never shared outside Kestrel Finance" },
+        kestrel: { t: "Shared only with Kestrel Finance", d: "Your lender, an RBI-registered NBFC. No one else sees it." },
+        not: { t: "We will NOT see or do", d: "Your contacts, SMS or photos. No CIBIL check. We can never move money from your account" },
+        del: { t: "Deleted after 30 days", d: "If you don't continue, your data is deleted automatically" },
+        promise: "Your information is used only to understand your eligibility and will never be misused. You can withdraw this consent at any time.",
+        agree: "I agree, continue", notNow: "Not now",
+        lenderLine: "Lending partner: Kestrel Finance Ltd (RBI-registered NBFC)",
+        stepLabel: "Step {n} of 3 · {label}",
+        stepNames: ["Choose your bank", "Add your account", "Verify with OTP"],
+        aa: "Account Aggregator consent",
+        banksTitle: "Which bank is your business account with?",
+        otherBank: "Other bank",
+        accSub: "Add the account your business payments land in. We use it only to find this account at {bank}.",
+        accType: "Account type", accTypes: ["Current", "Savings"],
+        accNo: "Account number", accNoPh: "9 to 18 digits",
+        accNo2: "Re-enter account number", accNo2Ph: "Must match",
+        accErr: "Account numbers don't match",
+        accSafe: "Read-only. Adding your account number never lets anyone move money from it.",
+        sendOtp: "Send OTP", diffBank: "Choose a different bank",
+        accLine: "{type} account ••{last4}", accLineD: "Transactions · last 6 months · view once",
+        otpLabel: "Enter the code sent to the mobile linked to this account, {mobile}",
+        demoAny: "(any 6 digits in this demo)",
+        shareOnce: "Share once", changeAcc: "Change account number",
+      },
+      pdf: {
+        title: "Upload a bank statement",
+        sub: "A PDF of your main business account, last 6 months. Password-protected files are fine.",
+        choose: "Choose a PDF", limit: "Up to 10 MB", chooseBtn: "Choose file",
+        file: "statement_apr26-sep26.pdf",
+        reading: "Reading…", found: "6 months · 1,164 transactions found",
+        safe: "We only read transactions. Deleted after 30 days if you don't continue.",
+        use: "Use this statement",
+      },
+      rough: {
+        title: "Just a rough idea", sub: "Two quick taps. Your estimate will be a range, not a number.",
+        earnLabel: "Roughly how much comes in each month?", earn: ["Under ₹1 lakh", "₹1–3 lakh", "₹3–5 lakh", "₹5 lakh+"],
+        askLabel: "How much would you like?", ask: ["Up to ₹2 lakh", "₹2–5 lakh", "₹5–10 lakh", "₹10 lakh+"],
+        go: "See my estimate",
+      },
+      loader: {
+        lines: ["Reading 6 months of payments…", "Spotting your busy season…", "Working out your pool…"],
+        rough: ["Reading your answers…", "Comparing with businesses like yours…", "Working out a rough pool…"],
+        sub: "Your data stays encrypted and read-only", subRough: "Using only what you told us",
+      },
+      months: ["Apr", "May", "Jun", "Jul", "Aug", "Sep"],
+      mirror: {
+        title: "Here's your business, the way we see it.",
+        avg: "Average money in", seen: " (seen in bank)", perMonth: "a month",
+        fromStatement: "From your statement", bankVerified: "Bank-verified", sixMonths: "6 months", thin: "Thin trail",
+        best: "Best month", slowest: "Slowest", moneyIn: "Money in",
+        busiestP: "Busiest: {v}", slowestP: "Slowest: {v}", cashPayers: "Most customers pay in cash",
+        cashNotice: "<b>Your trail is thin — most of your money moves in cash.</b> Add GST returns or a second account later to unlock more. This is never a dead end.",
+        cashSummary: "Your trail is thin — most of your money moves in cash, so your bank only sees part of your business. That's okay. We've made a smaller, safe offer today, and adding GST or a second account will show us the rest.",
+        aiHead: "In plain words", ok: "Looks right", off: "Something's off",
+      },
+      off: {
+        title: "What looks off?", sub: "Tell us in a line. A real person will check it before anything is final.",
+        ph: "e.g. September also includes a one-time family transfer", go: "Send and continue",
+      },
+      pool: {
+        starterTitle: "Here's a starter pool to begin your trail.",
+        title: "You could have a credit pool of up to {amt}",
+        labels: { verified: "Based on your verified trail", rough: "Rough estimate", thin: "Estimated from a thin trail", starter: "Starter pool" },
+        likely: "Likely {lo} – {hi}",
+        offerFrom: "Offer from Kestrel Finance",
+        checked: "Thanks — a person will check this before your offer is final.",
+        overAsk: "You asked for <b>{ask}</b>. Today we can do <b>{max}</b> — {link}.",
+        overAskLink: "here's what would unlock more",
+        need: "Your need: <b>{need}</b>. We've set it below — change it any time.",
+        cardStarter: "Starter pool", cardPool: "Your credit pool",
+        available: "Available to draw", unused: "Interest on unused", drawK: "Draw & repay", drawV: "Any time",
+        sliderQ: "How much do you need right now?",
+        inUse: "In use", zero: "₹0 interest",
+        payOn: "You pay interest on {amt}", intLine: "about {int}/month interest at {rate}% p.a.",
+        waiting: "{amt} waiting for you", waitingD: "₹0 interest until you use it",
+        growTitle: "Here's how to grow it in 6 months",
+        checklist: ["Route all business payments into one account", "Register on Udyam (free, 10 minutes)", "Repay your starter pool on time for 3 months", "Come back and reconnect — most limits grow 3–5×"],
+        whyLink: "Why this amount?",
+        fees: "<b>Fees, plainly:</b> one-time setup fee of {fee}% of the amount you use the first time. No interest on unused money. No prepayment charges.",
+        saveLater: "Save and finish later",
+      },
+      why: {
+        title: "Why {amt}?", sub: "Rules decide the amount. Here they are, explained.",
+        head: "Your pool, explained", counted: "What counted", unlock: "Ways to unlock more",
+        aiNew: "Because your business is less than a year old, we start with a small starter pool. Rules, not guesses, set this: once you have six months of trail and on-time repayments, the pool is recalculated — usually several times larger.",
+        aiRough: "This is a range because it's based on your answers rather than your bank trail. Connecting your bank takes 30 seconds and usually narrows the range to a single, firm number.",
+        fGst: "GST-registered", fNoGst: "No GST yet",
+        fCash: "Most income moves in cash — bank sees less", fNew: "Business is under 1 year old", fRough: "Based on your answers, not your bank trail",
+        leverRough: ["Connect my bank", "firm number in 30 sec"],
+      },
+      route: {
+        title: "Where should we send it?",
+        sub: "Paying your vendors directly saves you about {save} on {amt}.", perMonth: "/month",
+        lower: "Lower rate", bestFit: "Best fit for you", rateLine: "p.a. · setup fee {fee}%",
+        req: "A quote is needed for each vendor",
+        bankT: "Send to my bank account", bankD: "Use it however your business needs.",
+        note: "You can choose differently each time you withdraw.",
+        hintNone: "Add at least one vendor quote to continue",
+        quotesT: "Vendor quotes", required: "Required", added: "{n} added",
+        empty: "Upload a quote or invoice from each vendor — a chair, a tool, or your rent. We pay each one exactly what their quote says, so the money only goes where you intended.",
+        uploadQuote: "Upload quote", addAnother: "Add another vendor",
+        total: "Total to pay vendors", gstOk: "GST verified",
+        overPool: "Your quotes are {diff} more than your pool — pay the rest yourself, or add GST to unlock more.",
+      },
+      quote: {
+        title: "Upload a vendor quote",
+        sub: "We'll read it and pay this vendor directly — exactly the amount on their quote. Nothing goes out until you approve it.",
+        drop: "Upload the quote or invoice", dropD: "PDF or photo · up to 10 MB",
+        reading: "Reading your quote…", aiHead: "Read from your quote",
+        aiLine: "This is a quote from {vendor} for {item}, {amt}. Their GST number checks out.",
+        item: "Item", amount: "Amount", vendor: "Vendor", gst: "Vendor GST", gstOk: "Verified",
+        over: "This quote is {diff} more than your pool — pay the rest yourself, or add GST to unlock more.",
+        add: "Add quote", another: "Upload a different file",
+      },
+      lock: {
+        title: "Keep this offer for 7 days.",
+        sub: "Just three things — so we can hold it for you. Nothing is signed.",
+        name: "Your name", namePh: "As on your PAN", mobile: "Mobile number",
+        sendOtp: "Send OTP", resend: "Resend", verified: "Number verified",
+        otpLabel: "Enter the 6-digit code", demoAny: "(any 6 digits in this demo)",
+        reach: "How should we reach you?",
+        contact: ["WhatsApp", "Call me", "Don't contact me, I'll come back"],
+        pickTime: "Pick a time", slots: ["Today evening", "Tomorrow morning", "Tomorrow evening"],
+        nextT: "What happens next",
+        today: { w: "Today", d: "Your offer is saved, nothing is signed" },
+        step2w: { chosen: "Your chosen time", wa: "On WhatsApp", none: "Whenever you're ready" },
+        step2: { call: "Riya from Kestrel Finance confirms 2 details (10 min)", wa: "Riya from Kestrel Finance messages you to confirm 2 details", none: "Come back with your saved link — nobody calls you" },
+        kfs: { w: "Before anything is final", d: "You get a Key Fact Statement from Kestrel Finance with every fee in plain words" },
+        cool: { w: "After you sign", d: "You still get a cooling-off day to cancel without penalty" },
+        cta: "Save my offer",
+        welcome: {
+          t: "Welcome back — you're already with Kestrel Finance.", d: "Your repayment history counts in your favour.",
+          pool: "Your pool", here: "Continue here", app: "Open Kestrel app",
+          applied: "Repayment history applied · your pool is now {amt}",
+        },
+      },
+      done: {
+        title: "Your trail is saved.",
+        sub: "Your offer is held until {date}. Nothing is signed, and nothing moves without you.",
+        starter: "Starter pool", pool: "Credit pool", valid: "Valid till {date}", upTo: "Up to", holder: "Pool holder", rate: "Rate",
+        work: "Your work", poolRow: "Pool", est: " (est.)", first: "Using first", to: "Money goes to", reach: "We'll reach you",
+        vendors: "{n} vendor(s), paid directly", bank: "Your bank account", call: "Call · {slot}",
+        share: "Share with my CA", over: "Start over",
+      },
+      saveLater: {
+        title: "Save and finish later", sub: "Just your mobile number. Everything you've done so far stays saved.",
+        mobile: "Mobile number", note: "We'll send a link on WhatsApp. No calls.", send: "Send me the link",
+        doneT: "Link sent on WhatsApp", doneD: "Check WhatsApp on +91 {mobile}. Your pool stays saved for 7 days.", close: "Done",
+      },
+      toast: {
+        verified: "Number verified", codeSent: "Code sent to +91 {m}", aaSent: "Code sent to the mobile linked with this account",
+        lever: "Saved — you can add this after saving your offer", quoteAdded: "Quote added — we'll pay this vendor directly",
+        shareCA: "Link copied — it shows your summary only, and expires in 7 days", app: "Opening the Kestrel app… (demo)",
+      },
+    },
+
+    hi: {
+      steps: ["आप", "जानकारी", "लेन-देन", "पूल", "पक्का"],
+      footer: "यह सिर्फ़ डेमो है। Kestrel Finance Ltd असली कंपनी नहीं है। रकम, ब्याज दर और फ़ीस सिर्फ़ उदाहरण हैं, कोई ऑफ़र नहीं।",
+      lakh: "लाख",
+      common: { continue: "आगे बढ़ें", gotIt: "ठीक है", back: "पीछे", pa: "सालाना" },
+      q: { eyebrow: "{label} · सवाल {n}/{total}" },
+      trail: {
+        title: "आपका कारोबार खुद अपनी बात कहे।",
+        sub: "अंदाज़े से नंबर भरने की जगह, हमें वो लेन-देन देखने दें जो आपके पेमेंट पहले से बता रहे हैं।",
+        recommended: "(सबसे अच्छा)",
+        options: {
+          bank: { t: "मेरा बैंक जोड़ें", d: "सबसे सही · 30 सेकंड · RBI के Account Aggregator से", badge: "सबसे सही अंदाज़ा" },
+          pdf: { t: "बैंक स्टेटमेंट PDF अपलोड करें", d: "आपके बिज़नेस खाते के पिछले 6 महीने" },
+          rough: { t: "बस मोटा-मोटा अंदाज़ा बताइए", d: "हम 2 छोटे सवाल पूछेंगे। अंदाज़ा थोड़ा खुला रहेगा।" },
+        },
+        bankLead: "हम आपके पिछले 6 महीने के लेन-देन सिर्फ़ यह देखने के लिए पढ़ते हैं कि आपको कितना मिल सकता है।",
+        safety: ["सिर्फ़ आपकी योग्यता जाँचने के लिए", "सिर्फ़ देखने की इजाज़त — कोई आपके पैसे नहीं निकाल सकता", "आप बीच में रुकें तो 30 दिन में डेटा डिलीट"],
+        readOnly: "सिर्फ़ देखने की इजाज़त। हम आपके खाते से कभी पैसे नहीं निकाल सकते।",
+      },
+      consent: {
+        title: "Breadcrumb आपका बैंक स्टेटमेंट देखना चाहता है",
+        sub: "आपको कितना मिल सकता है, यह जानने के लिए हमें आपके बिज़नेस खाते के पिछले 6 महीने के लेन-देन देखने होंगे — RBI के Account Aggregator सिस्टम से।",
+        share: { t: "आप यह शेयर कर रहे हैं", d: "1 खाते के लेन-देन · पिछले 6 महीने · सिर्फ़ एक बार" },
+        use: { t: "सिर्फ़ आपकी योग्यता के लिए", d: "आपका क्रेडिट पूल तय करने के लिए। न मार्केटिंग के लिए, न बेचा जाएगा, न Kestrel Finance के बाहर किसी को दिया जाएगा" },
+        kestrel: { t: "सिर्फ़ Kestrel Finance के साथ शेयर", d: "आपको लोन देने वाली कंपनी, जो RBI में रजिस्टर्ड NBFC है। और कोई नहीं देखेगा।" },
+        not: { t: "हम यह न देखेंगे, न करेंगे", d: "आपके कॉन्टैक्ट, SMS या फ़ोटो। कोई CIBIL जाँच नहीं। हम आपके खाते से कभी पैसे नहीं निकाल सकते" },
+        del: { t: "30 दिन में डिलीट", d: "अगर आप आगे नहीं बढ़ते, तो आपका डेटा अपने-आप डिलीट हो जाएगा" },
+        promise: "आपकी जानकारी सिर्फ़ आपकी योग्यता समझने के लिए इस्तेमाल होगी, इसका कभी गलत इस्तेमाल नहीं होगा। आप जब चाहें यह इजाज़त वापस ले सकते हैं।",
+        agree: "मैं सहमत हूँ, आगे बढ़ें", notNow: "अभी नहीं",
+        lenderLine: "लोन देने वाली कंपनी: Kestrel Finance Ltd (RBI में रजिस्टर्ड NBFC)",
+        stepLabel: "स्टेप {n}/3 · {label}",
+        stepNames: ["अपना बैंक चुनें", "अपना खाता जोड़ें", "OTP से पक्का करें"],
+        aa: "Account Aggregator की सहमति",
+        banksTitle: "आपका बिज़नेस खाता किस बैंक में है?",
+        otherBank: "दूसरा बैंक",
+        accSub: "वो खाता जोड़ें जिसमें आपके कारोबार के पेमेंट आते हैं। हम इसे सिर्फ़ {bank} में आपका खाता ढूँढने के लिए इस्तेमाल करते हैं।",
+        accType: "खाते का प्रकार", accTypes: ["करंट", "सेविंग्स"],
+        accNo: "खाता नंबर", accNoPh: "9 से 18 अंक",
+        accNo2: "खाता नंबर दोबारा डालें", accNo2Ph: "ऊपर वाले से मेल खाना चाहिए",
+        accErr: "दोनों खाता नंबर मेल नहीं खाते",
+        accSafe: "सिर्फ़ देखने की इजाज़त। खाता नंबर जोड़ने से कोई भी इसमें से पैसे नहीं निकाल सकता।",
+        sendOtp: "OTP भेजें", diffBank: "दूसरा बैंक चुनें",
+        accLine: "{type} खाता ••{last4}", accLineD: "लेन-देन · पिछले 6 महीने · सिर्फ़ एक बार",
+        otpLabel: "इस खाते से जुड़े मोबाइल {mobile} पर आया कोड डालें",
+        demoAny: "(इस डेमो में कोई भी 6 अंक)",
+        shareOnce: "एक बार शेयर करें", changeAcc: "खाता नंबर बदलें",
+      },
+      pdf: {
+        title: "बैंक स्टेटमेंट अपलोड करें",
+        sub: "आपके मुख्य बिज़नेस खाते की PDF, पिछले 6 महीने की। पासवर्ड वाली फ़ाइल भी चलेगी।",
+        choose: "PDF चुनें", limit: "10 MB तक", chooseBtn: "फ़ाइल चुनें",
+        file: "statement_apr26-sep26.pdf",
+        reading: "पढ़ रहे हैं…", found: "6 महीने · 1,164 लेन-देन मिले",
+        safe: "हम सिर्फ़ लेन-देन पढ़ते हैं। आगे न बढ़ें तो 30 दिन में डिलीट।",
+        use: "यही स्टेटमेंट इस्तेमाल करें",
+      },
+      rough: {
+        title: "बस मोटा-मोटा अंदाज़ा", sub: "दो छोटे टैप। आपका अंदाज़ा एक रेंज में होगा, एक नंबर नहीं।",
+        earnLabel: "हर महीने लगभग कितने पैसे आते हैं?", earn: ["₹1 लाख से कम", "₹1–3 लाख", "₹3–5 लाख", "₹5 लाख+"],
+        askLabel: "आपको कितना चाहिए?", ask: ["₹2 लाख तक", "₹2–5 लाख", "₹5–10 लाख", "₹10 लाख+"],
+        go: "मेरा अंदाज़ा देखें",
+      },
+      loader: {
+        lines: ["6 महीने के पेमेंट पढ़ रहे हैं…", "आपका सबसे व्यस्त समय देख रहे हैं…", "आपका पूल तय कर रहे हैं…"],
+        rough: ["आपके जवाब पढ़ रहे हैं…", "आप जैसे कारोबारों से मिला रहे हैं…", "मोटा-मोटा पूल तय कर रहे हैं…"],
+        sub: "आपका डेटा सुरक्षित है और सिर्फ़ पढ़ा जा रहा है", subRough: "सिर्फ़ वही जो आपने बताया",
+      },
+      months: ["अप्रैल", "मई", "जून", "जुलाई", "अगस्त", "सितंबर"],
+      mirror: {
+        title: "हमें आपका कारोबार ऐसा दिखता है।",
+        avg: "हर महीने औसतन आने वाले पैसे", seen: " (बैंक में दिखे)", perMonth: "हर महीने",
+        fromStatement: "आपके स्टेटमेंट से", bankVerified: "बैंक से पक्का", sixMonths: "6 महीने", thin: "कम लेन-देन",
+        best: "सबसे अच्छा महीना", slowest: "सबसे धीमा", moneyIn: "आने वाले पैसे",
+        busiestP: "सबसे व्यस्त: {v}", slowestP: "सबसे धीमा: {v}", cashPayers: "ज़्यादातर ग्राहक कैश देते हैं",
+        cashNotice: "<b>बैंक में लेन-देन कम दिखता है — आपका ज़्यादातर पैसा कैश में चलता है।</b> बाद में GST रिटर्न या दूसरा खाता जोड़कर और पा सकते हैं। रास्ता कभी बंद नहीं होता।",
+        cashSummary: "आपका ज़्यादातर पैसा कैश में चलता है, इसलिए बैंक में आपके कारोबार का सिर्फ़ कुछ हिस्सा दिखता है। कोई बात नहीं। आज हमने एक छोटा, सुरक्षित ऑफ़र दिया है — GST या दूसरा खाता जोड़ेंगे तो बाकी भी दिख जाएगा।",
+        aiHead: "आसान शब्दों में", ok: "हाँ, सही है", off: "कुछ गलत लग रहा है",
+      },
+      off: {
+        title: "क्या गलत लग रहा है?", sub: "एक लाइन में बताइए। कुछ भी पक्का होने से पहले एक इंसान इसे जाँचेगा।",
+        ph: "जैसे, सितंबर में परिवार से एक बार पैसे आए थे", go: "भेजें और आगे बढ़ें",
+      },
+      pool: {
+        starterTitle: "शुरुआत के लिए यह रहा आपका स्टार्टर पूल।",
+        title: "आपको {amt} तक का क्रेडिट पूल मिल सकता है",
+        labels: { verified: "आपके पक्के लेन-देन के आधार पर", rough: "मोटा-मोटा अंदाज़ा", thin: "कम लेन-देन के आधार पर अंदाज़ा", starter: "स्टार्टर पूल" },
+        likely: "लगभग {lo} – {hi}",
+        offerFrom: "Kestrel Finance की तरफ़ से ऑफ़र",
+        checked: "धन्यवाद — ऑफ़र पक्का होने से पहले एक इंसान इसे जाँचेगा।",
+        overAsk: "आपने <b>{ask}</b> माँगा था। आज हम <b>{max}</b> दे सकते हैं — {link}।",
+        overAskLink: "और पाने का तरीका यहाँ देखें",
+        need: "आपकी ज़रूरत: <b>{need}</b>। हमने नीचे यही रखा है — कभी भी बदल सकते हैं।",
+        cardStarter: "स्टार्टर पूल", cardPool: "आपका क्रेडिट पूल",
+        available: "निकालने के लिए तैयार", unused: "बिना इस्तेमाल पर ब्याज", drawK: "निकालें और लौटाएँ", drawV: "कभी भी",
+        sliderQ: "अभी आपको कितना चाहिए?",
+        inUse: "इस्तेमाल में", zero: "₹0 ब्याज",
+        payOn: "आप {amt} पर ब्याज देंगे", intLine: "लगभग {int} हर महीने ब्याज, {rate}% सालाना पर",
+        waiting: "{amt} आपके लिए रखे हैं", waitingD: "जब तक इस्तेमाल न करें, ₹0 ब्याज",
+        growTitle: "6 महीने में इसे ऐसे बढ़ाएँ",
+        checklist: ["कारोबार के सारे पेमेंट एक ही खाते में लें", "Udyam पर रजिस्टर करें (मुफ़्त, 10 मिनट)", "3 महीने तक स्टार्टर पूल समय पर लौटाएँ", "फिर से जुड़ें — ज़्यादातर लिमिट 3–5 गुना बढ़ जाती है"],
+        whyLink: "यही रकम क्यों?",
+        fees: "<b>फ़ीस, साफ़-साफ़:</b> पहली बार जितना इस्तेमाल करेंगे, उसका {fee}% एक बार की सेटअप फ़ीस। बिना इस्तेमाल के पैसे पर कोई ब्याज नहीं। जल्दी लौटाने पर कोई चार्ज नहीं।",
+        saveLater: "सेव करें, बाद में पूरा करें",
+      },
+      why: {
+        title: "{amt} ही क्यों?", sub: "रकम नियम तय करते हैं। यहाँ वो नियम आसान भाषा में हैं।",
+        head: "आपका पूल, आसान भाषा में", counted: "किन बातों से फ़र्क पड़ा", unlock: "और पाने के तरीके",
+        aiNew: "आपका कारोबार एक साल से कम पुराना है, इसलिए हम छोटे स्टार्टर पूल से शुरू करते हैं। यह नियम से तय होता है, अंदाज़े से नहीं: 6 महीने के लेन-देन और समय पर पेमेंट के बाद पूल फिर से तय होता है — अक्सर कई गुना बड़ा।",
+        aiRough: "यह एक रेंज है क्योंकि यह आपके जवाबों पर आधारित है, बैंक के लेन-देन पर नहीं। बैंक जोड़ने में 30 सेकंड लगते हैं और अक्सर एक पक्का नंबर मिल जाता है।",
+        fGst: "GST में रजिस्टर्ड", fNoGst: "अभी GST नहीं",
+        fCash: "ज़्यादातर कमाई कैश में — बैंक में कम दिखती है", fNew: "कारोबार 1 साल से कम पुराना", fRough: "आपके जवाबों पर आधारित, बैंक के लेन-देन पर नहीं",
+        leverRough: ["मेरा बैंक जोड़ें", "30 सेकंड में पक्का नंबर"],
+      },
+      route: {
+        title: "पैसा कहाँ भेजें?",
+        sub: "सप्लायर को सीधे पेमेंट करने से {amt} पर लगभग {save} बचते हैं।", perMonth: " हर महीने",
+        lower: "कम ब्याज", bestFit: "आपके लिए सबसे सही", rateLine: "सालाना · सेटअप फ़ीस {fee}%",
+        req: "हर सप्लायर का कोटेशन चाहिए",
+        bankT: "मेरे बैंक खाते में भेजें", bankD: "कारोबार की जो भी ज़रूरत हो, उसमें लगाएँ।",
+        note: "हर बार पैसे निकालते समय आप अलग चुन सकते हैं।",
+        hintNone: "आगे बढ़ने के लिए कम से कम एक कोटेशन जोड़ें",
+        quotesT: "सप्लायर के कोटेशन", required: "ज़रूरी", added: "{n} जोड़े",
+        empty: "हर सप्लायर का कोटेशन या बिल अपलोड करें — माल, सामान या किराया। हम हर एक को ठीक उतना पेमेंट करते हैं जितना कोटेशन में लिखा है, ताकि पैसा वहीं जाए जहाँ आप चाहते हैं।",
+        uploadQuote: "कोटेशन अपलोड करें", addAnother: "एक और सप्लायर जोड़ें",
+        total: "सप्लायरों को कुल पेमेंट", gstOk: "GST सही पाया गया",
+        overPool: "आपके कोटेशन आपके पूल से {diff} ज़्यादा हैं — बाकी खुद दें, या GST जोड़कर और पाएँ।",
+      },
+      quote: {
+        title: "सप्लायर का कोटेशन अपलोड करें",
+        sub: "हम इसे पढ़कर सप्लायर को सीधे पेमेंट करेंगे — ठीक उतना जितना कोटेशन में लिखा है। आपकी हाँ के बिना कुछ नहीं जाएगा।",
+        drop: "कोटेशन या बिल अपलोड करें", dropD: "PDF या फ़ोटो · 10 MB तक",
+        reading: "आपका कोटेशन पढ़ रहे हैं…", aiHead: "आपके कोटेशन से पढ़ा गया",
+        aiLine: "यह {vendor} का {item} के लिए {amt} का कोटेशन है। उनका GST नंबर सही पाया गया।",
+        item: "सामान", amount: "रकम", vendor: "सप्लायर", gst: "सप्लायर का GST", gstOk: "सही पाया गया",
+        over: "यह कोटेशन आपके पूल से {diff} ज़्यादा है — बाकी खुद दें, या GST जोड़कर और पाएँ।",
+        add: "कोटेशन जोड़ें", another: "दूसरी फ़ाइल अपलोड करें",
+      },
+      lock: {
+        title: "यह ऑफ़र 7 दिन के लिए रख लें।",
+        sub: "बस तीन चीज़ें — ताकि हम इसे आपके लिए रख सकें। कुछ भी साइन नहीं होगा।",
+        name: "आपका नाम", namePh: "जैसा PAN पर लिखा है", mobile: "मोबाइल नंबर",
+        sendOtp: "OTP भेजें", resend: "फिर भेजें", verified: "नंबर पक्का हो गया",
+        otpLabel: "6 अंकों का कोड डालें", demoAny: "(इस डेमो में कोई भी 6 अंक)",
+        reach: "हम आपसे कैसे बात करें?",
+        contact: ["WhatsApp", "कॉल करें", "संपर्क न करें, बाद में खुद देखेंगे"],
+        pickTime: "समय चुनें", slots: ["आज शाम", "कल सुबह", "कल शाम"],
+        nextT: "आगे क्या होगा",
+        today: { w: "आज", d: "आपका ऑफ़र सेव है, कुछ भी साइन नहीं हुआ" },
+        step2w: { chosen: "आपका चुना हुआ समय", wa: "WhatsApp पर", none: "जब आप तैयार हों" },
+        step2: { call: "Kestrel Finance से रिया 2 बातें पक्की करेंगी (10 मिनट)", wa: "Kestrel Finance से रिया 2 बातें पक्की करने के लिए मैसेज करेंगी", none: "सेव किए लिंक से वापस आइए — कोई कॉल नहीं करेगा" },
+        kfs: { w: "कुछ भी पक्का होने से पहले", d: "Kestrel Finance से आपको KFS (Key Fact Statement) मिलेगा, जिसमें हर फ़ीस आसान शब्दों में लिखी होगी" },
+        cool: { w: "साइन करने के बाद", d: "फिर भी एक दिन मिलेगा, जिसमें बिना किसी पेनल्टी के कैंसल कर सकते हैं" },
+        cta: "मेरा ऑफ़र सेव करें",
+        welcome: {
+          t: "फिर से स्वागत है — आप पहले से Kestrel Finance के ग्राहक हैं।", d: "आपके समय पर किए गए पेमेंट आपके काम आते हैं।",
+          pool: "आपका पूल", here: "यहीं आगे बढ़ें", app: "Kestrel ऐप खोलें",
+          applied: "पेमेंट का रिकॉर्ड जुड़ गया · अब आपका पूल {amt} है",
+        },
+      },
+      done: {
+        title: "आपकी जानकारी सेव हो गई।",
+        sub: "आपका ऑफ़र {date} तक रखा गया है। कुछ भी साइन नहीं हुआ, और आपकी मर्ज़ी के बिना कुछ नहीं होगा।",
+        starter: "स्टार्टर पूल", pool: "क्रेडिट पूल", valid: "{date} तक", upTo: "अधिकतम", holder: "नाम", rate: "ब्याज दर",
+        work: "आपका काम", poolRow: "पूल", est: " (अंदाज़ा)", first: "पहले इस्तेमाल", to: "पैसा कहाँ जाएगा", reach: "हम संपर्क करेंगे",
+        vendors: "{n} सप्लायर, सीधे पेमेंट", bank: "आपका बैंक खाता", call: "कॉल · {slot}",
+        share: "अपने CA के साथ शेयर करें", over: "फिर से शुरू करें",
+      },
+      saveLater: {
+        title: "सेव करें, बाद में पूरा करें", sub: "बस आपका मोबाइल नंबर। अब तक जो किया है, सब सेव रहेगा।",
+        mobile: "मोबाइल नंबर", note: "हम WhatsApp पर एक लिंक भेजेंगे। कोई कॉल नहीं।", send: "मुझे लिंक भेजें",
+        doneT: "WhatsApp पर लिंक भेज दिया", doneD: "+91 {mobile} पर WhatsApp देखें। आपका पूल 7 दिन तक सेव रहेगा।", close: "ठीक है",
+      },
+      toast: {
+        verified: "नंबर पक्का हो गया", codeSent: "+91 {m} पर कोड भेजा गया", aaSent: "इस खाते से जुड़े मोबाइल पर कोड भेजा गया",
+        lever: "सेव हो गया — ऑफ़र सेव करने के बाद इसे जोड़ सकते हैं", quoteAdded: "कोटेशन जुड़ गया — हम इस सप्लायर को सीधे पेमेंट करेंगे",
+        shareCA: "लिंक कॉपी हो गया — इसमें सिर्फ़ आपका सारांश है, और यह 7 दिन में बंद हो जाएगा", app: "Kestrel ऐप खुल रहा है… (डेमो)",
+      },
+    },
+  },
+
+  /* ---------- Lender Lens (English only) ---------- */
+  lens: {
+    tabs: { live: "Live lead", funnel: "Funnel" },
+    handoffTitle: "Underwriting-ready application",
+    sourceLabel: "Source",
+    existing: "Existing customer · routed to relationship team · not billed as new acquisition",
+    recovered: "Recovered drop-off · returned via WhatsApp link",
+    funnel: {
+      title: "Where borrowers drop off",
+      note: "Illustrative — to be measured in pilot",
+      steps: ["Started", "Shared basics", "Saw an estimate", "Left contact", "Underwriting-ready"],
+      series: [
+        { name: "Old form", values: [100, 48, 22, 14, 6] },
+        { name: "Breadcrumb", values: [100, 82, 68, 41, 29] },
+      ],
+      unit: "of 100 visitors",
+      metricsTitle: "What we'll measure",
+      metrics: [
+        { t: "Start-to-lead conversion", d: "Visitors who start and leave a verified contact.", old: "14%", now: "41%" },
+        { t: "Qualified lead rate", d: "Leads with verified cash flow, not self-declared income.", old: "43%", now: "71%" },
+        { t: "Lead-to-sanction rate", d: "Leads that reach a sanctioned credit line.", old: "12%", now: "31%" },
+        { t: "Docs ready at first call", d: "Leads whose statement and quotes are in before sales calls.", old: "9%", now: "72%" },
+      ],
+    },
+  },
 
   personas: {
     shop: {
@@ -581,8 +1006,11 @@ const DATA = {
       route: "supplier",
       hint: "Your UPI collections and supplier payments already tell your story.",
       supplier: { t: "Pay my vendors directly", d: "We pay your wholesaler, equipment seller or landlord — exactly what their quote says." },
-      purposes: ["Stock from wholesaler", "Shop equipment", "Shop rent", "Fit-out / repairs"],
-      exampleQuote: { vendor: "Shree Ganesh Wholesale", purpose: "Stock from wholesaler", amount: 150000 },
+      quoteSamples: [
+        { vendor: "Gupta Wholesale", item: "Monthly stock", amount: 120000, gstin: "27AAFCG4821K1Z3" },
+        { vendor: "Prime Properties", item: "Shop rent", amount: 30000, gstin: "27AAJCP7710M1Z8" },
+        { vendor: "CoolTech Appliances", item: "Display fridge", amount: 45000, gstin: "27AACCC3302F1Z1" },
+      ],
       product: "Stock line via supplier pay (inventory credit)",
       seasonal: "Seasonal dip in July (−25%) — suggest flexible EMI",
       questions: [
@@ -595,6 +1023,23 @@ const DATA = {
       factors: [["+", "6 months of steady UPI income"], ["+", "860 different customers — no single one you depend on"], ["gst", ""], ["−", "July dip of about 25%"]],
       levers: [["Add GST details", "up to ₹5,20,000"], ["Connect a second account", "more accurate"]],
       handoff: "Ramesh runs a 5-year kirana in Chembur with steady daily UPI inflow (~₹2.8L/mo). Wants stock credit before festive season; prefers supplier-pay. Confirm GST status and shop ownership.",
+      /* Hindi overrides for the Shop & trade path */
+      hi: {
+        label: "दुकान और व्यापार",
+        busiest: "सितंबर (त्योहारों का समय)", slowest: "जुलाई (बारिश)", payers: "860 अलग-अलग ग्राहकों ने पैसे दिए",
+        hint: "आपके UPI कलेक्शन और सप्लायर को किए पेमेंट ही आपकी कहानी बता देते हैं।",
+        supplier: { t: "मेरे सप्लायर को सीधे पेमेंट करें", d: "हम आपके होलसेलर, सामान बेचने वाले या मकान-मालिक को सीधे पेमेंट करते हैं — ठीक उतना जितना उनके कोटेशन में लिखा है।" },
+        quoteItems: ["महीने का माल", "दुकान का किराया", "डिस्प्ले फ़्रिज"],
+        questions: [
+          { q: "ग्राहक आम तौर पर पैसे कैसे देते हैं?", o: ["ज़्यादातर UPI / कार्ड", "आधा-आधा कैश", "ज़्यादातर कैश"], why: "कैश में कोई दिक्कत नहीं — इससे बस यह तय होता है कि आपके लिए कौन-सा सबूत सबसे अच्छा रहेगा।" },
+          { q: "दुकान कितने समय से चल रही है?", o: ["1 साल से कम", "1–3 साल", "3–5 साल", "5+ साल"], why: "नई दुकानों को पहले छोटा पूल मिलता है, जो लेन-देन बढ़ने के साथ बढ़ता है।" },
+          { q: "क्या दुकान GST में रजिस्टर्ड है?", o: ["हाँ", "नहीं", "पता नहीं"], why: "ज़रूरी नहीं है। GST होने से बस हम बड़ा पूल दे पाते हैं।" },
+        ],
+        mirror: "आपकी दुकान का काम लगातार अच्छा चलता है — लगभग हर दिन पैसे आते हैं, ज़्यादातर UPI से। त्योहारों पर बिक्री बढ़ती है और बारिश में थोड़ी कम होती है। यही भरोसा आपके काम आता है।",
+        whyAi: "आपका पूल आपकी औसत महीने की कमाई का लगभग 1.6 गुना है। हमने इसे ऐसे तय किया है कि सबसे धीमे महीने — जुलाई — में भी किस्त आराम से आपकी कमाई से कम रहे।",
+        factors: [["+", "6 महीने से लगातार UPI से कमाई"], ["+", "860 अलग-अलग ग्राहक — किसी एक पर निर्भर नहीं"], ["gst", ""], ["−", "जुलाई में लगभग 25% कमी"]],
+        levers: [["GST की जानकारी जोड़ें", "₹5,20,000 तक"], ["दूसरा खाता जोड़ें", "और सही अंदाज़ा"]],
+      },
     },
     clinic: {
       label: "Clinic & practice", short: "Clinic", examples: "Doctor, dentist, CA, architect",
@@ -606,8 +1051,11 @@ const DATA = {
       hint: "Your receipts show us your practice. You'll add equipment or rent quotes when you choose where the money goes.",
       need: "New dental chair · ₹6,50,000",
       supplier: { t: "Pay my vendors directly", d: "We pay your equipment vendor, contractor or landlord — exactly what their quote says." },
-      purposes: ["Dental chair", "Tools & instruments", "Clinic rent", "Fit-out / renovation"],
-      exampleQuote: { vendor: "SmileTech Dental Equipment", purpose: "Dental chair", amount: 650000 },
+      quoteSamples: [
+        { vendor: "Sharma Dental Supplies", item: "Dental chair", amount: 650000, gstin: "27AAKCS5521D1Z6" },
+        { vendor: "Precision Instruments", item: "Dental tools", amount: 120000, gstin: "27AAECP9014H1Z2" },
+        { vendor: "Prime Properties", item: "Clinic rent", amount: 90000, gstin: "27AAJCP7710M1Z8" },
+      ],
       product: "Equipment financing via vendor pay",
       seasonal: "Mild dip in May (summer break) — no action needed",
       questions: [
@@ -623,15 +1071,18 @@ const DATA = {
     },
     creator: {
       label: "Creator & freelancer", short: "Creator", examples: "YouTube, Instagram, design, consulting",
-      who: "Arjun", biz: "YouTube + brand deals",
+      who: "Kabir", biz: "YouTube + brand deals",
       avg: 190000, pool: 300000, defaultDraw: 100000, overAsk: 600000, step: 5000,
       series: [230, 110, 175, 140, 205, 280],
       busiest: "September (festive brand deals)", slowest: "May", payers: "Paid by 9 brands and 3 platforms",
       route: "bank",
       hint: "Your platform payouts land in your bank — that's your proof.",
       supplier: { t: "Pay my vendors directly", d: "We pay your gear store, studio or software vendor — exactly what their quote says." },
-      purposes: ["Camera & gear", "Editing setup", "Studio rent", "Software & tools"],
-      exampleQuote: { vendor: "Lensworks Camera Store", purpose: "Camera & gear", amount: 85000 },
+      quoteSamples: [
+        { vendor: "Lensworks Camera Store", item: "Camera & lens kit", amount: 85000, gstin: "27AADCL6610B1Z9" },
+        { vendor: "EditBay Systems", item: "Editing workstation", amount: 120000, gstin: "27AAECE2287Q1Z4" },
+        { vendor: "Prime Properties", item: "Studio rent", amount: 25000, gstin: "27AAJCP7710M1Z8" },
+      ],
       product: "Flexible working-capital line to bank",
       seasonal: "Bursty income — 2 of 6 months below ₹1.5L; suggest interest-only months",
       questions: [
@@ -643,7 +1094,7 @@ const DATA = {
       whyAi: "Your pool is about 1.6× your average month. Because income is bursty, we size it against your quieter months rather than your best ones, so repayments never squeeze you.",
       factors: [["+", "Regular platform payouts every month"], ["+", "9 different brands — not dependent on one"], ["−", "Income varies a lot month to month"], ["−", "Single account connected"]],
       levers: [["Link brand contracts", "up to ₹3,60,000"], ["Connect a second account", "more accurate"]],
-      handoff: "Arjun, full-time YouTuber, ~₹1.9L/mo average but bursty (May low, Sep high). Paid by 9 brands + 3 platforms. Prefers funds to bank. Offer interest-only flexibility.",
+      handoff: "Kabir, full-time YouTuber, ~₹1.9L/mo average but bursty (May low, Sep high). Paid by 9 brands + 3 platforms. Prefers funds to bank. Offer interest-only flexibility.",
     },
     local: {
       label: "Local services", short: "Services", examples: "Salon, repair shop, tuition, caterer",
@@ -654,8 +1105,11 @@ const DATA = {
       route: "bank",
       hint: "Small UPI payments from customers count — every one of them.",
       supplier: { t: "Pay my vendors directly", d: "We pay your parts supplier, tool seller or landlord — exactly what their quote says." },
-      purposes: ["Parts & stock", "Tools & equipment", "Shop rent", "Fit-out / repairs"],
-      exampleQuote: { vendor: "Mobitronics Spares", purpose: "Parts & stock", amount: 45000 },
+      quoteSamples: [
+        { vendor: "Mobitronics Spares", item: "Phone parts & screens", amount: 45000, gstin: "27AAGCM3390N1Z7" },
+        { vendor: "ToolPro Traders", item: "Repair bench & tools", amount: 30000, gstin: "27AAHCT1145R1Z5" },
+        { vendor: "Prime Properties", item: "Shop rent", amount: 18000, gstin: "27AAJCP7710M1Z8" },
+      ],
       product: "Small-ticket working-capital line",
       seasonal: "Monsoon dip in June — suggest flexible EMI",
       questions: [
@@ -683,7 +1137,6 @@ const DATA = {
    ========================================================= */
 const $ = (s, r = document) => r.querySelector(s);
 const inr = n => "₹" + Math.round(n).toLocaleString("en-IN");
-const lakh = n => { const l = n / 100000; return "₹" + (Number.isInteger(+l.toFixed(1)) ? (+l.toFixed(1)).toFixed(0) : l.toFixed(1)) + " lakh"; };
 const r10k = n => Math.round(n / 10000) * 10000;
 const esc = s => String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 const md = s => esc(s).replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
@@ -723,63 +1176,83 @@ function cardArt() {
   return `<svg style="position:absolute;inset:0;width:100%;height:100%" viewBox="0 0 331 209" preserveAspectRatio="xMidYMid slice"><defs><clipPath id="${id}"><rect width="331" height="209"/></clipPath></defs><g clip-path="url(#${id})">${rings.map(r => `<ellipse cx="18" cy="203" rx="${r[0]}" ry="${r[1]}" fill="${r[2]}"/>`).join("")}</g></svg>`;
 }
 
+/* Neutral placeholder lender mark (not a real logo) */
+I.mark = (s = 18) => `<svg width="${s}" height="${s}" viewBox="0 0 20 20" aria-hidden="true"><rect width="20" height="20" rx="6" fill="#E8EAF2"/><path d="M6 13.5l4-7 4 7z" fill="none" stroke="#8A8FA8" stroke-width="1.6" stroke-linejoin="round"/></svg>`;
+
 /* =========================================================
    State
    ========================================================= */
 const fresh = () => ({
-  step: "landing", qi: 0, persona: null, answers: {}, freeText: "", classified: null,
+  step: "landing", qi: 0, persona: null, answers: {}, freeText: "", classified: null, lang: "en",
   trail: null, bank: null, consentStage: "ask", acc: "", acc2: "", accType: 0, otpConsent: "", pdfStage: 0, roughEarn: null, roughAsk: null,
   mirror: null, offNote: "", draw: null, route: null, quotes: [], qd: null,
-  name: "", phone: "", otpSent: false, otp: "", phoneVerified: false, contact: null, slot: null, saved: false,
-  edge: { newBiz: false, cash: false, overAsk: false },
-  sheet: null, hist: [], dir: 1,
+  name: "", phone: "", otpSent: false, otp: "", phoneVerified: false, contact: null, slot: null, saved: false, welcomeAck: false,
+  edge: { newBiz: false, cash: false, overAsk: false, existing: false, returning: false },
+  source: "direct", retDismissed: false, recovered: false, sl: { phone: "", sent: false },
+  sheet: null, hist: [], dir: 1, lensTab: "live",
 });
 let S = fresh();
 const typed = {};   // typewriter progress per key
 const counted = {}; // count-up done per key
 let renderToken = 0;
 
+/* ---------- copy lookup (English / Hindi) ---------- */
+const lang = () => (S.persona === "shop" && S.lang === "hi" && S.step !== "landing" && S.step !== "persona") ? "hi" : "en";
+const dig = (o, path) => path.split(".").reduce((a, k) => (a == null ? a : a[k]), o);
+const fill = (s, v) => typeof s === "string" && v ? s.replace(/\{(\w+)\}/g, (m, k) => (v[k] != null ? v[k] : m)) : s;
+const T = (path, v) => { const x = dig(DATA.ui[lang()], path); return fill(x != null ? x : dig(DATA.ui.en, path), v); };
+const TE = (path, v) => fill(dig(DATA.ui.en, path), v);
+const lakh = n => { const l = n / 100000; return "₹" + (Number.isInteger(+l.toFixed(1)) ? (+l.toFixed(1)).toFixed(0) : l.toFixed(1)) + " " + T("lakh"); };
+const fmtDiff = n => n >= 100000 ? lakh(n) : inr(n);
+
 /* ---------- derived ---------- */
-const P = () => DATA.personas[S.persona] || DATA.personas.shop;
+const PE = () => DATA.personas[S.persona] || DATA.personas.shop;
+const P = () => {
+  const b = PE();
+  if (lang() !== "hi" || !b.hi) return b;
+  const h = b.hi;
+  return { ...b, ...h, questions: b.questions.map((q, i) => ({ ...q, ...h.questions[i] })), quoteSamples: b.quoteSamples.map((s, i) => ({ ...s, item: h.quoteItems[i] })) };
+};
 const isNewBiz = () => S.edge.newBiz || S.answers.tenure === "Less than 1 year";
 const isCash = () => S.edge.cash || S.answers.pay === "Mostly cash";
-function offer() {
-  const p = P();
-  let max, low = null, label, kind = "full";
-  if (isNewBiz()) { max = DATA.starterPool; kind = "starter"; label = "Starter pool"; }
+const existingOn = () => S.edge.existing && S.phoneVerified;
+function offer(noBoost) {
+  const p = PE();
+  let max, low = null, lk, kind = "full";
+  if (isNewBiz()) { max = DATA.starterPool; kind = "starter"; lk = "starter"; }
   else if (S.trail === "rough") {
-    const e = S.roughEarn != null ? DATA.rough.earn[S.roughEarn].v : p.avg;
-    max = r10k(Math.min(e * 1.6, p.pool * 1.15)); low = r10k(max * 0.6); label = "Rough estimate";
-  } else if (isCash()) { max = r10k(p.pool * 0.4); low = r10k(max * 0.65); label = "Estimated from a thin trail"; kind = "thin"; }
-  else { max = p.pool; label = "Based on your verified trail"; }
-  let ask = S.edge.overAsk ? p.overAsk : (S.trail === "rough" && S.roughAsk != null ? DATA.rough.ask[S.roughAsk].v : null);
-  return { max, low, label, kind, ask, over: ask && ask > max };
+    const e = S.roughEarn != null ? DATA.rough.earn[S.roughEarn] : p.avg;
+    max = r10k(Math.min(e * 1.6, p.pool * 1.15)); low = r10k(max * 0.6); lk = "rough";
+  } else if (isCash()) { max = r10k(p.pool * 0.4); low = r10k(max * 0.65); lk = "thin"; kind = "thin"; }
+  else { max = p.pool; lk = "verified"; }
+  if (!noBoost && existingOn()) { max = Math.round(max * DATA.existingBoost / 1000) * 1000; if (low) low = Math.round(low * DATA.existingBoost / 1000) * 1000; }
+  const ask = S.edge.overAsk ? p.overAsk : (S.trail === "rough" && S.roughAsk != null ? DATA.rough.ask[S.roughAsk] : null);
+  return { max, low, lk, kind, ask, over: ask && ask > max };
 }
 function drawAmt() {
-  const o = offer(), p = P();
+  const o = offer(), p = PE();
   const step = o.max <= 100000 ? 5000 : p.step;
   const def = o.kind === "starter" ? 25000 : (p.defaultDraw <= o.max * 0.8 ? p.defaultDraw : Math.round(o.max * 0.5 / step) * step);
   return clamp(S.draw == null ? def : S.draw, step, o.max);
 }
-const routeNow = () => S.route || P().route;
+const routeNow = () => S.route || (S.source === "vendor" ? "supplier" : PE().route);
 const quotesTotal = () => S.quotes.reduce((a, q) => a + q.amount, 0);
-const quotesOk = () => S.quotes.length > 0 && quotesTotal() <= offer().max;
+const quotesOk = () => S.quotes.length > 0;
 const accOk = () => S.acc.length >= 9 && S.acc === S.acc2;
-const qdOk = () => S.qd && S.qd.vendor.trim().length > 1 && S.qd.purpose && S.qd.amount >= 1000 && S.qd.file === 2;
-const quoteFile = q => "quote_" + (q.vendor.trim().toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") || "vendor") + ".pdf";
 const syncDrawToQuotes = () => { if (S.quotes.length) S.draw = Math.min(quotesTotal(), offer().max); };
+const nextSample = () => { const n = PE().quoteSamples.length; for (let i = 0; i < n; i++) if (!S.quotes.some(q => q.idx === i)) return i; return S.quotes.length % n; };
+const quoteFromSample = i => { const s = PE().quoteSamples[i]; return { idx: i, vendor: s.vendor, amount: s.amount, gstin: s.gstin }; };
 function quotesBlock() {
-  const o = offer(), t = quotesTotal();
+  const o = offer(), t = quotesTotal(), items = P().quoteSamples;
   return `<div class="quotes">
-    <div class="qhead"><b>Vendor quotes</b><span class="tag ${S.quotes.length ? "tag-green" : "tag-amber"}">${S.quotes.length ? `${S.quotes.length} added` : "Required"}</span></div>
-    ${S.quotes.length ? S.quotes.map((q, i) => `<div class="qrow"><span class="ico">${I.pdf}</span><span class="qt"><b>${esc(q.vendor)}</b><span>${esc(q.purpose)} · PDF attached</span></span><span class="qa num">${inr(q.amount)}</span><button class="iconbtn" data-act="qRemove:${i}" aria-label="Remove quote">${I.close}</button></div>`).join("")
-      : `<p class="qempty">Upload a quote or invoice from each vendor — a chair, a tool, or your rent. We pay each one exactly what their quote says, so the money only goes where you intended.</p>`}
-    <button class="qadd" data-act="qAdd">${I.upload}${S.quotes.length ? "Add another vendor" : "Upload a quote"}</button>
-    ${S.quotes.length ? `<div class="qtotal"><span>Total to pay vendors</span><b class="num">${inr(t)}</b></div>` : ""}
-    ${t > o.max ? `<div class="notice amber" style="margin-top:12px">${I.info("#C9860C")}<span>Your quotes add up to more than your pool of <b>${inr(o.max)}</b>. Remove one or lower an amount to continue.</span></div>` : ""}
+    <div class="qhead"><b>${T("route.quotesT")}</b><span class="tag ${S.quotes.length ? "tag-green" : "tag-amber"}">${S.quotes.length ? T("route.added", { n: S.quotes.length }) : T("route.required")}</span></div>
+    ${S.quotes.length ? S.quotes.map((q, i) => `<div class="qrow"><span class="ico">${I.pdf}</span><span class="qt"><b>${esc(q.vendor)}</b><span>${esc(items[q.idx].item)}</span><span class="gst-ok">${I.check("#14996A", 10)}${T("route.gstOk")}</span></span><span class="qa num">${inr(q.amount)}</span><button class="iconbtn" data-act="qRemove:${i}" aria-label="Remove quote">${I.close}</button></div>`).join("")
+      : `<p class="qempty">${T("route.empty")}</p>`}
+    <button class="qadd" data-act="qAdd">${I.upload}${S.quotes.length ? T("route.addAnother") : T("route.uploadQuote")}</button>
+    ${S.quotes.length ? `<div class="qtotal"><span>${T("route.total")}</span><b class="num">${inr(t)}</b></div>` : ""}
+    ${t > o.max ? `<div class="notice amber" style="margin-top:12px">${I.info("#C9860C")}<span>${T("route.overPool", { diff: `<b>${fmtDiff(t - o.max)}</b>` })}</span></div>` : ""}
   </div>`;
 }
-const rateNow = () => DATA.rates[S.route || (S.step === "pool" ? "bank" : routeNow())];
 const confidence = () => S.trail === "bank" ? ["Bank-verified via AA (6 months)", "ok"] : S.trail === "pdf" ? ["Statement-verified (6 months)", "ok"] : S.trail === "rough" ? ["Self-declared (rough)", "warn"] : ["Self-declared", "warn"];
 const stepIndex = () => ({ landing: -1, persona: 0, q: 1, trail: 2, loader: 2, mirror: 2, pool: 3, route: 3, lock: 4, done: 5 })[S.step];
 
@@ -804,24 +1277,31 @@ function score() {
 /* =========================================================
    Rendering
    ========================================================= */
-const foot = () => `<p class="foot">${DATA.brand.footer}</p>`;
+const foot = () => `<p class="foot">${T("footer")}</p>`;
 const btn = (label, act, opts = {}) => `<button class="btn ${opts.cls || "btn-primary"}" data-act="${act}" ${opts.dis ? "disabled" : ""} ${opts.id ? `id="${opts.id}"` : ""}>${label}</button>`;
 const why = t => `<p class="why">${I.info()}<span>${t}</span></p>`;
-const aiCard = (key, text, head = "In plain words") => `<div class="ai"><div class="ai-head"><span class="spark">${I.spark}</span>${head}</div><p class="ai-text" data-type="${key}" data-full="${esc(text)}"></p></div>`;
-const countUp = (key, to, fmt = "inr") => `<span class="num" data-count="${key}" data-to="${to}" data-fmt="${fmt}">${counted[key] ? inr(to) : "₹0"}</span>`;
+const aiCard = (key, text, head) => `<div class="ai"><div class="ai-head"><span class="spark">${I.spark}</span>${head || T("mirror.aiHead")}</div><p class="ai-text" data-type="${key}-${lang()}" data-full="${esc(text)}"></p></div>`;
+const countUp = (key, to) => `<span class="num" data-count="${key}" data-to="${to}">${counted[key] ? inr(to) : "₹0"}</span>`;
+const svgFont = "Inter, 'Noto Sans Devanagari', sans-serif";
 
 const Screens = {
   landing() {
-    const L = DATA.landing;
+    const L = DATA.landing, H = L.heroCard;
     return {
       body: `
+      <div class="lockup">${I.mark()}<span>${DATA.brand.lockup}</span></div>
+      ${S.source === "vendor" ? `<div class="notice blue" style="margin-bottom:12px">${icon("clinic").replace("<svg", "<svg width='22' height='22'")}<span><b>${L.vendorBanner.t}</b><br>${L.vendorBanner.d}</span></div>` : ""}
+      ${S.edge.returning && !S.retDismissed ? `<div class="card pad resume">
+          <p style="font-weight:600;font-size:15px">${L.returning.t}</p><p style="font-size:14px;color:var(--muted);margin-top:2px">${L.returning.d}</p>
+          <div style="display:flex;gap:8px;margin-top:12px"><button class="btn btn-primary btn-sm" data-act="resume">${L.returning.cont}</button><button class="btn btn-ghost btn-sm" data-act="retFresh">${L.returning.fresh}</button></div>
+        </div>` : ""}
       <div class="hero-visual">
         <div class="hero-card back">${cardArt()}</div>
         <div class="hero-card">${cardArt()}
           <div class="cardface">
-            <div class="brand"><span style="display:flex;gap:8px;align-items:center"><span class="crumbs"><i></i><i></i><i></i></span>Credit pool</span><span style="opacity:.8;font-weight:500;font-size:12px">Kestrel Finance</span></div>
-            <div style="margin-top:22px" class="lbl">Up to</div><div class="amt num">₹4,50,000</div>
-            <div class="row"><div><div class="k">Interest on unused</div><div class="v">₹0</div></div><div style="text-align:right"><div class="k">Time to know</div><div class="v">45 sec</div></div></div>
+            <div class="brand"><span style="display:flex;gap:8px;align-items:center"><span class="crumbs"><i></i><i></i><i></i></span>${H.pool}</span><span style="opacity:.8;font-weight:500;font-size:12px">${DATA.brand.lenderShort}</span></div>
+            <div style="margin-top:22px" class="lbl">${H.upTo}</div><div class="amt num">${H.amt}</div>
+            <div class="row"><div><div class="k">${H.unused}</div><div class="v">₹0</div></div><div style="text-align:right"><div class="k">${H.time}</div><div class="v">${H.timeV}</div></div></div>
           </div>
         </div>
       </div>
@@ -849,27 +1329,29 @@ const Screens = {
       <h2 class="h">${D.title}</h2><p class="sub">${D.sub}</p>
       <div class="gap"></div>
       <div class="persona-grid">${cards}</div>
+      ${S.persona === "shop" ? `<div class="langask"><p>${D.langNote}</p><div class="chips"><button class="chip sel hi" data-act="lang:hi:go">${D.langAsk}</button><button class="chip" data-act="lang:en:go">${D.langEn}</button></div></div>` : ""}
       <p class="label-s" style="margin-top:22px">${D.freeLabel}</p>
       <div class="input-row">
         <input class="input" id="freeText" placeholder="${D.freePlaceholder}" value="${esc(S.freeText)}" autocomplete="off">
         <button class="btn btn-secondary" style="width:56px;flex:none;height:56px;border-radius:16px" data-act="classify" aria-label="Find my fit">${I.arrow}</button>
       </div>
-      ${cls ? `<div class="ai" style="margin-top:12px"><div class="ai-head"><span class="spark">${I.spark}</span>Understood</div><p class="ai-text" data-type="cls-${cls.id}" data-full="${esc(cls.line)}"></p></div>` : ""}
+      ${cls ? `<div class="ai" style="margin-top:12px"><div class="ai-head"><span class="spark">${I.spark}</span>${D.understood}</div><p class="ai-text" data-type="cls-${cls.id}" data-full="${esc(cls.line)}"></p></div>` : ""}
       ${foot()}`,
       // LLM call goes here — classify free-text description into one of the 4 personas
-      cta: btn("Continue", "toQuestions", { dis: !S.persona }),
+      cta: btn(D.continue, "toQuestions", { dis: !S.persona }),
     };
   },
 
   q() {
-    const p = P(), q = p.questions[S.qi];
+    const p = P(), q = p.questions[S.qi], qe = PE().questions[S.qi];
+    const selIdx = qe.o.indexOf(S.answers[q.id]);
     return {
       body: `
-      <p class="eyebrow">${p.label} · ${S.qi + 1} of ${p.questions.length}</p>
+      <p class="eyebrow">${T("q.eyebrow", { label: p.label, n: S.qi + 1, total: p.questions.length })}</p>
       <h2 class="h">${q.q}</h2>
       ${why(q.why)}
       <div class="gap-l"></div>
-      <div class="stack">${q.o.map(o => `<button class="opt ${S.answers[q.id] === o ? "sel" : ""}" data-act="answer:${q.id}:${esc(o)}">${o}<span class="chev">${S.answers[q.id] === o ? I.check("#2C48FF", 16) : I.chev}</span></button>`).join("")}</div>
+      <div class="stack">${q.o.map((o, i) => `<button class="opt ${selIdx === i ? "sel" : ""}" data-act="answer:${q.id}:${i}">${o}<span class="chev">${selIdx === i ? I.check("#2C48FF", 16) : I.chev}</span></button>`).join("")}</div>
       ${foot()}`,
       cta: "",
     };
@@ -879,29 +1361,30 @@ const Screens = {
     const p = P();
     return {
       body: `
-      <h2 class="h">Let your business speak for itself.</h2>
-      <p class="sub">Instead of guessing numbers, let us read the trail your payments already left.</p>
+      <h2 class="h">${T("trail.title")}</h2>
+      <p class="sub">${T("trail.sub")}</p>
       <div class="notice blue" style="margin-top:18px">${I.spark}<span>${p.hint}</span></div>
       <div class="gap"></div>
-      <div class="stack">${DATA.trailOptions.map(o => `
-        <button class="choice ${S.trail === o.id ? "sel" : ""}" data-act="trailOpt:${o.id}">
-          <span class="ico">${icon(o.icon)}</span>
-          <span style="flex:1;min-width:0"><span style="display:flex;gap:8px;align-items:center;flex-wrap:wrap"><span class="ttl">${o.t}${o.id === "bank" ? " <span style='color:var(--muted);font-weight:500'>(recommended)</span>" : ""}</span></span>
+      <div class="stack">${["bank", "pdf", "rough"].map(id => { const o = T("trail.options." + id); return `
+        <button class="choice ${S.trail === id ? "sel" : ""}" data-act="trailOpt:${id}">
+          <span class="ico">${icon(DATA.trailIcons[id])}</span>
+          <span style="flex:1;min-width:0"><span style="display:flex;gap:8px;align-items:center;flex-wrap:wrap"><span class="ttl">${o.t}${id === "bank" ? ` <span style='color:var(--muted);font-weight:500'>${T("trail.recommended")}</span>` : ""}</span></span>
             <span class="dsc" style="display:block">${o.d}</span>
-            ${o.id === "bank" ? `<span class="why-bank"><span class="wb-lead">We read your last 6 months of transactions only to check what you're eligible for.</span>
-              ${DATA.bankSafety.map(t => `<span class="wb-row">${I.check("#14996A", 11)}${t}</span>`).join("")}</span>` : ""}
+            ${id === "bank" ? `<span class="why-bank"><span class="wb-lead">${T("trail.bankLead")}</span>
+              ${T("trail.safety").map(t => `<span class="wb-row">${I.check("#14996A", 11)}${t}</span>`).join("")}</span>` : ""}
             ${o.badge ? `<span class="tag tag-green" style="margin-top:8px">${I.check("#14996A", 11)}${o.badge}</span>` : ""}</span>
           <span class="chev" style="color:var(--faint)">${I.chev}</span>
-        </button>`).join("")}</div>
-      <p class="why" style="justify-content:center">${I.lock("#99A7FF")}<span>Read-only. We can never move money from your account.</span></p>
+        </button>`; }).join("")}</div>
+      <p class="why" style="justify-content:center">${I.lock("#99A7FF")}<span>${T("trail.readOnly")}</span></p>
       ${foot()}`,
       cta: "",
     };
   },
 
   loader() {
-    const lines = S.trail === "rough" ? DATA.loaderRough : DATA.loader;
-    const W = 342, H = 92, pts = DATA.months.map((m, i) => [24 + i * ((W - 48) / (DATA.months.length - 1)), 44 + Math.sin(i * 1.3) * 18]);
+    const lines = S.trail === "rough" ? T("loader.rough") : T("loader.lines");
+    const months = T("months");
+    const W = 342, H = 92, pts = months.map((m, i) => [24 + i * ((W - 48) / (months.length - 1)), 44 + Math.sin(i * 1.3) * 18]);
     const d = pts.map((p, i) => (i ? "L" : "M") + p[0].toFixed(1) + " " + p[1].toFixed(1)).join(" ");
     return {
       body: `
@@ -911,18 +1394,18 @@ const Screens = {
           <defs><clipPath id="ldClip"><rect x="0" y="0" width="0" height="${H}"><animate attributeName="width" from="0" to="${W}" dur="2.8s" fill="freeze" calcMode="spline" keySplines=".4 0 .2 1"/></rect></clipPath></defs>
           <path d="${d}" fill="none" stroke="#E5E8FF" stroke-width="2" stroke-dasharray="1 7" stroke-linecap="round"/>
           <path d="${d}" fill="none" stroke="#2C48FF" stroke-width="2.4" stroke-dasharray="1 7" stroke-linecap="round" clip-path="url(#ldClip)"/>
-          ${pts.map((p, i) => `<circle class="mdot" cx="${p[0]}" cy="${p[1]}" r="4.5" fill="#2C48FF" style="animation-delay:${(i / (DATA.months.length - 1) * 2.6).toFixed(2)}s"/>`).join("")}
-          ${pts.map((p, i) => `<text x="${p[0]}" y="${H - 4}" text-anchor="middle" font-size="11" fill="#A3A7BD" font-family="Inter" font-weight="500">${DATA.months[i]}</text>`).join("")}
+          ${pts.map((p, i) => `<circle class="mdot" cx="${p[0]}" cy="${p[1]}" r="4.5" fill="#2C48FF" style="animation-delay:${(i / (months.length - 1) * 2.6).toFixed(2)}s"/>`).join("")}
+          ${pts.map((p, i) => `<text x="${p[0]}" y="${H - 4}" text-anchor="middle" font-size="11" fill="#A3A7BD" font-family="${svgFont}" font-weight="500">${months[i]}</text>`).join("")}
         </svg>
         <div class="status" id="status">${lines.map((l, i) => `<span class="${i === 0 ? "on" : ""}">${l}</span>`).join("")}</div>
-        <p class="sub" style="font-size:13px;margin-top:8px">${S.trail === "rough" ? "Using only what you told us" : "Your data stays encrypted and read-only"}</p>
+        <p class="sub" style="font-size:13px;margin-top:8px">${S.trail === "rough" ? T("loader.subRough") : T("loader.sub")}</p>
       </div>`,
       cta: "",
     };
   },
 
   mirror() {
-    const p = P(), cash = isCash(), k = cash ? 0.45 : 1;
+    const p = P(), cash = isCash(), k = cash ? 0.45 : 1, months = T("months");
     const series = p.series.map(v => v * k), max = Math.max(...series), min = Math.min(...series);
     const bi = series.indexOf(max), si = series.indexOf(min);
     const W = 314, H = 150, top = 14, base = 124, bw = 30, gap = (W - bw * series.length) / (series.length - 1);
@@ -931,39 +1414,37 @@ const Screens = {
     const tops = series.map((v, i) => [xs[i] + bw / 2, base - hgt(v) - 8]);
     const d = tops.map((t, i) => (i ? "L" : "M") + t[0].toFixed(1) + " " + t[1].toFixed(1)).join(" ");
     const avg = p.avg * k;
-    const summary = cash
-      ? "Your trail is thin — most of your money moves in cash, so your bank only sees part of your business. That's okay. We've made a smaller, safe offer today, and adding GST or a second account will show us the rest."
-      : p.mirror;
+    const summary = cash ? T("mirror.cashSummary") : p.mirror;
     return {
       body: `
-      <h2 class="h">Here's your business, the way we see it.</h2>
+      <h2 class="h">${T("mirror.title")}</h2>
       <div class="gap"></div>
       <div class="card pad">
-        <p style="font-size:13px;color:var(--muted);font-weight:500">Average money in${cash ? " (seen in bank)" : ""}</p>
-        <div class="bignum" style="margin-top:4px">${countUp("avg-" + S.persona + cash, avg)}<small>a month</small></div>
-        <div style="margin-top:8px;display:flex;gap:8px;flex-wrap:wrap"><span class="tag ${S.trail === "pdf" ? "tag-blue" : "tag-green"}">${I.check(S.trail === "pdf" ? "#2C48FF" : "#14996A", 11)}${S.trail === "pdf" ? "From your statement" : "Bank-verified"} · 6 months</span>${cash ? `<span class="tag tag-amber">Thin trail</span>` : ""}</div>
+        <p style="font-size:13px;color:var(--muted);font-weight:500">${T("mirror.avg")}${cash ? T("mirror.seen") : ""}</p>
+        <div class="bignum" style="margin-top:4px">${countUp("avg-" + S.persona + cash, avg)}<small>${T("mirror.perMonth")}</small></div>
+        <div style="margin-top:8px;display:flex;gap:8px;flex-wrap:wrap"><span class="tag ${S.trail === "pdf" ? "tag-blue" : "tag-green"}">${I.check(S.trail === "pdf" ? "#2C48FF" : "#14996A", 11)}${S.trail === "pdf" ? T("mirror.fromStatement") : T("mirror.bankVerified")} · ${T("mirror.sixMonths")}</span>${cash ? `<span class="tag tag-amber">${T("mirror.thin")}</span>` : ""}</div>
         <div class="chart" style="padding:18px 0 0">
           <svg viewBox="0 0 ${W} ${H}">
             <defs><clipPath id="mClip"><rect x="-10" y="0" width="0" height="${H}"><animate attributeName="width" from="0" to="${W + 20}" begin=".5s" dur="1.4s" fill="freeze" calcMode="spline" keySplines=".4 0 .2 1"/></rect></clipPath></defs>
             <line x1="0" x2="${W}" y1="${base}" y2="${base}" stroke="#E8EAF2"/>
             ${series.map((v, i) => `<rect class="bar" x="${xs[i]}" y="${base - hgt(v)}" width="${bw}" height="${hgt(v)}" rx="8" fill="${i === bi ? "#14996A" : i === si ? "#C9860C" : (cash ? "#99A7FF" : "#2C48FF")}" style="animation-delay:${i * 35}ms"/>`).join("")}
             <path d="${d}" fill="none" stroke="#99A7FF" stroke-width="2" stroke-dasharray="1 6" stroke-linecap="round" clip-path="url(#mClip)"/>
-            ${series.map((v, i) => `<text x="${xs[i] + bw / 2}" y="${H - 6}" text-anchor="middle" font-size="11" font-family="Inter" font-weight="${i === bi || i === si ? 600 : 500}" fill="${i === bi ? "#14996A" : i === si ? "#C9860C" : "#A3A7BD"}">${DATA.months[i]}</text>`).join("")}
+            ${series.map((v, i) => `<text x="${xs[i] + bw / 2}" y="${H - 6}" text-anchor="middle" font-size="11" font-family="${svgFont}" font-weight="${i === bi || i === si ? 600 : 500}" fill="${i === bi ? "#14996A" : i === si ? "#C9860C" : "#A3A7BD"}">${months[i]}</text>`).join("")}
           </svg>
-          <div class="legend"><span><i style="background:#14996A"></i>Best month</span><span><i style="background:#C9860C"></i>Slowest</span><span><i style="background:${cash ? "#99A7FF" : "#2C48FF"}"></i>Money in</span></div>
+          <div class="legend"><span><i style="background:#14996A"></i>${T("mirror.best")}</span><span><i style="background:#C9860C"></i>${T("mirror.slowest")}</span><span><i style="background:${cash ? "#99A7FF" : "#2C48FF"}"></i>${T("mirror.moneyIn")}</span></div>
         </div>
       </div>
       <div class="insights">
-        <span class="insight"><i style="background:#14996A"></i>Busiest: ${p.busiest}</span>
-        <span class="insight"><i style="background:#C9860C"></i>Slowest: ${p.slowest}</span>
-        <span class="insight"><i style="background:#2C48FF"></i>${cash ? "Most customers pay in cash" : p.payers}</span>
+        <span class="insight"><i style="background:#14996A"></i>${T("mirror.busiestP", { v: p.busiest })}</span>
+        <span class="insight"><i style="background:#C9860C"></i>${T("mirror.slowestP", { v: p.slowest })}</span>
+        <span class="insight"><i style="background:#2C48FF"></i>${cash ? T("mirror.cashPayers") : p.payers}</span>
       </div>
-      ${cash ? `<div class="notice amber" style="margin-top:14px">${I.info("#C9860C")}<span><b>Your trail is thin — most of your money moves in cash.</b> Add GST returns or a second account later to unlock more. This is never a dead end.</span></div>` : ""}
+      ${cash ? `<div class="notice amber" style="margin-top:14px">${I.info("#C9860C")}<span>${T("mirror.cashNotice")}</span></div>` : ""}
       <div class="gap-s"></div>
       ${aiCard("mirror-" + S.persona + cash, summary)}
       ${foot()}`,
       // LLM call goes here — summarise the 6-month money trail in plain language
-      cta: btn("Looks right", "mirrorOk") + `<button class="btn btn-ghost" style="width:100%;margin-top:4px" data-act="sheet:off">Something's off</button>`,
+      cta: btn(T("mirror.ok"), "mirrorOk") + `<button class="btn btn-ghost" style="width:100%;margin-top:4px" data-act="sheet:off">${T("mirror.off")}</button>`,
     };
   },
 
@@ -974,40 +1455,42 @@ const Screens = {
     const starter = o.kind === "starter";
     return {
       body: `
-      <h2 class="h">${starter ? "Here's a starter pool to begin your trail." : `You could have a credit pool of up to <span style="color:var(--primary)">${countUp("pool-" + o.max, o.max)}</span>`}</h2>
+      <h2 class="h">${starter ? T("pool.starterTitle") : T("pool.title", { amt: `<span style="color:var(--primary)">${countUp("pool-" + o.max, o.max)}</span>` })}</h2>
       <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap">
-        <span class="tag ${o.label === "Based on your verified trail" ? "tag-green" : o.kind === "starter" ? "tag-blue" : "tag-amber"}">${o.label === "Based on your verified trail" ? I.check("#14996A", 11) : ""}${o.label}</span>
-        ${o.low ? `<span class="tag tag-blue">Likely ${lakh(o.low)} – ${lakh(o.max)}</span>` : ""}
+        <span class="tag ${o.lk === "verified" ? "tag-green" : o.kind === "starter" ? "tag-blue" : "tag-amber"}">${o.lk === "verified" ? I.check("#14996A", 11) : ""}${T("pool.labels." + o.lk)}</span>
+        ${o.low ? `<span class="tag tag-blue">${T("pool.likely", { lo: lakh(o.low), hi: lakh(o.max) })}</span>` : ""}
       </div>
-      ${S.mirror === "off" ? `<div class="notice green" style="margin-top:14px">${I.check("#14996A", 15)}<span>Thanks — a person will check this before your offer is final.</span></div>` : ""}
-      ${o.over ? `<div class="notice amber" style="margin-top:14px">${I.info("#C9860C")}<span>You asked for <b>${lakh(o.ask)}</b>. Today we can do <b>${lakh(o.max)}</b> — <button class="link" style="min-height:0;font-size:14px;display:inline" data-act="sheet:why">here's what would unlock more</button>.</span></div>` : ""}
-      ${p.need && !starter ? `<div class="notice blue" style="margin-top:14px">${I.spark}<span>Your need: <b>${p.need}</b>. We've set it below — change it any time.</span></div>` : ""}
+      <div class="lockup sm">${I.mark(16)}<span>${T("pool.offerFrom")}</span></div>
+      ${S.mirror === "off" ? `<div class="notice green" style="margin-top:14px">${I.check("#14996A", 15)}<span>${T("pool.checked")}</span></div>` : ""}
+      ${o.over ? `<div class="notice amber" style="margin-top:14px">${I.info("#C9860C")}<span>${T("pool.overAsk", { ask: lakh(o.ask), max: lakh(o.max), link: `<button class="link" style="min-height:0;font-size:14px;display:inline" data-act="sheet:why">${T("pool.overAskLink")}</button>` })}</span></div>` : ""}
+      ${p.need && !starter ? `<div class="notice blue" style="margin-top:14px">${I.spark}<span>${T("pool.need", { need: p.need })}</span></div>` : ""}
       <div class="gap"></div>
       <div class="pool-card">${cardArt()}
         <div class="cardface">
-          <div class="brand"><span style="display:flex;gap:8px;align-items:center"><span class="crumbs"><i></i><i></i><i></i></span>${starter ? "Starter pool" : "Your credit pool"}</span><span style="opacity:.8;font-weight:500;font-size:12px">Kestrel Finance</span></div>
-          <div style="margin-top:20px" class="lbl">Available to draw</div><div class="amt num">${starter ? inr(o.max) : countUp("pool2-" + o.max, o.max)}</div>
-          <div class="row"><div><div class="k">Interest on unused</div><div class="v">₹0</div></div><div style="text-align:right"><div class="k">Draw &amp; repay</div><div class="v">Any time</div></div></div>
+          <div class="brand"><span style="display:flex;gap:8px;align-items:center"><span class="crumbs"><i></i><i></i><i></i></span>${starter ? T("pool.cardStarter") : T("pool.cardPool")}</span><span style="opacity:.8;font-weight:500;font-size:12px">${DATA.brand.lenderShort}</span></div>
+          <div style="margin-top:20px" class="lbl">${T("pool.available")}</div><div class="amt num">${starter ? inr(o.max) : countUp("pool2-" + o.max, o.max)}</div>
+          <div class="row"><div><div class="k">${T("pool.unused")}</div><div class="v">₹0</div></div><div style="text-align:right"><div class="k">${esc(T("pool.drawK"))}</div><div class="v">${T("pool.drawV")}</div></div></div>
         </div>
       </div>
-      <div class="slider-head"><span class="q">How much do you need right now?</span><span class="v num" id="drawV">${inr(d)}</span></div>
-      <input type="range" id="drawR" min="${step}" max="${o.max}" step="${step}" value="${d}" style="--pct:${(d - step) / (o.max - step) * 100}%" aria-label="Amount you need now">
+      <div class="slider-head"><span class="q">${T("pool.sliderQ")}</span><span class="v num" id="drawV">${inr(d)}</span></div>
+      <input type="range" id="drawR" min="${step}" max="${o.max}" step="${step}" value="${d}" style="--pct:${(d - step) / (o.max - step) * 100}%" aria-label="${T("pool.sliderQ")}">
       <div class="range-ends num"><span>${inr(step)}</span><span>${inr(o.max)}</span></div>
       <div class="gap-s"></div>
-      <div class="pool-track"><div class="pool-fill ${pct >= 99.9 ? "full" : ""}" id="poolFill" style="width:${pct}%"><span id="poolFillT">${pct > 28 ? "In use" : ""}</span></div><span class="pool-free" id="poolFree">${pct < 72 ? "₹0 interest" : ""}</span></div>
+      <div class="pool-track"><div class="pool-fill ${pct >= 99.9 ? "full" : ""}" id="poolFill" style="width:${pct}%"><span id="poolFillT">${pct > 28 ? T("pool.inUse") : ""}</span></div><span class="pool-free" id="poolFree">${pct < 72 ? T("pool.zero") : ""}</span></div>
       <div class="card pad stat-rows">
-        <div class="stat"><span class="sw" style="background:var(--primary)"></span><span class="t">You pay interest on <b class="num" id="sDraw">${inr(d)}</b><span class="m num" id="sInt">about ${inr(Math.round(d * rate / 100 / 12 / 10) * 10)}/month interest at ${rate}% p.a.</span></span></div>
-        <div class="stat"><span class="sw" style="background:repeating-linear-gradient(135deg,#F3F5FF 0 3px,#CCD3FF 3px 6px)"></span><span class="t"><b class="num" id="sFree">${inr(o.max - d)}</b> waiting for you<span class="m">₹0 interest until you use it</span></span></div>
+        <div class="stat"><span class="sw" style="background:var(--primary)"></span><span class="t" id="sDrawT">${poolLines(d, o).a}</span></div>
+        <div class="stat"><span class="sw" style="background:repeating-linear-gradient(135deg,#F3F5FF 0 3px,#CCD3FF 3px 6px)"></span><span class="t" id="sFreeT">${poolLines(d, o).b}</span></div>
       </div>
       ${starter ? `
         <div class="card pad" style="margin-top:14px">
-          <p style="font-weight:600;font-size:15px">Here's how to grow it in 6 months</p>
-          <div class="stack" style="gap:10px;margin-top:12px">${DATA.starterChecklist.map((c, i) => `<div style="display:flex;gap:12px;font-size:14px;color:var(--ink2)"><span class="how"><span class="n" style="width:24px;height:24px;font-size:12px">${i + 1}</span></span>${c}</div>`).join("")}</div>
+          <p style="font-weight:600;font-size:15px">${T("pool.growTitle")}</p>
+          <div class="stack" style="gap:10px;margin-top:12px">${T("pool.checklist").map((c, i) => `<div style="display:flex;gap:12px;font-size:14px;color:var(--ink2)"><span class="how"><span class="n" style="width:24px;height:24px;font-size:12px">${i + 1}</span></span>${c}</div>`).join("")}</div>
         </div>` : ""}
-      <div style="margin-top:6px"><button class="link" data-act="sheet:why">${I.info("#2C48FF")}Why this amount?</button></div>
-      <div class="fees card pad" style="margin-top:4px">${I.info("#6F7490")}<span><b>Fees, plainly:</b> one-time setup fee of ${DATA.fees.bank}% of the amount you use the first time. No interest on unused money. No prepayment charges.</span></div>
+      <div style="margin-top:6px"><button class="link" data-act="sheet:why">${I.info("#2C48FF")}${T("pool.whyLink")}</button></div>
+      <div class="fees card pad" style="margin-top:4px">${I.info("#6F7490")}<span>${T("pool.fees", { fee: DATA.fees.bank })}</span></div>
+      <div style="text-align:center;margin-top:10px"><button class="link quiet" data-act="saveLater">${T("pool.saveLater")}</button></div>
       ${foot()}`,
-      cta: btn("Continue", "toRoute"),
+      cta: btn(T("common.continue"), "toRoute"),
     };
   },
 
@@ -1017,218 +1500,280 @@ const Screens = {
       <button class="choice route ${r === id ? "sel" : ""}" data-act="route:${id}">
         <span class="top"><span class="ico" style="width:44px;height:44px;border-radius:14px">${id === "supplier" ? icon(S.persona === "clinic" ? "clinic" : "shop") : icon("bankSvg")}</span>
           <span class="ttl" style="flex:1">${title}</span><span class="radio"></span></span>
-        ${badge ? `<span style="margin-top:12px"><span class="tag tag-green">${badge}</span>${p.route === id ? ` <span class="tag tag-blue">Best fit for you</span>` : ""}</span>` : (p.route === id ? `<span style="margin-top:12px"><span class="tag tag-blue">Best fit for you</span></span>` : "")}
-        <span class="rate"><b class="num">${rate}%</b><span>p.a. · setup fee ${DATA.fees[id]}%</span></span>
+        ${badge ? `<span style="margin-top:12px"><span class="tag tag-green">${badge}</span>${PE().route === id ? ` <span class="tag tag-blue">${T("route.bestFit")}</span>` : ""}</span>` : (PE().route === id ? `<span style="margin-top:12px"><span class="tag tag-blue">${T("route.bestFit")}</span></span>` : "")}
+        <span class="rate"><b class="num">${rate}%</b><span>${T("route.rateLine", { fee: DATA.fees[id] })}</span></span>
         <span class="dsc">${desc}</span>
         ${extra || ""}
       </button>`;
     const saving = Math.round(d * (DATA.rates.bank - DATA.rates.supplier) / 100 / 12 / 10) * 10;
     return {
       body: `
-      <h2 class="h">Where should we send it?</h2>
-      <p class="sub">Paying your vendors directly saves you about <b class="num" style="color:var(--green)">${inr(saving)}/month</b> on ${inr(d)}.</p>
+      <h2 class="h">${T("route.title")}</h2>
+      <p class="sub">${T("route.sub", { save: `<b class="num" style="color:var(--green)">${inr(saving)}${T("route.perMonth")}</b>`, amt: inr(d) })}</p>
       <div class="gap"></div>
       <div class="stack">
-        ${r === "supplier" ? `<div class="quotes-wrap">` : ""}${card("supplier", p.supplier.t, p.supplier.d, DATA.rates.supplier, "Lower rate", `<span class="req-line">${I.pdf.replace(/34/g, "16")}A quote is needed for each vendor</span>`)}
+        ${r === "supplier" ? `<div class="quotes-wrap">` : ""}${card("supplier", p.supplier.t, p.supplier.d, DATA.rates.supplier, T("route.lower"), `<span class="req-line">${I.pdf.replace(/34/g, "16")}${T("route.req")}</span>`)}
         ${r === "supplier" ? quotesBlock() + `</div>` : ""}
-        ${card("bank", "Send to my bank account", "Use it however your business needs.", DATA.rates.bank, "")}
+        ${card("bank", T("route.bankT"), T("route.bankD"), DATA.rates.bank, "")}
       </div>
-      <p class="why" style="justify-content:center">${I.info()}<span>You can choose differently each time you withdraw.</span></p>
+      <p class="why" style="justify-content:center">${I.info()}<span>${T("route.note")}</span></p>
       ${foot()}`,
-      cta: (r === "supplier" && !quotesOk() ? `<p class="cta-hint">${S.quotes.length ? "Your quotes add up to more than your pool" : "Add at least one vendor quote to continue"}</p>` : "") + btn("Continue", "toLock", { dis: r === "supplier" && !quotesOk() }),
+      cta: (r === "supplier" && !quotesOk() ? `<p class="cta-hint">${T("route.hintNone")}</p>` : "") + btn(T("common.continue"), "toLock", { dis: r === "supplier" && !quotesOk() }),
     };
   },
 
   lock() {
-    const L = DATA.lock, c = S.contact;
-    const step2 = c === 1 ? `${S.slot != null ? L.slots[S.slot] : "Your chosen time"}` : c === 0 ? "On WhatsApp" : c === 2 ? "Whenever you're ready" : "Your chosen time";
-    const step2d = c === 2 ? "Come back with your saved link — nobody calls you" : c === 0 ? "Riya from Kestrel Finance messages you to confirm 2 details" : "Riya from Kestrel Finance confirms 2 details (10 min)";
+    const c = S.contact, slots = T("lock.slots");
+    const step2 = c === 1 ? (S.slot != null ? slots[S.slot] : T("lock.step2w.chosen")) : c === 0 ? T("lock.step2w.wa") : c === 2 ? T("lock.step2w.none") : T("lock.step2w.chosen");
+    const step2d = c === 2 ? T("lock.step2.none") : c === 0 ? T("lock.step2.wa") : T("lock.step2.call");
+    const W = DATA.ui[lang()].lock.welcome;
+    const ob = offer(true), on = offer();
+    const welcome = !existingOn() ? "" : !S.welcomeAck
+      ? `<div class="card pad welcome">
+          <div style="display:flex;gap:12px;align-items:flex-start"><span class="ico" style="width:44px;height:44px;flex:none">${icon("user")}</span><div><p style="font-weight:600;font-size:15px;line-height:1.4">${W.t}</p><p style="font-size:14px;color:var(--muted);margin-top:2px">${W.d}</p></div></div>
+          <div class="boost"><span>${W.pool}</span><span class="num"><s>${inr(ob.max)}</s> ${I.arrow} <b>${countUp("boost-" + on.max, on.max)}</b></span></div>
+          <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap"><button class="btn btn-primary btn-sm" data-act="welcomeHere">${W.here}</button><button class="btn btn-secondary btn-sm" data-act="openApp">${W.app}</button></div>
+        </div>`
+      : `<div class="notice green">${I.check("#14996A", 15)}<span>${fill(W.applied, { amt: `<b class="num">${inr(on.max)}</b>` })}</span></div>`;
     return {
       body: `
-      <h2 class="h">${L.title}</h2><p class="sub">${L.sub}</p>
+      <h2 class="h">${T("lock.title")}</h2><p class="sub">${T("lock.sub")}</p>
       <div class="gap"></div>
       <div class="stack" style="gap:16px">
-        <div class="field"><label for="nm">Your name</label><input class="input" id="nm" value="${esc(S.name)}" placeholder="As on your PAN" autocomplete="name"></div>
-        <div class="field"><label for="ph">Mobile number</label>
+        <div class="field"><label for="nm">${T("lock.name")}</label><input class="input" id="nm" value="${esc(S.name)}" placeholder="${T("lock.namePh")}" autocomplete="name"></div>
+        <div class="field"><label for="ph">${T("lock.mobile")}</label>
           <div class="input-row"><div class="input-wrap"><span class="prefix">+91</span><input class="input num" id="ph" inputmode="numeric" maxlength="10" value="${esc(S.phone)}" placeholder="98XXX XXXXX" ${S.phoneVerified ? "disabled" : ""}></div>
-          ${S.phoneVerified ? "" : `<button class="btn btn-secondary btn-sm" style="height:56px;border-radius:16px" id="sendOtp" data-act="sendOtp" ${S.phone.length === 10 ? "" : "disabled"}>${S.otpSent ? "Resend" : "Send OTP"}</button>`}</div>
-          ${S.phoneVerified ? `<span class="verified">${I.check("#14996A", 13)}Number verified</span>` : ""}
+          ${S.phoneVerified ? "" : `<button class="btn btn-secondary btn-sm" style="height:56px;border-radius:16px" id="sendOtp" data-act="sendOtp" ${S.phone.length === 10 ? "" : "disabled"}>${S.otpSent ? T("lock.resend") : T("lock.sendOtp")}</button>`}</div>
+          ${S.phoneVerified ? `<span class="verified">${I.check("#14996A", 13)}${T("lock.verified")}</span>` : ""}
         </div>
-        ${S.otpSent && !S.phoneVerified ? `<div class="field"><label for="otp">Enter the 6-digit code <span style="color:var(--faint);font-weight:400">(any 6 digits in this demo)</span></label><input class="input otp" id="otp" inputmode="numeric" maxlength="6" placeholder="••••••" value="${esc(S.otp)}"></div>` : ""}
+        ${S.otpSent && !S.phoneVerified ? `<div class="field"><label for="otp">${T("lock.otpLabel")} <span style="color:var(--faint);font-weight:400">${T("lock.demoAny")}</span></label><input class="input otp" id="otp" inputmode="numeric" maxlength="6" placeholder="••••••" value="${esc(S.otp)}"></div>` : ""}
+        ${welcome}
       </div>
-      <p class="label-s" style="margin-top:24px">How should we reach you?</p>
-      <div class="chips">${L.contact.map((t, i) => `<button class="chip ${c === i ? "sel" : ""}" data-act="contact:${i}">${t}</button>`).join("")}</div>
-      ${c === 1 ? `<p class="label-s">Pick a time</p><div class="chips">${L.slots.map((t, i) => `<button class="chip ${S.slot === i ? "sel" : ""}" data-act="slot:${i}">${t}</button>`).join("")}</div>` : ""}
+      <p class="label-s" style="margin-top:24px">${T("lock.reach")}</p>
+      <div class="chips">${T("lock.contact").map((t, i) => `<button class="chip ${c === i ? "sel" : ""}" data-act="contact:${i}">${t}</button>`).join("")}</div>
+      ${c === 1 ? `<p class="label-s">${T("lock.pickTime")}</p><div class="chips">${slots.map((t, i) => `<button class="chip ${S.slot === i ? "sel" : ""}" data-act="slot:${i}">${t}</button>`).join("")}</div>` : ""}
       <div class="card pad" style="margin-top:24px">
-        <p style="font-weight:600;font-size:15px;margin-bottom:14px">What happens next</p>
+        <p style="font-weight:600;font-size:15px;margin-bottom:14px">${T("lock.nextT")}</p>
         <div class="timeline">
-          <div class="tl"><div class="w">Today</div><div class="d">Your offer is saved, nothing is signed</div></div>
+          <div class="tl"><div class="w">${T("lock.today.w")}</div><div class="d">${T("lock.today.d")}</div></div>
           <div class="tl"><div class="w">${step2}</div><div class="d">${step2d}</div></div>
-          <div class="tl"><div class="w">Before anything is final</div><div class="d">You get a Key Fact Statement with every fee in plain words</div></div>
-          <div class="tl"><div class="w">After you sign</div><div class="d">You still get a cooling-off day to cancel without penalty</div></div>
+          <div class="tl"><div class="w">${T("lock.kfs.w")}</div><div class="d">${T("lock.kfs.d")}</div></div>
+          <div class="tl"><div class="w">${T("lock.cool.w")}</div><div class="d">${T("lock.cool.d")}</div></div>
         </div>
       </div>
       ${foot()}`,
-      cta: btn(L.cta, "save", { dis: !lockReady(), id: "saveBtn" }),
+      cta: btn(T("lock.cta"), "save", { dis: !lockReady(), id: "saveBtn" }),
     };
   },
 
   done() {
     const p = P(), o = offer(), r = routeNow();
-    const until = new Date(Date.now() + 7 * 864e5).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" });
-    const contact = S.contact === 1 ? `Call · ${DATA.lock.slots[S.slot]}` : DATA.lock.contact[S.contact];
+    const until = new Date(Date.now() + 7 * 864e5).toLocaleDateString(lang() === "hi" ? "hi-IN" : "en-IN", { day: "numeric", month: "short", year: "numeric" });
+    const contact = S.contact === 1 ? T("done.call", { slot: T("lock.slots")[S.slot] }) : T("lock.contact")[S.contact];
     return {
       body: `
       <div class="success-badge">${I.check("#14996A", 28)}</div>
-      <h2 class="h">Your trail is saved.</h2>
-      <p class="sub">Your offer is held until <b style="color:var(--ink)">${until}</b>. Nothing is signed, and nothing moves without you.</p>
+      <h2 class="h">${T("done.title")}</h2>
+      <p class="sub">${T("done.sub", { date: `<b style="color:var(--ink)">${until}</b>` })}</p>
       <div class="gap"></div>
       <div class="pool-card" style="height:190px">${cardArt()}
         <div class="cardface">
-          <div class="brand"><span style="display:flex;gap:8px;align-items:center"><span class="crumbs"><i></i><i></i><i></i></span>${o.kind === "starter" ? "Starter pool" : "Credit pool"}</span><span style="opacity:.8;font-weight:500;font-size:12px">Valid till ${until}</span></div>
-          <div style="margin-top:20px" class="lbl">Up to</div><div class="amt num">${inr(o.max)}</div>
-          <div class="row"><div><div class="k">Pool holder</div><div class="v">${esc(S.name.toUpperCase() || p.who.toUpperCase())}</div></div><div style="text-align:right"><div class="k">Rate</div><div class="v">${DATA.rates[r]}% p.a.</div></div></div>
+          <div class="brand"><span style="display:flex;gap:8px;align-items:center"><span class="crumbs"><i></i><i></i><i></i></span>${o.kind === "starter" ? T("done.starter") : T("done.pool")}</span><span style="opacity:.8;font-weight:500;font-size:12px">${T("done.valid", { date: until })}</span></div>
+          <div style="margin-top:20px" class="lbl">${T("done.upTo")}</div><div class="amt num">${inr(o.max)}</div>
+          <div class="row"><div><div class="k">${T("done.holder")}</div><div class="v">${esc(S.name.toUpperCase() || p.who.toUpperCase())}</div></div><div style="text-align:right"><div class="k">${T("done.rate")}</div><div class="v">${DATA.rates[r]}% ${T("common.pa")}</div></div></div>
         </div>
       </div>
       <div class="card pad rows" style="margin-top:16px">
-        <div class="r"><span>Your work</span><b>${p.label}</b></div>
-        <div class="r"><span>Pool</span><b class="num">${inr(o.max)}${o.low ? " (est.)" : ""}</b></div>
-        <div class="r"><span>Using first</span><b class="num">${inr(drawAmt())}</b></div>
-        <div class="r"><span>Money goes to</span><b>${r === "supplier" ? `${S.quotes.length} vendor${S.quotes.length === 1 ? "" : "s"}, paid directly` : "Your bank account"}</b></div>
-        <div class="r"><span>We'll reach you</span><b>${contact}</b></div>
+        <div class="r"><span>${T("done.work")}</span><b>${p.label}</b></div>
+        <div class="r"><span>${T("done.poolRow")}</span><b class="num">${inr(o.max)}${o.low ? T("done.est") : ""}</b></div>
+        <div class="r"><span>${T("done.first")}</span><b class="num">${inr(drawAmt())}</b></div>
+        <div class="r"><span>${T("done.to")}</span><b>${r === "supplier" ? T("done.vendors", { n: S.quotes.length }) : T("done.bank")}</b></div>
+        <div class="r"><span>${T("done.reach")}</span><b>${contact}</b></div>
       </div>
       <div class="stack" style="margin-top:16px;gap:8px">
-        <button class="btn btn-secondary" data-act="shareCA">${I.share}Share with my CA</button>
-        <button class="btn btn-ghost" data-act="reset">Start over</button>
+        <button class="btn btn-secondary" data-act="shareCA">${I.share}${T("done.share")}</button>
+        <button class="btn btn-ghost" data-act="reset">${T("done.over")}</button>
       </div>
       ${foot()}`,
       cta: "",
     };
   },
 };
+function poolLines(d, o) {
+  const rate = DATA.rates.bank;
+  return {
+    a: `${T("pool.payOn", { amt: `<b class="num">${inr(d)}</b>` })}<span class="m num">${T("pool.intLine", { int: inr(Math.round(d * rate / 100 / 12 / 10) * 10), rate })}</span>`,
+    b: `${T("pool.waiting", { amt: `<b class="num">${inr(o.max - d)}</b>` })}<span class="m">${T("pool.waitingD")}</span>`,
+  };
+}
 
 /* ---------- sheets ---------- */
 const Sheets = {
   how() {
-    return `<h3>How Breadcrumb works</h3><p class="sub">${DATA.brand.tagline}</p>
-      <div class="step-steps">${DATA.landing.how.map((h, i) => `<div class="how"><span class="n">${i + 1}</span><div><b>${h.t}</b><span>${h.d}</span></div></div>`).join("")}</div>
+    const L = DATA.landing;
+    return `<h3>${L.howTitle}</h3><p class="sub">${DATA.brand.tagline}</p>
+      <div class="step-steps">${L.how.map((h, i) => `<div class="how"><span class="n">${i + 1}</span><div><b>${h.t}</b><span>${h.d}</span></div></div>`).join("")}</div>
       <div class="notice blue" style="margin-top:20px">${I.lock()}<span>${DATA.brand.lenderLine}</span></div>
-      <div style="height:16px"></div>${btn("Got it", "closeSheet")}`;
+      <div style="height:16px"></div>${btn(L.gotIt, "closeSheet")}`;
   },
   consent() {
-    const C = DATA.consent, st = S.consentStage, b = DATA.banks[S.bank];
+    const C = T("consent"), CE = DATA.ui.en.consent, st = S.consentStage, b = DATA.banks[S.bank];
+    const c = k => (C[k] != null ? C[k] : CE[k]);
+    const bankName = x => x.other ? c("otherBank") : x.n;
     const steps = ["banks", "account", "otp"], si = steps.indexOf(st);
-    const stepper = si < 0 ? "" : `<div class="cstep"><div class="cstep-bars">${steps.map((x, i) => `<i class="${i <= si ? "on" : ""}"></i>`).join("")}</div><span>Step ${si + 1} of 3 · ${["Choose your bank", "Add your account", "Verify with OTP"][si]}</span></div>`;
-    const bankHead = b ? `<div style="display:flex;gap:12px;align-items:center"><span class="mono" style="width:44px;height:44px;border-radius:14px;background:${b.c};color:#fff;display:grid;place-items:center;font-weight:700;flex:none">${b.m}</span><div><h3 style="font-size:18px">${b.n}</h3><p style="font-size:13px;color:var(--muted)">Account Aggregator consent</p></div></div>` : "";
+    const stepper = si < 0 ? "" : `<div class="cstep"><div class="cstep-bars">${steps.map((x, i) => `<i class="${i <= si ? "on" : ""}"></i>`).join("")}</div><span>${fill(c("stepLabel"), { n: si + 1, label: c("stepNames")[si] })}</span></div>`;
+    const bankHead = b ? `<div style="display:flex;gap:12px;align-items:center"><span class="mono" style="width:44px;height:44px;border-radius:14px;background:${b.c};color:#fff;display:grid;place-items:center;font-weight:700;flex:none">${b.m}</span><div><h3 style="font-size:18px">${bankName(b)}</h3><p style="font-size:13px;color:var(--muted)">${c("aa")}</p></div></div>` : "";
     const backLink = label => `<button class="btn btn-ghost" style="width:100%" data-act="consentBack">${label}</button>`;
     if (st === "ask") {
-      return `<div style="display:flex;gap:14px;align-items:center"><span class="ico" style="width:56px;height:56px">${icon("safe")}</span><h3>${C.title}</h3></div>
-        <p class="sub">${C.sub}</p>
+      return `<div style="display:flex;gap:14px;align-items:center"><span class="ico" style="width:56px;height:56px">${icon("safe")}</span><h3>${c("title")}</h3></div>
+        <p class="sub">${c("sub")}</p>
         <div class="consent-list">
-          <div class="consent-item"><span class="ci" style="background:var(--p6)">${I.check("#2C48FF", 13)}</span><span><b>${C.share.t}</b>${C.share.d}</span></div>
-          <div class="consent-item"><span class="ci" style="background:var(--green-soft)">${I.lock("#14996A")}</span><span><b>${C.use.t}</b>${C.use.d}</span></div>
-          <div class="consent-item"><span class="ci" style="background:var(--red-soft)">${I.eyeOff}</span><span><b>${C.not.t}</b>${C.not.d}</span></div>
-          <div class="consent-item"><span class="ci" style="background:var(--amber-soft)">${I.clock}</span><span><b>${C.del.t}</b>${C.del.d}</span></div>
+          <div class="consent-item"><span class="ci" style="background:var(--p6)">${I.check("#2C48FF", 13)}</span><span><b>${c("share").t}</b>${c("share").d}</span></div>
+          <div class="consent-item"><span class="ci" style="background:var(--green-soft)">${I.lock("#14996A")}</span><span><b>${c("use").t}</b>${c("use").d}</span></div>
+          <div class="consent-item"><span class="ci" style="background:#F1F2F7">${I.mark(16)}</span><span><b>${c("kestrel").t}</b>${c("kestrel").d}</span></div>
+          <div class="consent-item"><span class="ci" style="background:var(--red-soft)">${I.eyeOff}</span><span><b>${c("not").t}</b>${c("not").d}</span></div>
+          <div class="consent-item"><span class="ci" style="background:var(--amber-soft)">${I.clock}</span><span><b>${c("del").t}</b>${c("del").d}</span></div>
         </div>
-        <div class="notice green" style="margin-top:14px">${I.check("#14996A", 15)}<span>${C.promise}</span></div>
-        <div style="height:18px"></div>${btn("I agree, continue", "consentAllow")}
-        <button class="btn btn-ghost" style="width:100%" data-act="closeSheet">Not now</button>
-        <p class="why" style="justify-content:center;font-size:12px;margin-top:4px">${I.info()}<span>${DATA.brand.lenderLine}</span></p>`;
+        <div class="notice green" style="margin-top:14px">${I.check("#14996A", 15)}<span>${c("promise")}</span></div>
+        <div style="height:18px"></div>${btn(c("agree"), "consentAllow")}
+        <button class="btn btn-ghost" style="width:100%" data-act="closeSheet">${c("notNow")}</button>
+        <p class="why" style="justify-content:center;font-size:12px;margin-top:4px">${I.info()}<span>${c("lenderLine")}</span></p>`;
     }
     if (st === "banks") {
-      return `${stepper}<h3>Which bank is your business account with?</h3>
-        <div class="banks">${DATA.banks.map((x, i) => `<button class="bank ${S.bank === i ? "sel" : ""}" data-act="bank:${i}"><span class="mono" style="background:${x.c}">${x.m}</span>${x.n}</button>`).join("")}</div>
-        <div style="height:18px"></div>${btn("Continue", "consentNext", { dis: S.bank == null })}${backLink("Back")}`;
+      return `${stepper}<h3>${c("banksTitle")}</h3>
+        <div class="banks">${DATA.banks.map((x, i) => `<button class="bank ${S.bank === i ? "sel" : ""}" data-act="bank:${i}"><span class="mono" style="background:${x.c}">${x.m}</span>${bankName(x)}</button>`).join("")}</div>
+        <div style="height:18px"></div>${btn(T("common.continue"), "consentNext", { dis: S.bank == null })}${backLink(T("common.back"))}`;
     }
     if (st === "account") {
       return `${stepper}${bankHead}
-        <p class="sub" style="margin-top:14px">Add the account your business payments land in. We use it only to find this account at ${b.n}.</p>
-        <p class="label-s">Account type</p>
-        <div class="chips">${["Current", "Savings"].map((t, i) => `<button class="chip ${S.accType === i ? "sel" : ""}" data-act="accType:${i}">${t}</button>`).join("")}</div>
+        <p class="sub" style="margin-top:14px">${fill(c("accSub"), { bank: bankName(b) })}</p>
+        <p class="label-s">${c("accType")}</p>
+        <div class="chips">${c("accTypes").map((t, i) => `<button class="chip ${S.accType === i ? "sel" : ""}" data-act="accType:${i}">${t}</button>`).join("")}</div>
         <div class="stack" style="gap:14px;margin-top:16px">
-          <div class="field"><label for="accNo">Account number</label><input class="input num" id="accNo" inputmode="numeric" maxlength="18" placeholder="9 to 18 digits" value="${esc(S.acc)}" autocomplete="off"></div>
-          <div class="field"><label for="accNo2">Re-enter account number</label><input class="input num" id="accNo2" inputmode="numeric" maxlength="18" placeholder="Must match" value="${esc(S.acc2)}" autocomplete="off"><span class="field-err" id="accErr"></span></div>
+          <div class="field"><label for="accNo">${c("accNo")}</label><input class="input num" id="accNo" inputmode="numeric" maxlength="18" placeholder="${c("accNoPh")}" value="${esc(S.acc)}" autocomplete="off"></div>
+          <div class="field"><label for="accNo2">${c("accNo2")}</label><input class="input num" id="accNo2" inputmode="numeric" maxlength="18" placeholder="${c("accNo2Ph")}" value="${esc(S.acc2)}" autocomplete="off"><span class="field-err" id="accErr"></span></div>
         </div>
-        <p class="why">${I.lock("#99A7FF")}<span>Read-only. Adding your account number never lets anyone move money from it.</span></p>
-        <div style="height:14px"></div>${btn("Send OTP", "consentNext", { dis: !accOk(), id: "accBtn" })}${backLink("Choose a different bank")}`;
+        <p class="why">${I.lock("#99A7FF")}<span>${c("accSafe")}</span></p>
+        <div style="height:14px"></div>${btn(c("sendOtp"), "consentNext", { dis: !accOk(), id: "accBtn" })}${backLink(c("diffBank"))}`;
     }
     const last4 = S.acc.slice(-4);
     return `${stepper}${bankHead}
-      <div class="consent-list" style="margin-top:16px"><div class="consent-item"><span class="ci" style="background:var(--p6)">${I.check("#2C48FF", 13)}</span><span><b>${["Current", "Savings"][S.accType]} account ••${esc(last4)}</b>Transactions · last 6 months · view once</span></div></div>
-      <div class="field" style="margin-top:18px"><label for="aaOtp">Enter the code sent to the mobile linked to this account, <span class="num">+91 ••••• ••${esc(S.phone.slice(-3) || "210")}</span> <span style="color:var(--faint);font-weight:400">(any 6 digits in this demo)</span></label><input class="input otp" id="aaOtp" inputmode="numeric" maxlength="6" placeholder="••••••" value="${esc(S.otpConsent)}"></div>
-      <div style="height:18px"></div>${btn(`${I.lock("#fff")}Share once`, "shareOnce", { dis: S.otpConsent.length !== 6, id: "shareBtn" })}${backLink("Change account number")}`;
+      <div class="consent-list" style="margin-top:16px"><div class="consent-item"><span class="ci" style="background:var(--p6)">${I.check("#2C48FF", 13)}</span><span><b>${fill(c("accLine"), { type: c("accTypes")[S.accType], last4: esc(last4) })}</b>${c("accLineD")}</span></div></div>
+      <div class="field" style="margin-top:18px"><label for="aaOtp">${fill(c("otpLabel"), { mobile: `<span class="num">+91 ••••• ••${esc(S.phone.slice(-3) || "210")}</span>` })} <span style="color:var(--faint);font-weight:400">${c("demoAny")}</span></label><input class="input otp" id="aaOtp" inputmode="numeric" maxlength="6" placeholder="••••••" value="${esc(S.otpConsent)}"></div>
+      <div style="height:18px"></div>${btn(`${I.lock("#fff")}${c("shareOnce")}`, "shareOnce", { dis: S.otpConsent.length !== 6, id: "shareBtn" })}${backLink(c("changeAcc"))}`;
   },
   quote() {
-    const p = P(), q = S.qd;
-    return `<h3>Add a vendor quote</h3><p class="sub">We'll pay this vendor directly — exactly the amount on their quote. Nothing goes out until you approve it.</p>
-      <div class="stack" style="gap:14px;margin-top:16px">
-        <div class="field"><label for="qVendor">Vendor or landlord name</label><input class="input" id="qVendor" placeholder="e.g. ${esc(p.exampleQuote.vendor)}" value="${esc(q.vendor)}" autocomplete="off"></div>
+    const q = S.qd, s = P().quoteSamples[q.idx], o = offer();
+    const room = o.max - quotesTotal(), over = s.amount - room;
+    if (q.stage === 0) {
+      return `<h3>${T("quote.title")}</h3><p class="sub">${T("quote.sub")}</p>
+        <button class="dropzone" style="width:100%;margin-top:18px;padding:22px 16px;display:flex;align-items:center;gap:14px;text-align:left" data-act="qPick"><span class="ico" style="background:#fff;width:48px;height:48px">${I.pdf}</span><span><span style="font-weight:600;display:block">${T("quote.drop")}</span><span style="font-size:13px;color:var(--muted)">${T("quote.dropD")}</span></span></button>`;
+    }
+    const file = `<div class="file" style="margin-top:18px"><span class="ico" style="width:44px;height:44px">${I.pdf}</span><div style="flex:1;min-width:0"><p style="font-weight:600;font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(quoteFileName(s))}</p><p style="font-size:12px;color:var(--muted)">${q.stage === 1 ? T("quote.reading") : `${I.check("#14996A", 10)} ${T("quote.gstOk")}`}</p><div class="bar2"><i id="qBar" style="width:${q.stage === 2 ? 100 : 0}%"></i></div></div></div>`;
+    if (q.stage === 1) return `<h3>${T("quote.title")}</h3><p class="sub">${T("quote.sub")}</p>${file}`;
+    // LLM call goes here — read the uploaded quote: item, amount, vendor name, vendor GSTIN
+    return `<h3>${T("quote.title")}</h3><p class="sub">${T("quote.sub")}</p>${file}
+      <div style="height:14px"></div>${aiCard("quote-" + S.persona + q.idx, T("quote.aiLine", { vendor: s.vendor, item: s.item, amt: inr(s.amount) }), T("quote.aiHead"))}
+      <div class="card pad rows" style="margin-top:12px">
+        <div class="r"><span>${T("quote.item")}</span><b>${esc(s.item)}</b></div>
+        <div class="r"><span>${T("quote.amount")}</span><b class="num">${inr(s.amount)}</b></div>
+        <div class="r"><span>${T("quote.vendor")}</span><b>${esc(s.vendor)}</b></div>
+        <div class="r"><span>${T("quote.gst")}</span><b class="gst-col"><span class="gst-ok">${I.check("#14996A", 12)}${T("quote.gstOk")}</span><span class="num">${s.gstin}</span></b></div>
       </div>
-      <p class="label-s">What is it for?</p>
-      <div class="chips">${p.purposes.map(t => `<button class="chip ${q.purpose === t ? "sel" : ""}" data-act="qPurpose:${esc(t)}">${t}</button>`).join("")}</div>
-      <div class="field" style="margin-top:16px"><label for="qAmt">Amount on the quote</label><div class="input-wrap"><span class="prefix" style="left:18px">₹</span><input class="input num" id="qAmt" inputmode="numeric" placeholder="0" value="${q.amount ? Number(q.amount).toLocaleString("en-IN") : ""}" style="padding-left:36px" autocomplete="off"></div></div>
-      <p class="label-s">Quote PDF</p>
-      ${q.file === 0 ? `<button class="dropzone" style="width:100%;margin-top:0;padding:18px 16px;display:flex;align-items:center;gap:14px;text-align:left" data-act="qPick"><span class="ico" style="background:#fff;width:44px;height:44px">${I.pdf}</span><span><span style="font-weight:600;display:block">Upload the quote or invoice</span><span style="font-size:13px;color:var(--muted)">PDF or photo · up to 10 MB</span></span></button>`
-      : `<div class="file" style="margin-top:0"><span class="ico" style="width:44px;height:44px">${I.pdf}</span><div style="flex:1;min-width:0"><p style="font-weight:600;font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(quoteFile(q))}</p><p style="font-size:12px;color:var(--muted)">${q.file === 1 ? "Uploading…" : "Uploaded · we'll check it matches the amount"}</p><div class="bar2"><i id="qBar" style="width:${q.file === 2 ? 100 : 0}%"></i></div></div>${q.file === 2 ? `<button class="iconbtn" data-act="qUnpick" aria-label="Remove file">${I.close}</button>` : ""}</div>`}
-      <div style="height:18px"></div>${btn("Add quote", "qSave", { dis: !qdOk(), id: "qSaveBtn" })}
-      <button class="btn btn-ghost" style="width:100%" data-act="qExample">Fill with an example</button>`;
+      ${over > 0 ? `<div class="notice amber" style="margin-top:12px">${I.info("#C9860C")}<span>${T("quote.over", { diff: `<b>${fmtDiff(over)}</b>` })}</span></div>` : ""}
+      <div style="height:18px"></div>${btn(T("quote.add"), "qSave")}
+      <button class="btn btn-ghost" style="width:100%" data-act="qAnother">${T("quote.another")}</button>`;
   },
   pdf() {
     const st = S.pdfStage;
-    return `<h3>Upload a bank statement</h3><p class="sub">A PDF of your main business account, last 6 months. Password-protected files are fine.</p>
-      ${st === 0 ? `<div class="dropzone"><span class="ico" style="margin:0 auto 12px;background:#fff">${I.pdf}</span><p style="font-weight:600">Choose a PDF</p><p style="font-size:13px;color:var(--muted);margin-top:2px">Up to 10 MB</p><div style="height:14px"></div><button class="btn btn-primary btn-sm" style="margin:0 auto" data-act="pickPdf">${I.upload}Choose file</button></div>`
-      : `<div class="file"><span class="ico" style="width:44px;height:44px">${I.pdf}</span><div style="flex:1;min-width:0"><p style="font-weight:600;font-size:14px">statement_apr26-sep26.pdf</p><p style="font-size:12px;color:var(--muted)">${st === 1 ? "Reading…" : "6 months · 1,164 transactions found"}</p><div class="bar2"><i id="pdfBar" style="width:${st === 2 ? 100 : 0}%"></i></div></div>${st === 2 ? `<span class="ci" style="width:28px;height:28px;border-radius:50%;background:var(--green-soft);display:grid;place-items:center">${I.check("#14996A", 13)}</span>` : ""}</div>`}
-      <p class="why">${I.lock("#99A7FF")}<span>We only read transactions. Deleted after 30 days if you don't continue.</span></p>
-      <div style="height:14px"></div>${btn("Use this statement", "pdfGo", { dis: st !== 2 })}`;
+    return `<h3>${T("pdf.title")}</h3><p class="sub">${T("pdf.sub")}</p>
+      ${st === 0 ? `<div class="dropzone"><span class="ico" style="margin:0 auto 12px;background:#fff">${I.pdf}</span><p style="font-weight:600">${T("pdf.choose")}</p><p style="font-size:13px;color:var(--muted);margin-top:2px">${T("pdf.limit")}</p><div style="height:14px"></div><button class="btn btn-primary btn-sm" style="margin:0 auto" data-act="pickPdf">${I.upload}${T("pdf.chooseBtn")}</button></div>`
+      : `<div class="file"><span class="ico" style="width:44px;height:44px">${I.pdf}</span><div style="flex:1;min-width:0"><p style="font-weight:600;font-size:14px">${T("pdf.file")}</p><p style="font-size:12px;color:var(--muted)">${st === 1 ? T("pdf.reading") : T("pdf.found")}</p><div class="bar2"><i id="pdfBar" style="width:${st === 2 ? 100 : 0}%"></i></div></div>${st === 2 ? `<span class="ci" style="width:28px;height:28px;border-radius:50%;background:var(--green-soft);display:grid;place-items:center">${I.check("#14996A", 13)}</span>` : ""}</div>`}
+      <p class="why">${I.lock("#99A7FF")}<span>${T("pdf.safe")}</span></p>
+      <div style="height:14px"></div>${btn(T("pdf.use"), "pdfGo", { dis: st !== 2 })}`;
   },
   rough() {
-    const R = DATA.rough;
-    return `<h3>Just a rough idea</h3><p class="sub">Two quick taps. Your estimate will be a range, not a number.</p>
-      <p class="label-s">${R.earnLabel}</p><div class="chips">${R.earn.map((e, i) => `<button class="chip ${S.roughEarn === i ? "sel" : ""}" data-act="rEarn:${i}">${e.l}</button>`).join("")}</div>
-      <p class="label-s">${R.askLabel}</p><div class="chips">${R.ask.map((e, i) => `<button class="chip ${S.roughAsk === i ? "sel" : ""}" data-act="rAsk:${i}">${e.l}</button>`).join("")}</div>
-      <div style="height:22px"></div>${btn("See my estimate", "roughGo", { dis: S.roughEarn == null || S.roughAsk == null })}`;
+    return `<h3>${T("rough.title")}</h3><p class="sub">${T("rough.sub")}</p>
+      <p class="label-s">${T("rough.earnLabel")}</p><div class="chips">${T("rough.earn").map((l, i) => `<button class="chip ${S.roughEarn === i ? "sel" : ""}" data-act="rEarn:${i}">${l}</button>`).join("")}</div>
+      <p class="label-s">${T("rough.askLabel")}</p><div class="chips">${T("rough.ask").map((l, i) => `<button class="chip ${S.roughAsk === i ? "sel" : ""}" data-act="rAsk:${i}">${l}</button>`).join("")}</div>
+      <div style="height:22px"></div>${btn(T("rough.go"), "roughGo", { dis: S.roughEarn == null || S.roughAsk == null })}`;
   },
   off() {
-    return `<h3>What looks off?</h3><p class="sub">Tell us in a line. A real person will check it before anything is final.</p>
-      <div style="height:16px"></div><textarea class="input" id="offNote" placeholder="e.g. October also includes a one-time family transfer">${esc(S.offNote)}</textarea>
-      <div style="height:16px"></div>${btn("Send and continue", "offGo")}`;
+    return `<h3>${T("off.title")}</h3><p class="sub">${T("off.sub")}</p>
+      <div style="height:16px"></div><textarea class="input" id="offNote" placeholder="${T("off.ph")}">${esc(S.offNote)}</textarea>
+      <div style="height:16px"></div>${btn(T("off.go"), "offGo")}`;
   },
   why() {
     const p = P(), o = offer();
-    const factors = p.factors.map(f => f[0] === "gst" ? (S.answers.gst === "Yes" ? ["+", "GST-registered"] : ["−", "No GST yet"]) : f);
-    if (isCash()) factors.unshift(["−", "Most income moves in cash — bank sees less"]);
-    if (isNewBiz()) factors.unshift(["−", "Business is under 1 year old"]);
-    if (S.trail === "rough") factors.unshift(["−", "Based on your answers, not your bank trail"]);
-    const ai = isNewBiz() ? "Because your business is less than a year old, we start with a small starter pool. Rules, not guesses, set this: once you have six months of trail and on-time repayments, the pool is recalculated — usually several times larger."
-      : S.trail === "rough" ? "This is a range because it's based on your answers rather than your bank trail. Connecting your bank takes 30 seconds and usually narrows the range to a single, firm number."
-      : p.whyAi;
-    const levers = S.trail === "rough" ? [["Connect my bank", "firm number in 30 sec"], ...p.levers.slice(0, 1)] : p.levers;
-    return `<h3>Why ${inr(o.max)}?</h3><p class="sub">Rules decide the amount. Here they are, explained.</p>
-      <div style="height:16px"></div>${aiCard("why-" + S.persona + o.max, ai, "Your pool, explained")}
-      <p class="label-s">What counted</p>
-      <div class="card" style="padding:4px 16px">${factors.map(f => `<div class="factor"><span class="sg" style="background:${f[0] === "+" ? "var(--green-soft);color:var(--green)" : "var(--amber-soft);color:var(--amber)"}">${f[0] === "+" ? "+" : "−"}</span>${f[1]}</div>`).join("")}</div>
-      <p class="label-s">Ways to unlock more</p>
-      ${levers.map(l => `<button class="lever" data-act="lever"><span style="flex:1">${l[0]} → <b>${l[1]}</b></span><span style="color:var(--primary)">${I.chev}</span></button>`).join("")}
-      <div style="height:18px"></div>${btn("Got it", "closeSheet")}`;
+    const factors = p.factors.map(f => f[0] === "gst" ? (S.answers.gst === "Yes" ? ["+", T("why.fGst")] : ["−", T("why.fNoGst")]) : f);
+    if (isCash()) factors.unshift(["−", T("why.fCash")]);
+    if (isNewBiz()) factors.unshift(["−", T("why.fNew")]);
+    if (S.trail === "rough") factors.unshift(["−", T("why.fRough")]);
+    const ai = isNewBiz() ? T("why.aiNew") : S.trail === "rough" ? T("why.aiRough") : p.whyAi;
+    const levers = S.trail === "rough" ? [T("why.leverRough"), ...p.levers.slice(0, 1)] : p.levers;
     // LLM call goes here — answer "why is my pool this size?" using the rule outputs above
+    return `<h3>${T("why.title", { amt: inr(o.max) })}</h3><p class="sub">${T("why.sub")}</p>
+      <div style="height:16px"></div>${aiCard("why-" + S.persona + o.max, ai, T("why.head"))}
+      <p class="label-s">${T("why.counted")}</p>
+      <div class="card" style="padding:4px 16px">${factors.map(f => `<div class="factor"><span class="sg" style="background:${f[0] === "+" ? "var(--green-soft);color:var(--green)" : "var(--amber-soft);color:var(--amber)"}">${f[0] === "+" ? "+" : "−"}</span>${f[1]}</div>`).join("")}</div>
+      <p class="label-s">${T("why.unlock")}</p>
+      ${levers.map(l => `<button class="lever" data-act="lever"><span style="flex:1">${l[0]} → <b>${l[1]}</b></span><span style="color:var(--primary)">${I.chev}</span></button>`).join("")}
+      <div style="height:18px"></div>${btn(T("common.gotIt"), "closeSheet")}`;
+  },
+  saveLater() {
+    const L = T("saveLater"), sl = S.sl;
+    if (sl.sent) {
+      return `<div class="success-badge" style="margin-bottom:14px">${I.check("#14996A", 28)}</div><h3>${L.doneT}</h3>
+        <p class="sub">${fill(L.doneD, { mobile: `${sl.phone.slice(0, 5)} ${sl.phone.slice(5)}` })}</p>
+        <div style="height:18px"></div>${btn(L.close, "closeSheet")}`;
+    }
+    return `<h3>${L.title}</h3><p class="sub">${L.sub}</p>
+      <div class="field" style="margin-top:16px"><label for="slPh">${L.mobile}</label><div class="input-wrap"><span class="prefix">+91</span><input class="input num" id="slPh" inputmode="numeric" maxlength="10" placeholder="98XXX XXXXX" value="${esc(sl.phone)}"></div></div>
+      <div class="notice green" style="margin-top:14px">${I.check("#14996A", 15)}<span>${L.note}</span></div>
+      <div style="height:18px"></div>${btn(L.send, "slSend", { dis: sl.phone.length !== 10, id: "slBtn" })}`;
   },
 };
+const quoteFileName = s => "quote_" + s.vendor.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") + ".pdf";
 
-/* ---------- Lender Lens ---------- */
+/* ---------- Lender Lens (always English) ---------- */
+function funnelHTML() {
+  const F = DATA.lens.funnel, cols = ["#5C6299", "#99A7FF"];
+  return `<div class="lens-sec"><div class="lens-k">${F.title}</div>
+      <p class="fn-note">${F.note}</p>
+      <div class="fn">
+        <span></span>${F.series.map((s, j) => `<span class="fn-h"><i style="background:${cols[j]}"></i>${s.name}</span>`).join("")}
+        ${F.steps.map((st, i) => `<span class="fn-l">${st}</span>${F.series.map((s, j) => `<span class="fn-c" title="${s.name} · ${st}: ${s.values[i]} ${F.unit}"><i style="width:${s.values[i] * 0.78}%;background:${cols[j]}"></i><b>${s.values[i]}</b></span>`).join("")}`).join("")}
+      </div>
+      <p class="fn-unit">${F.unit}</p>
+    </div>
+    <div class="lens-sec"><div class="lens-k">${F.metricsTitle}</div>
+      <div class="tiles">${F.metrics.map(m => `<div class="tile"><span class="tt">${m.t}</span><span class="tv lens-mono"><s>${m.old}</s> → <b>${m.now}</b></span><span class="td">${m.d}</span></div>`).join("")}</div>
+      <p class="fn-note" style="margin-top:10px">${F.note}</p>
+    </div>`;
+}
 function lensHTML() {
+  const tabs = `<div class="lens-tabs">${Object.entries(DATA.lens.tabs).map(([k, l]) => `<button class="${S.lensTab === k ? "on" : ""}" data-act="lensTab:${k}">${l}</button>`).join("")}</div>`;
+  return tabs + (S.lensTab === "funnel" ? funnelHTML() : liveHTML());
+}
+function liveHTML() {
   const sc = score(), t = sc.total;
   const lab = t >= 70 ? "Sales-ready" : t >= 35 ? "Warm" : "Cold";
   const col = t >= 70 ? "#5BE3A8" : t >= 35 ? "#FFC45E" : "#99A7FF";
   const C = 2 * Math.PI * 36;
   const [conf, ck] = confidence();
+  const source = DATA.sources.find(s => s.id === S.source).l;
+  const srcLine = `<div class="kv" style="margin-top:12px"><span>${DATA.lens.sourceLabel}</span><b style="font-family:Inter">${source}</b></div>`;
   if (!S.persona) {
-    return `<div class="lens-sec"><div class="lens-k">Lead quality</div><div class="score"><div class="score-ring"><svg viewBox="0 0 84 84"><circle cx="42" cy="42" r="36" fill="none" stroke="#1C2156" stroke-width="7"/></svg><span class="n">0</span></div><div><div class="lab">Waiting for a visitor</div><div class="hint">This panel shows what Kestrel Finance sees, live, as the borrower moves through Breadcrumb.</div></div></div></div>
+    return `<div class="lens-sec"><div class="lens-k">Lead quality</div><div class="score"><div class="score-ring"><svg viewBox="0 0 84 84"><circle cx="42" cy="42" r="36" fill="none" stroke="#1C2156" stroke-width="7"/></svg><span class="n">0</span></div><div><div class="lab">Waiting for a visitor</div><div class="hint">This panel shows what Kestrel Finance sees, live, as the borrower moves through Breadcrumb.</div></div></div>${srcLine}</div>
       <div class="lens-sec"><div class="lens-k">What we capture</div><p class="lens-empty">Nothing yet. No phone number, no name, no bureau pull — until the borrower chooses to share.</p></div>`;
   }
-  const p = P(), o = offer(), d = drawAmt(), r = S.route || (stepIndex() >= 3 ? routeNow() : null);
+  const p = PE(), o = offer(), d = drawAmt(), r = S.route || (stepIndex() >= 3 ? routeNow() : null);
   const fee = d * DATA.fees[r || "bank"] / 100, mi = d * DATA.rates[r || "bank"] / 100 / 12;
+  const slotsE = DATA.ui.en.lock.slots;
   const notes = [];
-  if (r === "supplier") notes.push(["#5BE3A8", S.quotes.length ? `Vendor-pay: ${S.quotes.length} quote${S.quotes.length > 1 ? "s" : ""} on file (${inr(quotesTotal())}) — funds can't be diverted` : "Vendor-pay selected — awaiting vendor quotes"]);
+  if (S.recovered) notes.push(["#5BE3A8", DATA.lens.recovered]);
+  if (existingOn()) notes.push(["#5BE3A8", DATA.lens.existing]);
+  if (r === "supplier") notes.push(["#5BE3A8", S.quotes.length ? `Vendor-pay: ${S.quotes.length} quote${S.quotes.length > 1 ? "s" : ""} on file (${inr(quotesTotal())}), vendor GST verified — funds can't be diverted` : "Vendor-pay selected — awaiting vendor quotes"]);
   if (S.trail && S.trail !== "rough" && !isNewBiz()) notes.push(["#FFC45E", p.seasonal]);
   if (isCash()) notes.push(["#FFC45E", "Cash-heavy: verified inflow understates business — request GST / 2nd account"]);
   if (isNewBiz()) notes.push(["#99A7FF", "Under 1 year: starter limit, nurture track (6-month re-score)"]);
@@ -1243,44 +1788,50 @@ function lensHTML() {
       <div class="score"><div class="score-ring"><svg viewBox="0 0 84 84"><circle cx="42" cy="42" r="36" fill="none" stroke="#1C2156" stroke-width="7"/><circle cx="42" cy="42" r="36" fill="none" stroke="${col}" stroke-width="7" stroke-linecap="round" stroke-dasharray="${C}" stroke-dashoffset="${C * (1 - t / 100)}"/></svg><span class="n">${t}</span></div>
         <div><div class="lab" style="color:${col}">${lab}</div><div class="hint">${lab === "Sales-ready" ? "Verified cash flow + reachable. Route to sales." : lab === "Warm" ? "Engaged. Needs trail or verification." : "Early signal only."}</div></div></div>
       <div class="signals">${sc.sig.map(s => `<div class="sig ${s[1] ? "on" : ""}"><span>${s[0]}</span><span class="p">${s[1] ? "+" + s[1] : "—"}</span></div>`).join("")}</div>
+      ${srcLine}
     </div>
     <div class="lens-sec"><div class="lens-k">Data confidence</div><div class="conf"><span class="pill ${ck}">${conf}</span></div>
       ${S.trail && S.trail !== "rough" ? `<div class="kv" style="margin-top:12px"><span>Verified avg inflow</span><b class="num">${inr(p.avg * (isCash() ? .45 : 1))}/mo</b><span>Months of trail</span><b>6</b></div>` : ""}</div>
-    <div class="lens-sec"><div class="lens-k">Persona &amp; suggested product</div><div class="lens-v"><b style="font-weight:600">${p.label}</b> → ${isNewBiz() ? "Starter line, nurture track" : p.product}</div>
+    <div class="lens-sec"><div class="lens-k">Persona &amp; suggested product</div><div class="lens-v"><b style="font-weight:600">${p.label}</b> → ${isNewBiz() ? "Starter line, nurture track" : p.product}${lang() === "hi" ? ` <span class="tag" style="background:var(--navy3);color:var(--lens-ink);height:20px">Viewing in Hindi</span>` : ""}</div>
       ${Object.keys(S.answers).length ? `<div class="kv" style="margin-top:12px">${p.questions.filter(q => S.answers[q.id]).map(q => `<span>${q.q.replace(/\?$/, "").replace("…", "").slice(0, 34)}</span><b style="font-family:Inter">${S.answers[q.id]}</b>`).join("")}</div>` : ""}</div>
     <div class="lens-sec"><div class="lens-k">Risk notes</div>${notes.length ? `<div class="notes">${notes.map(n => `<div class="note"><i style="background:${n[0]}"></i><span>${n[1]}</span></div>`).join("")}</div>` : `<p class="lens-empty">No flags yet.</p>`}</div>
     ${stepIndex() >= 3 ? `<div class="lens-sec"><div class="lens-k">Revenue view <span style="text-transform:none;letter-spacing:0;font-weight:400">· illustrative</span></div>
       <div class="kv"><span>Pool approved</span><b>${inr(o.max)}</b><span>Drawn today</span><b>${inr(d)}</b><span>Setup fee earned (${DATA.fees[r || "bank"]}%)</span><b class="hl">${inr(fee)}</b><span>Expected interest / month</span><b class="hl">${inr(mi)}</b><span>Rate</span><b>${DATA.rates[r || "bank"]}% p.a.</b></div>
       <div class="capbar"><i style="width:${d / o.max * 100}%"></i></div>
       <p style="font-size:12.5px;color:var(--lens-muted);margin-top:8px">Capital committed today: <span class="lens-mono" style="color:var(--lens-ink)">${inr(d)}</span> (not ${inr(o.max)})</p></div>` : ""}
-    ${showHandoff ? `<div class="lens-sec"><div class="lens-k">Sales handoff ${S.saved ? `<span style="color:#5BE3A8;text-transform:none;letter-spacing:0">· sent to queue</span>` : ""}</div>
+    ${showHandoff ? `<div class="lens-sec"><div class="lens-k">${DATA.lens.handoffTitle} ${S.saved ? `<span style="color:#5BE3A8;text-transform:none;letter-spacing:0">· sent to queue</span>` : ""}</div>
       <div class="handoff"><div class="hd"><span class="nm">${esc(name)}</span><span class="tag" style="background:rgba(91,227,168,.12);color:#5BE3A8">${S.phoneVerified ? "Phone verified" : "Unverified"}</span></div>
-        <div class="kv"><span>Persona</span><b style="font-family:Inter">${p.label}</b><span>Verified avg inflow</span><b>${S.trail === "rough" ? "—" : inr(p.avg * (isCash() ? .45 : 1))}</b><span>Pool</span><b>${inr(o.max)}</b><span>Route</span><b style="font-family:Inter">${routeNow() === "supplier" ? "Vendor pay" : "Bank transfer"}</b>${routeNow() === "supplier" ? S.quotes.map(q => `<span>↳ ${esc(q.vendor)}</span><b>${inr(q.amount)}</b>`).join("") : ""}<span>Contact</span><b style="font-family:Inter">${S.contact == null ? "—" : S.contact === 1 ? "Call · " + (S.slot != null ? DATA.lock.slots[S.slot] : "slot pending") : S.contact === 2 ? "Do not call" : "WhatsApp"}</b>${S.phoneVerified ? `<span>Mobile</span><b>+91 ${S.phone.slice(0, 5)} ${S.phone.slice(5)}</b>` : ""}</div>
-        <div class="sum"><span style="color:#99A7FF;font-size:11px;font-weight:600;letter-spacing:.06em;display:block;margin-bottom:4px">AI SUMMARY FOR CALLER</span>${esc(p.handoff.replace(p.who, name))}${S.mirror === "off" ? " Borrower flagged data — check note first." : ""}</div>
+        <div class="kv"><span>${DATA.lens.sourceLabel}</span><b style="font-family:Inter">${source}</b>${existingOn() ? `<span>Customer</span><b style="font-family:Inter">Existing · relationship team</b>` : ""}<span>Persona</span><b style="font-family:Inter">${p.label}</b><span>Verified avg inflow</span><b>${S.trail === "rough" ? "—" : inr(p.avg * (isCash() ? .45 : 1))}</b><span>Pool</span><b>${inr(o.max)}</b><span>Route</span><b style="font-family:Inter">${routeNow() === "supplier" ? "Vendor pay" : "Bank transfer"}</b>${routeNow() === "supplier" ? S.quotes.map(q => `<span>↳ ${esc(q.vendor)}</span><b>${inr(q.amount)}</b>`).join("") : ""}<span>Contact</span><b style="font-family:Inter">${S.contact == null ? "—" : S.contact === 1 ? "Call · " + (S.slot != null ? slotsE[S.slot] : "slot pending") : S.contact === 2 ? "Do not call" : "WhatsApp"}</b>${S.phoneVerified ? `<span>Mobile</span><b>+91 ${S.phone.slice(0, 5)} ${S.phone.slice(5)}</b>` : ""}</div>
+        <div class="sum"><span style="color:#99A7FF;font-size:11px;font-weight:600;letter-spacing:.06em;display:block;margin-bottom:4px">AI SUMMARY FOR CALLER</span>${esc(p.handoff.replace(p.who, name))}${S.mirror === "off" ? " Borrower flagged data — check note first." : ""}${lang() === "hi" ? " Prefers Hindi." : ""}</div>
         <!-- LLM call goes here — one-line caller summary from the lead record -->
       </div></div>` : ""}`;
 }
 
 function demoHTML() {
   const e = S.edge;
+  const tg = (k, l) => `<button class="toggle ${e[k] ? "on" : ""}" data-act="edge:${k}">${l}<span class="sw2"></span></button>`;
   return `<h4>Persona shortcut</h4><div class="chips">${Object.entries(DATA.personas).map(([k, p]) => `<button class="chip ${S.persona === k ? "sel" : ""}" data-act="demoP:${k}">${p.short}</button>`).join("")}</div>
+    <h4>Source</h4><div class="chips">${DATA.sources.map(s => `<button class="chip ${S.source === s.id ? "sel" : ""}" data-act="source:${s.id}">${s.l}</button>`).join("")}</div>
     <h4>Edge states</h4>
-    <button class="toggle ${e.newBiz ? "on" : ""}" data-act="edge:newBiz">New business (&lt;1 year)<span class="sw2"></span></button>
-    <button class="toggle ${e.cash ? "on" : ""}" data-act="edge:cash">Mostly cash / thin trail<span class="sw2"></span></button>
-    <button class="toggle ${e.overAsk ? "on" : ""}" data-act="edge:overAsk">Asked for more than eligible<span class="sw2"></span></button>
+    ${tg("newBiz", "New business (&lt;1 year)")}${tg("cash", "Mostly cash / thin trail")}${tg("overAsk", "Asked for more than eligible")}
+    ${tg("existing", "Existing Kestrel customer")}${tg("returning", "Returning visitor")}
     <p style="font-size:12px;color:var(--muted);margin-top:6px">“Something's off” lives on the mirror screen.</p>
     <h4>Jump to</h4><div class="chips">${[["persona", "Who"], ["trail", "Trail"], ["mirror", "Mirror"], ["pool", "Pool"], ["lock", "Lock"]].map(([s, l]) => `<button class="chip" data-act="jump:${s}">${l}</button>`).join("")}</div>
     <div style="height:14px"></div><button class="btn btn-secondary" style="height:44px;font-size:14px" data-act="reset">Reset demo</button>`;
 }
 
-/* ---------- progress ---------- */
+/* ---------- progress + language switch ---------- */
 function progressHTML() {
   const idx = stepIndex();
   if (idx < 0) return "";
-  const w = Math.min(idx, 4) / 4 * 100;
+  const w = Math.min(idx, 4) / 4 * 100, steps = T("steps");
   return `<div class="prog-row"><div class="prog-line"></div><div class="prog-fill" style="width:calc((100% - 12px) * ${w / 100})"></div>
-    ${DATA.steps.map((s, i) => `<span class="prog-dot ${i < idx ? "done" : i === idx ? "now" : ""}"></span>`).join("")}</div>
-    <div class="prog-labels">${DATA.steps.map((s, i) => `<span class="${i <= idx ? "on" : ""}">${s}</span>`).join("")}</div>`;
+    ${steps.map((s, i) => `<span class="prog-dot ${i < idx ? "done" : i === idx ? "now" : ""}"></span>`).join("")}</div>
+    <div class="prog-labels">${steps.map((s, i) => `<span class="${i <= idx ? "on" : ""}">${s}</span>`).join("")}</div>`;
+}
+function langSwHTML() {
+  if (S.persona !== "shop" || S.step === "landing" || S.step === "persona") return "";
+  return `<span class="lang-sw" role="group" aria-label="Language">${["en", "hi"].map(l => `<button class="${S.lang === l ? "on" : ""}" data-act="lang:${l}">${DATA.langSwitch[l]}</button>`).join("")}</span>`;
 }
 
 /* ---------- main render ---------- */
@@ -1292,12 +1843,15 @@ function render() {
   const scroll = $("#scroll");
   const isNew = key !== lastStepKey;
   const prevTop = scroll.scrollTop;
+  $("#app").setAttribute("lang", lang() === "hi" ? "hi" : "en");
   scroll.innerHTML = `<div class="screen ${isNew ? (S.dir > 0 ? "enter" : "enter-back") : ""}">${scr.body}</div>`;
   if (isNew) scroll.scrollTop = 0; else scroll.scrollTop = prevTop;
   lastStepKey = key;
   $("#cta").innerHTML = scr.cta;
   const pr = $("#progress"); pr.innerHTML = progressHTML(); pr.classList.toggle("hide", S.step === "landing");
+  $("#langSw").innerHTML = langSwHTML(); $(".topbar").classList.toggle("has-lang", !!langSwHTML());
   const back = $("#backBtn"); back.disabled = S.step === "landing" || S.step === "loader" || S.step === "done"; $(".topbar").classList.toggle("home", S.step === "landing" || S.step === "done");
+  back.setAttribute("aria-label", T("common.back"));
   renderSheet();
   renderLens();
   $("#demo").innerHTML = demoHTML();
@@ -1353,25 +1907,23 @@ function bindInputs() {
   const ft = $("#freeText"); if (ft) { ft.oninput = e => S.freeText = e.target.value; ft.onkeydown = e => { if (e.key === "Enter") act("classify"); }; }
   const nm = $("#nm"); if (nm) nm.oninput = e => { S.name = e.target.value; $("#saveBtn").disabled = !lockReady(); renderLens(); };
   const ph = $("#ph"); if (ph) ph.oninput = e => { e.target.value = e.target.value.replace(/\D/g, "").slice(0, 10); S.phone = e.target.value; const b = $("#sendOtp"); if (b) b.disabled = S.phone.length !== 10; };
-  const otp = $("#otp"); if (otp) otp.oninput = e => { e.target.value = e.target.value.replace(/\D/g, "").slice(0, 6); S.otp = e.target.value; if (S.otp.length === 6) { S.phoneVerified = true; render(); toast("Number verified"); } };
+  const otp = $("#otp"); if (otp) otp.oninput = e => { e.target.value = e.target.value.replace(/\D/g, "").slice(0, 6); S.otp = e.target.value; if (S.otp.length === 6) { S.phoneVerified = true; syncDrawToQuotes(); render(); toast(T("toast.verified")); } };
   const aa = $("#aaOtp"); if (aa) aa.oninput = e => { e.target.value = e.target.value.replace(/\D/g, "").slice(0, 6); S.otpConsent = e.target.value; $("#shareBtn").disabled = S.otpConsent.length !== 6; };
   const an = $("#accNo"), an2 = $("#accNo2");
-  const accUi = () => { $("#accBtn").disabled = !accOk(); $("#accErr").textContent = S.acc2.length >= 9 && S.acc !== S.acc2 ? "Account numbers don't match" : ""; };
+  const accUi = () => { $("#accBtn").disabled = !accOk(); $("#accErr").textContent = S.acc2.length >= 9 && S.acc !== S.acc2 ? T("consent.accErr") : ""; };
   if (an) an.oninput = e => { e.target.value = e.target.value.replace(/\D/g, "").slice(0, 18); S.acc = e.target.value; accUi(); };
   if (an2) an2.oninput = e => { e.target.value = e.target.value.replace(/\D/g, "").slice(0, 18); S.acc2 = e.target.value; accUi(); };
-  const qv = $("#qVendor"); if (qv) qv.oninput = e => { S.qd.vendor = e.target.value; $("#qSaveBtn").disabled = !qdOk(); };
-  const qa = $("#qAmt"); if (qa) qa.oninput = e => { const n = +e.target.value.replace(/\D/g, "").slice(0, 9); S.qd.amount = n; e.target.value = n ? n.toLocaleString("en-IN") : ""; $("#qSaveBtn").disabled = !qdOk(); };
+  const sl = $("#slPh"); if (sl) sl.oninput = e => { e.target.value = e.target.value.replace(/\D/g, "").slice(0, 10); S.sl.phone = e.target.value; $("#slBtn").disabled = S.sl.phone.length !== 10; };
   const on = $("#offNote"); if (on) on.oninput = e => S.offNote = e.target.value;
   const rg = $("#drawR"); if (rg) rg.oninput = e => { S.draw = +e.target.value; updatePool(); };
 }
 function updatePool() {
-  const o = offer(), d = drawAmt(), rate = DATA.rates.bank, rg = $("#drawR");
-  const pct = d / o.max * 100, min = +rg.min;
+  const o = offer(), d = drawAmt(), rg = $("#drawR");
+  const pct = d / o.max * 100, min = +rg.min, L = poolLines(d, o);
   rg.style.setProperty("--pct", ((d - min) / (o.max - min) * 100) + "%");
-  $("#drawV").textContent = inr(d); $("#sDraw").textContent = inr(d); $("#sFree").textContent = inr(o.max - d);
-  $("#sInt").textContent = `about ${inr(Math.round(d * rate / 100 / 12 / 10) * 10)}/month interest at ${rate}% p.a.`;
+  $("#drawV").textContent = inr(d); $("#sDrawT").innerHTML = L.a; $("#sFreeT").innerHTML = L.b;
   const f = $("#poolFill"); f.style.width = pct + "%"; f.classList.toggle("full", pct >= 99.9);
-  $("#poolFillT").textContent = pct > 28 ? "In use" : ""; $("#poolFree").textContent = pct < 72 ? "₹0 interest" : "";
+  $("#poolFillT").textContent = pct > 28 ? T("pool.inUse") : ""; $("#poolFree").textContent = pct < 72 ? T("pool.zero") : "";
   renderLens();
 }
 
@@ -1396,12 +1948,14 @@ function back() {
 function classify(text) {
   // LLM call goes here — classify the free-text business description into a persona
   const t = text.trim(); if (!t) return null;
+  const D = DATA.personaScreen;
   const hit = DATA.classify.find(c => c.re.test(t));
   const id = hit ? hit.p : "local";
   const desc = t.replace(/^(i\s+(run|own|have|am|do)\s+(a|an)?\s*|i'?m\s+(a|an)\s+)/i, "").replace(/[.!]+$/, "");
-  const line = hit ? `Sounds like **${DATA.personas[id].label}** — ${/^(a|an|the)\s/i.test(desc) ? "" : "a "}${desc.toLowerCase()}. Got it.` : `Closest fit looks like **${DATA.personas[id].label}**. You can pick another above if it isn't right.`;
-  return { id, line: line, key: Date.now() };
+  const line = hit ? fill(D.clsHit, { label: DATA.personas[id].label, desc: (/^(a|an|the)\s/i.test(desc) ? "" : "a ") + desc.toLowerCase() }) : fill(D.clsMiss, { label: DATA.personas[id].label });
+  return { id, line, key: Date.now() };
 }
+const resetPersonaBits = () => { S.answers = {}; S.draw = null; S.route = null; S.quotes = []; };
 function act(a, el) {
   const [cmd, ...args] = a.split(":"); const arg = args.join(":");
   switch (cmd) {
@@ -1409,13 +1963,14 @@ function act(a, el) {
     case "back": return back();
     case "sheet": S.sheet = arg; if (arg === "consent") S.consentStage = "ask"; if (arg === "pdf") S.pdfStage = 0; return render();
     case "closeSheet": S.sheet = null; return render();
-    case "persona": if (S.persona !== arg) { S.answers = {}; S.draw = null; S.route = null; S.quotes = []; } S.persona = arg; return render();
-    case "classify": { const c = classify(S.freeText); if (!c) return; S.classified = { ...c, id: c.id + c.key }; if (S.persona !== c.id) { S.answers = {}; S.draw = null; S.route = null; } S.persona = c.id; render(); setTimeout(() => document.querySelector('#scroll .ai')?.scrollIntoView({ behavior: 'smooth', block: 'center' }), 60); return; }
+    case "persona": if (S.persona !== arg) resetPersonaBits(); S.persona = arg; return render();
+    case "lang": { S.lang = args[0]; if (args[1] === "go") return go("q", { qi: 0 }); return render(); }
+    case "classify": { const c = classify(S.freeText); if (!c) return; S.classified = { ...c, id: c.id + c.key }; if (S.persona !== c.id) resetPersonaBits(); S.persona = c.id; render(); setTimeout(() => document.querySelector('#scroll .ai')?.scrollIntoView({ behavior: 'smooth', block: 'center' }), 60); return; }
     case "toQuestions": return go("q", { qi: 0 });
     case "answer": {
-      const [qid, ...rest] = args; S.answers[qid] = rest.join(":").replace(/&amp;/g, "&");
+      const [qid, idx] = args; S.answers[qid] = PE().questions[S.qi].o[+idx];
       render();
-      setTimeout(() => { if (S.qi < P().questions.length - 1) go("q", { qi: S.qi + 1 }); else go("trail"); }, 260);
+      setTimeout(() => { if (S.qi < PE().questions.length - 1) go("q", { qi: S.qi + 1 }); else go("trail"); }, 260);
       return;
     }
     case "trailOpt": S.sheet = arg === "bank" ? "consent" : arg; if (arg === "bank") { S.consentStage = "ask"; S.otpConsent = ""; } if (arg === "pdf") S.pdfStage = 0; return render();
@@ -1424,7 +1979,7 @@ function act(a, el) {
     case "consentNext":
       if (S.consentStage === "banks") { S.consentStage = "account"; render(); setTimeout(() => $("#accNo")?.focus(), 80); return; }
       if (!accOk()) return;
-      S.consentStage = "otp"; S.otpConsent = ""; render(); toast("Code sent to the mobile linked with this account"); setTimeout(() => $("#aaOtp")?.focus(), 80); return;
+      S.consentStage = "otp"; S.otpConsent = ""; render(); toast(T("toast.aaSent")); setTimeout(() => $("#aaOtp")?.focus(), 80); return;
     case "consentBack": S.consentStage = { banks: "ask", account: "banks", otp: "account" }[S.consentStage] || "ask"; return render();
     case "accType": S.accType = +arg; return render();
     case "shareOnce": S.trail = "bank"; S.mirror = null; S.sheet = null; return go("loader");
@@ -1435,34 +1990,50 @@ function act(a, el) {
     case "roughGo": S.trail = "rough"; S.mirror = null; S.draw = null; return go("loader");
     case "mirrorOk": S.mirror = "ok"; return go("pool");
     case "offGo": S.mirror = "off"; S.sheet = null; return go("pool");
-    case "lever": toast("Saved — you can add this after saving your offer"); return;
+    case "lever": toast(T("toast.lever")); return;
+    case "saveLater": S.sl = { phone: S.sl.phone || S.phone, sent: false }; S.sheet = "saveLater"; render(); setTimeout(() => $("#slPh")?.focus(), 350); return;
+    case "slSend": if (S.sl.phone.length !== 10) return; S.sl.sent = true; return render();
     case "toRoute": return go("route");
     case "route": S.route = arg; return render();
-    case "qAdd": S.qd = { vendor: "", purpose: null, amount: 0, file: 0 }; S.sheet = "quote"; render(); setTimeout(() => $("#qVendor")?.focus(), 350); return;
-    case "qPurpose": S.qd.purpose = arg.replace(/&amp;/g, "&"); return render();
-    case "qPick": S.qd.file = 1; render(); setTimeout(() => { const b = $("#qBar"); if (b) b.style.width = "100%"; }, 50); setTimeout(() => { if (S.sheet === "quote" && S.qd.file === 1) { S.qd.file = 2; render(); } }, 1200); return;
-    case "qUnpick": S.qd.file = 0; return render();
-    case "qExample": { const e = P().exampleQuote; const used = S.quotes.some(q => q.vendor === e.vendor); S.qd = used ? { vendor: "Prime Properties (landlord)", purpose: P().purposes[2], amount: S.persona === "clinic" ? 90000 : 30000, file: 2 } : { ...e, file: 2 }; return render(); }
-    case "qSave": if (!qdOk()) return; S.quotes.push({ vendor: S.qd.vendor.trim(), purpose: S.qd.purpose, amount: S.qd.amount, file: quoteFile(S.qd) }); S.qd = null; S.route = "supplier"; S.sheet = null; syncDrawToQuotes(); render(); toast("Quote added — we'll pay this vendor directly"); return;
+    case "qAdd": S.qd = { stage: 0, idx: nextSample() }; S.sheet = "quote"; return render();
+    case "qPick": S.qd.stage = 1; render(); setTimeout(() => { const b = $("#qBar"); if (b) b.style.width = "100%"; }, 50); setTimeout(() => { if (S.sheet === "quote" && S.qd.stage === 1) { S.qd.stage = 2; render(); } }, 1200); return;
+    case "qAnother": { const n = PE().quoteSamples.length; S.qd = { stage: 0, idx: (S.qd.idx + 1) % n }; return render(); }
+    case "qSave": S.quotes.push(quoteFromSample(S.qd.idx)); S.qd = null; S.route = "supplier"; S.sheet = null; syncDrawToQuotes(); render(); toast(T("toast.quoteAdded")); return;
     case "qRemove": S.quotes.splice(+arg, 1); syncDrawToQuotes(); return render();
     case "toLock": if (!S.route) S.route = routeNow(); if (S.route === "supplier" && !quotesOk()) return; return go("lock");
-    case "sendOtp": S.otpSent = true; render(); toast("Code sent to +91 " + S.phone.slice(0, 5) + " " + S.phone.slice(5)); setTimeout(() => $("#otp")?.focus(), 50); return;
+    case "sendOtp": S.otpSent = true; render(); toast(T("toast.codeSent", { m: S.phone.slice(0, 5) + " " + S.phone.slice(5) })); setTimeout(() => $("#otp")?.focus(), 50); return;
+    case "welcomeHere": S.welcomeAck = true; return render();
+    case "openApp": toast(T("toast.app")); return;
     case "contact": S.contact = +arg; if (S.contact !== 1) S.slot = null; return render();
     case "slot": S.slot = +arg; return render();
     case "save": if (!lockReady()) return; S.saved = true; return go("done");
-    case "shareCA": toast("Link copied — it shows your summary only, and expires in 7 days"); return;
+    case "shareCA": toast(T("toast.shareCA")); return;
+    case "resume": {
+      if (!S.persona) S.persona = "shop";
+      S.trail = S.trail || "bank"; S.mirror = "ok"; S.recovered = true; S.retDismissed = true;
+      S.hist = [{ step: "landing", qi: 0 }, { step: "persona", qi: 0 }, { step: "trail", qi: 0 }, { step: "mirror", qi: 0 }];
+      S.dir = 1; S.step = "pool"; S.sheet = null; return render();
+    }
+    case "retFresh": S.retDismissed = true; return render();
     case "reset": Object.keys(typed).forEach(k => delete typed[k]); Object.keys(counted).forEach(k => delete counted[k]); S = fresh(); lastStepKey = null; $("#demo").classList.remove("open"); closeLens(); return render();
     case "openLens": $("#lensSheet").classList.add("open"); return;
     case "closeLens": return closeLens();
+    case "lensTab": S.lensTab = arg; return renderLens();
     case "toggleDemo": $("#demo").classList.toggle("open"); return;
     case "openDemo": closeLens(); $("#demo").classList.add("open"); return;
-    case "edge": S.edge[arg] = !S.edge[arg]; S.draw = null; if (!S.persona) S.persona = "shop"; return render();
-    case "demoP": S.persona = arg; S.answers = {}; S.draw = null; S.route = null; S.quotes = []; S.trail = S.trail || "bank"; S.hist = [{ step: "landing", qi: 0 }, { step: "persona", qi: 0 }, { step: "trail", qi: 0 }]; S.dir = 1; S.step = "mirror"; S.mirror = null; return render();
+    case "source": S.source = arg; if (arg !== "vendor" && S.route === "supplier" && !S.quotes.length) S.route = null; return render();
+    case "edge": {
+      S.edge[arg] = !S.edge[arg]; S.draw = null;
+      if (arg === "returning") { S.retDismissed = false; return render(); }
+      if (arg === "existing") { S.welcomeAck = false; return render(); }
+      if (!S.persona) S.persona = "shop"; return render();
+    }
+    case "demoP": S.persona = arg; resetPersonaBits(); S.trail = S.trail || "bank"; S.hist = [{ step: "landing", qi: 0 }, { step: "persona", qi: 0 }, { step: "trail", qi: 0 }]; S.dir = 1; S.step = "mirror"; S.mirror = null; return render();
     case "jump": {
       if (!S.persona) S.persona = "shop";
       if (["mirror", "pool", "lock"].includes(arg) && !S.trail) S.trail = "bank";
       if (arg === "lock" && !S.route) S.route = routeNow();
-      if (arg === "lock" && S.route === "supplier" && !S.quotes.length) { const e = P().exampleQuote; S.quotes.push({ ...e, file: quoteFile(e) }); syncDrawToQuotes(); }
+      if (arg === "lock" && S.route === "supplier" && !S.quotes.length) { S.quotes.push(quoteFromSample(0)); syncDrawToQuotes(); }
       S.sheet = null; return go(arg);
     }
   }
