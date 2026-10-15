@@ -482,7 +482,9 @@ input[type=range]::-moz-range-thumb{width:24px;height:24px;border-radius:50%;bac
 .app[lang=hi] .ins-add{font-size:12px}
 
 /* ---------- finish readiness + submitted ---------- */
-.btn-primary.soft{background:var(--p4);box-shadow:none}
+.btn-primary.is-disabled,.btn-primary.is-disabled:hover{background:var(--p5);box-shadow:none;cursor:not-allowed;color:#fff}
+.btn-primary.is-disabled:active{transform:none}
+.toast.warn{background:#5A3D05}
 .input.bad{border-color:var(--red)}
 .nudge{animation:nudge .5s var(--ease) 2}
 @keyframes nudge{0%,100%{transform:none}30%{transform:translateX(-4px)}70%{transform:translateX(4px)}}
@@ -942,6 +944,7 @@ const DATA = {
         ],
         cta: "Finish my application", later: "I'll finish later. Send me a link on WhatsApp",
         left: "To finish: {items}", need: { name: "your name", phone: "verify your mobile", pan: "PAN", aadhaar: "Aadhaar" },
+        blocked: "You can finish once you add: {items}",
         panErr: "That doesn't look like a PAN. It's 5 letters, 4 numbers, then 1 letter.",
         welcome: {
           t: "Welcome back — you're already with Kestrel Finance.", d: "Your repayment history counts in your favour.",
@@ -1188,6 +1191,7 @@ const DATA = {
         ],
         cta: "मेरा आवेदन पूरा करें", later: "बाद में पूरा करें — मुझे WhatsApp पर लिंक भेजें",
         left: "पूरा करने के लिए: {items}", need: { name: "आपका नाम", phone: "मोबाइल नंबर पक्का करें", pan: "PAN", aadhaar: "आधार" },
+        blocked: "आगे बढ़ने के लिए ये बाकी है: {items}",
         panErr: "यह PAN जैसा नहीं लगता। इसमें 5 अक्षर, 4 अंक और फिर 1 अक्षर होता है।",
         welcome: {
           t: "फिर से स्वागत है — आप पहले से Kestrel Finance के ग्राहक हैं।", d: "आपके समय पर किए गए पेमेंट आपके काम आते हैं।",
@@ -2013,7 +2017,7 @@ const Screens = {
         <div class="timeline">${L.tl.map(x => `<div class="tl"><div class="w">${x.w}</div><div class="d">${x.d}</div></div>`).join("")}</div>
       </div>
       ${foot()}`,
-      cta: `<p class="cta-hint" id="lockLeft" aria-live="polite">${lockLeftText()}</p>` + btn(L.cta, "save", { id: "saveBtn", cls: "btn-primary" + (lockReady() ? "" : " soft") }) + `<button class="btn btn-ghost later-link" data-act="saveLater:lock">${L.later}</button>`,
+      cta: `<p class="cta-hint" id="lockLeft" aria-live="polite">${lockLeftText()}</p>` + `<button class="btn btn-primary ${lockReady() ? "" : "is-disabled"}" data-act="save" id="saveBtn" aria-disabled="${!lockReady()}">${L.cta}</button>` + `<button class="btn btn-ghost later-link" data-act="saveLater:lock">${L.later}</button>`,
     };
   },
 
@@ -2431,7 +2435,7 @@ function lockMissing() {
 }
 function lockReady() { return !lockMissing().length; }
 const lockLeftText = () => { const m = lockMissing(), N = T("lock.need"); return m.length ? T("lock.left", { items: m.map(k => N[k]).join(" · ") }) : ""; };
-function updateLockCta() { const h = $("#lockLeft"), b = $("#saveBtn"); if (h) h.textContent = lockLeftText(); if (b) b.classList.toggle("soft", !lockReady()); }
+function updateLockCta() { const h = $("#lockLeft"), b = $("#saveBtn"); if (h) h.textContent = lockLeftText(); if (b) { const ok = lockReady(); b.classList.toggle("is-disabled", !ok); b.setAttribute("aria-disabled", String(!ok)); } }
 function bindInputs() {
   const ft = $("#freeText"); if (ft) { ft.oninput = e => S.freeText = e.target.value; ft.onkeydown = e => { if (e.key === "Enter") act("classify"); }; }
   const nm = $("#nm"); if (nm) { nm.oninput = e => { S.name = e.target.value; updateLockCta(); renderLens(); }; nm.onchange = nm.oninput; }
@@ -2457,7 +2461,7 @@ function updatePool() {
 
 /* ---------- toast ---------- */
 let toastT;
-function toast(msg) { const t = $("#toast"); const cb = $("#cta"); t.style.bottom = ((cb && cb.offsetHeight) || 84) + 12 + "px"; t.innerHTML = `${I.check("#5BE3A8", 15)}<span>${msg}</span>`; t.classList.add("on"); clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove("on"), 2600); }
+function toast(msg, kind) { const t = $("#toast"); const cb = $("#cta"); t.style.bottom = ((cb && cb.offsetHeight) || 84) + 12 + "px"; t.classList.toggle("warn", kind === "warn"); t.innerHTML = `${kind === "warn" ? I.info("#FFC45E") : I.check("#5BE3A8", 15)}<span>${msg}</span>`; t.classList.add("on"); clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove("on"), 2600); }
 
 /* =========================================================
    Actions
@@ -2556,7 +2560,8 @@ function act(a, el) {
       const nmEl = $("#nm"); if (nmEl) S.name = nmEl.value;
       const pnEl = $("#pan"); if (pnEl && /^[A-Z]{5}[0-9]{4}[A-Z]$/.test(pnEl.value.toUpperCase())) { S.pan = pnEl.value.toUpperCase(); S.panOk = true; }
       if (!lockReady()) {
-        render();
+        updateLockCta();
+        toast(T("lock.blocked", { items: lockMissing().map(k => T("lock.need")[k]).join(" · ") }), "warn");
         const first = { name: "#nm", phone: "#ph", pan: "#pan", aadhaar: '[data-act="digi"]' }[lockMissing()[0]];
         const el = $(first); if (el) { el.scrollIntoView({ behavior: "smooth", block: "center" }); el.classList.add("nudge"); setTimeout(() => el.classList.remove("nudge"), 1200); if (el.focus && first !== '[data-act="digi"]') el.focus({ preventScroll: true }); }
         return;
