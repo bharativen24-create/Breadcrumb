@@ -611,7 +611,7 @@ const DATA = {
       flex: { name: "Flexible business line", rate: 16.5, how: "Interest only on what you draw. Repay and draw again." },
       term: { name: "Business term loan", rate: 15.5, months: 24, how: "One amount, fixed monthly EMI over 24 months." },
     },
-    vendorDiscount: 2,
+    vendorPay: { enabled: true, discount: 2 },
   },
   starterPool: 50000,
   existingBoost: 1.1,
@@ -764,7 +764,9 @@ const DATA = {
         save: "Paying your vendors directly saves you about {save} on {amt}, at Kestrel's rates.", perMonth: "/month",
         lower: "Lower rate · Kestrel's policy", rateLine: "p.a. · {product}",
         req: "A quote is needed for each vendor",
-        bankT: "Send to my bank account", bankD: "Use it however your business needs.",
+        bankT: "Kestrel sends it to your bank account", bankD: "Use it however your business needs.",
+        setBy: "Payout options and rates are set by Kestrel Finance.",
+        bankOnly: "Kestrel sends approved money to your business account.",
         quotesT: "Vendor quotes", optional: "Optional for now", added: "{n} added",
         empty: "Upload a quote or invoice from each vendor if you have it ready, like a chair, a tool or rent. If not, you can share it later with the person who calls you.",
         uploadQuote: "Upload quote", addAnother: "Add another vendor",
@@ -951,7 +953,9 @@ const DATA = {
         save: "सप्लायर को सीधे पेमेंट करने से {amt} पर लगभग {save} बचते हैं, Kestrel की दरों पर।", perMonth: " हर महीने",
         lower: "कम ब्याज · Kestrel की पॉलिसी", rateLine: "सालाना · {product}",
         req: "हर सप्लायर का कोटेशन चाहिए",
-        bankT: "मेरे बैंक खाते में भेजें", bankD: "कारोबार की जो भी ज़रूरत हो, उसमें लगाएँ।",
+        bankT: "Kestrel इसे आपके बैंक खाते में भेजता है", bankD: "कारोबार की जो भी ज़रूरत हो, उसमें लगाएँ।",
+        setBy: "पेमेंट के तरीके और ब्याज दरें Kestrel Finance तय करता है।",
+        bankOnly: "मंज़ूर हुआ पैसा Kestrel आपके बिज़नेस खाते में भेजता है।",
         quotesT: "सप्लायर के कोटेशन", optional: "अभी ज़रूरी नहीं", added: "{n} जोड़े",
         empty: "अगर तैयार हो तो हर सप्लायर का कोटेशन या बिल अपलोड करें, जैसे माल, कोई सामान या किराया। नहीं तो बाद में उस व्यक्ति को दे सकते हैं जो आपको कॉल करेगा।",
         uploadQuote: "कोटेशन अपलोड करें", addAnother: "एक और सप्लायर जोड़ें",
@@ -1046,7 +1050,7 @@ const DATA = {
       busiest: "September (festive season)", slowest: "July (monsoon)", payers: "Paid by 860 different customers",
       route: "supplier",
       hint: "Your UPI collections and supplier payments already tell your story.",
-      supplier: { t: "Pay my vendors directly", d: "We pay your wholesaler, equipment seller or landlord — exactly what their quote says." },
+      supplier: { t: "Kestrel pays your vendor directly", d: "Kestrel pays your wholesaler, equipment seller or landlord — exactly what their quote says." },
       quoteSamples: [
         { vendor: "Gupta Wholesale", item: "Monthly stock", amount: 120000, gstin: "27AAFCG4821K1Z3" },
         { vendor: "Prime Properties", item: "Shop rent", amount: 30000, gstin: "27AAJCP7710M1Z8" },
@@ -1071,7 +1075,7 @@ const DATA = {
         label: "दुकान और व्यापार",
         busiest: "सितंबर (त्योहारों का समय)", slowest: "जुलाई (बारिश)", payers: "860 अलग-अलग ग्राहकों ने पैसे दिए",
         hint: "आपके UPI कलेक्शन और सप्लायर को किए पेमेंट ही आपकी कहानी बता देते हैं।",
-        supplier: { t: "मेरे सप्लायर को सीधे पेमेंट करें", d: "हम आपके होलसेलर, सामान बेचने वाले या मकान-मालिक को सीधे पेमेंट करते हैं — ठीक उतना जितना उनके कोटेशन में लिखा है।" },
+        supplier: { t: "Kestrel आपके सप्लायर को सीधे पेमेंट करता है", d: "Kestrel आपके होलसेलर, सामान बेचने वाले या मकान-मालिक को सीधे पेमेंट करता है — ठीक उतना जितना उनके कोटेशन में लिखा है।" },
         quoteItems: ["महीने का माल", "दुकान का किराया", "डिस्प्ले फ़्रिज"],
         questions: [
           { q: "ग्राहक आम तौर पर पैसे कैसे देते हैं?", o: ["ज़्यादातर UPI / कार्ड", "आधा-आधा कैश", "ज़्यादातर कैश"], why: "कैश में कोई दिक्कत नहीं — इससे बस यह तय होता है कि आपके लिए कौन-सा सबूत सबसे अच्छा रहेगा।" },
@@ -1095,7 +1099,7 @@ const DATA = {
       route: "supplier",
       hint: "Your receipts show us your practice. You'll add equipment or rent quotes when you choose where the money goes.",
       need: "New dental chair · ₹6,50,000",
-      supplier: { t: "Pay my vendors directly", d: "We pay your equipment vendor, contractor or landlord — exactly what their quote says." },
+      supplier: { t: "Kestrel pays your vendor directly", d: "Kestrel pays your equipment vendor, contractor or landlord — exactly what their quote says." },
       quoteSamples: [
         { vendor: "Sharma Dental Supplies", item: "Dental chair", amount: 650000, gstin: "27AAKCS5521D1Z6" },
         { vendor: "Precision Instruments", item: "Dental tools", amount: 120000, gstin: "27AAECP9014H1Z2" },
@@ -1124,7 +1128,7 @@ const DATA = {
       busiest: "September (festive brand deals)", slowest: "May", payers: "Paid by 9 brands and 3 platforms",
       route: "bank",
       hint: "Your platform payouts land in your bank — that's your proof.",
-      supplier: { t: "Pay my vendors directly", d: "We pay your gear store, studio or software vendor — exactly what their quote says." },
+      supplier: { t: "Kestrel pays your vendor directly", d: "Kestrel pays your gear store, studio or software vendor — exactly what their quote says." },
       quoteSamples: [
         { vendor: "Lensworks Camera Store", item: "Camera & lens kit", amount: 85000, gstin: "27AADCL6610B1Z9" },
         { vendor: "EditBay Systems", item: "Editing workstation", amount: 120000, gstin: "27AAECE2287Q1Z4" },
@@ -1153,7 +1157,7 @@ const DATA = {
       busiest: "September (festive upgrades)", slowest: "June (monsoon)", payers: "Paid by 1,100 different customers",
       route: "bank",
       hint: "Small UPI payments from customers count — every one of them.",
-      supplier: { t: "Pay my vendors directly", d: "We pay your parts supplier, tool seller or landlord — exactly what their quote says." },
+      supplier: { t: "Kestrel pays your vendor directly", d: "Kestrel pays your parts supplier, tool seller or landlord — exactly what their quote says." },
       quoteSamples: [
         { vendor: "Mobitronics Spares", item: "Phone parts & screens", amount: 45000, gstin: "27AAGCM3390N1Z7" },
         { vendor: "ToolPro Traders", item: "Repair bench & tools", amount: 30000, gstin: "27AAHCT1145R1Z5" },
@@ -1238,7 +1242,7 @@ const fresh = () => ({
   trail: null, bank: null, consentStage: "ask", acc: "", acc2: "", accType: 0, otpConsent: "", pdfStage: 0, roughEarn: null, roughAsk: null,
   mirror: null, offNote: "", draw: null, route: null, product: null, quotes: [], qd: null,
   name: "", phone: "", otpSent: false, otp: "", phoneVerified: false, contact: null, slot: null, saved: false, welcomeAck: false,
-  edge: { newBiz: false, cash: false, overAsk: false, existing: false, returning: false, termOnly: false },
+  edge: { newBiz: false, cash: false, overAsk: false, existing: false, returning: false, termOnly: false, noVendor: false },
   source: "direct", retDismissed: false, recovered: false, sl: { phone: "", sent: false },
   sheet: null, hist: [], dir: 1, lensTab: "live",
 });
@@ -1286,14 +1290,15 @@ function drawAmt() {
   const def = o.kind === "starter" ? 25000 : (p.defaultDraw <= o.max * 0.8 ? p.defaultDraw : Math.round(o.max * 0.5 / step) * step);
   return clamp(S.draw == null ? def : S.draw, step, o.max);
 }
-const routeNow = () => S.route || (S.source === "vendor" ? "supplier" : PE().route);
+const vendorPayOn = () => DATA.lender.vendorPay.enabled && !S.edge.noVendor;
+const routeNow = () => !vendorPayOn() ? "bank" : S.route || (S.source === "vendor" ? "supplier" : PE().route);
 const quotesTotal = () => S.quotes.reduce((a, q) => a + q.amount, 0);
 /* Kestrel's products: which are on, which the borrower prefers, what they cost */
 const prodList = () => isNewBiz() ? ["term"] : ["flex", "term"].filter(id => id === "term" || !S.edge.termOnly);
 const productNow = () => { const l = prodList(); return l.includes(S.product) ? S.product : (l.includes(PE().suggest) ? PE().suggest : l[0]); };
 const prodName = id => T("prod." + id + ".name");
 const prodNameE = id => DATA.lender.products[id].name;
-const routeRate = (route, id = productNow()) => DATA.lender.products[id].rate - (route === "supplier" ? DATA.lender.vendorDiscount : 0);
+const routeRate = (route, id = productNow()) => DATA.lender.products[id].rate - (route === "supplier" ? DATA.lender.vendorPay.discount : 0);
 const emi = (amt, rate, n) => { const k = rate / 1200; return amt * k * Math.pow(1 + k, n) / (Math.pow(1 + k, n) - 1); };
 const monthly = (amt, id, rate) => id === "term" ? emi(amt, rate, DATA.lender.products.term.months) : amt * rate / 1200;
 const r10 = n => Math.round(n / 10) * 10;
@@ -1585,13 +1590,15 @@ const Screens = {
       body: `
       <h2 class="h">${T("route.title")}</h2>
       <p class="sub">${T("route.sub")}</p>
-      <p class="sub" style="margin-top:8px">${T("route.save", { save: `<b class="num" style="color:var(--green)">${inr(saving)}${T("route.perMonth")}</b>`, amt: inr(d) })}</p>
+      <div class="lockup sm">${I.mark(16)}<span>${T("route.setBy")}</span></div>
+      ${vendorPayOn() ? `<p class="sub" style="margin-top:12px">${T("route.save", { save: `<b class="num" style="color:var(--green)">${inr(saving)}${T("route.perMonth")}</b>`, amt: inr(d) })}</p>` : ""}
       <div class="gap"></div>
       <div class="stack">
-        ${r === "supplier" ? `<div class="quotes-wrap">` : ""}${card("supplier", p.supplier.t, p.supplier.d, T("route.lower"), `<span class="req-line">${I.pdf.replace(/34/g, "16")}${T("route.req")}</span>`)}
-        ${r === "supplier" ? quotesBlock() + `</div>` : ""}
+        ${vendorPayOn() ? `${r === "supplier" ? `<div class="quotes-wrap">` : ""}${card("supplier", p.supplier.t, p.supplier.d, T("route.lower"), `<span class="req-line">${I.pdf.replace(/34/g, "16")}${T("route.req")}</span>`)}
+        ${r === "supplier" ? quotesBlock() + `</div>` : ""}` : ""}
         ${card("bank", T("route.bankT"), T("route.bankD"), "")}
       </div>
+      ${vendorPayOn() ? "" : `<p class="why">${I.info()}<span>${T("route.bankOnly")}</span></p>`}
       ${foot()}`,
       cta: btn(T("common.continue"), "toLock"),
     };
@@ -1824,7 +1831,7 @@ function lensHTML() {
 }
 function setupHTML() {
   const L = DATA.lender.products;
-  const rows = [[L.term.name, L.term.rate + "%", true], [L.flex.name, L.flex.rate + "%", !S.edge.termOnly], [`Vendor pay −${DATA.lender.vendorDiscount} pts`, "", true]];
+  const rows = [[L.term.name, L.term.rate + "%", true], [L.flex.name, L.flex.rate + "%", !S.edge.termOnly], [`Vendor pay −${DATA.lender.vendorPay.discount} pts`, "", vendorPayOn()]];
   return `<div class="lens-sec"><div class="lens-k">Kestrel's product setup</div>
     <div class="setup">${rows.map(([l, rt, on]) => `<div class="su ${on ? "" : "off"}"><span>${l}${rt ? ` <span class="lens-mono" style="color:var(--lens-muted)">${rt}</span>` : ""}</span><b>${on ? "✓" : "✕ off"}</b></div>`).join("")}</div>
     <p class="lens-empty" style="margin-top:8px;font-size:12px">Configured by the lender, not Breadcrumb.</p></div>`;
@@ -1895,7 +1902,7 @@ function demoHTML() {
     <h4>Source</h4><div class="chips">${DATA.sources.map(s => `<button class="chip ${S.source === s.id ? "sel" : ""}" data-act="source:${s.id}">${s.l}</button>`).join("")}</div>
     <h4>Edge states</h4>
     ${tg("newBiz", "New business (&lt;1 year)")}${tg("cash", "Mostly cash / thin trail")}${tg("overAsk", "Asked for more than eligible")}
-    ${tg("existing", "Existing Kestrel customer")}${tg("returning", "Returning visitor")}${tg("termOnly", "Lender offers term loans only")}
+    ${tg("existing", "Existing Kestrel customer")}${tg("returning", "Returning visitor")}${tg("termOnly", "Lender offers term loans only")}${tg("noVendor", "Lender doesn't offer vendor pay")}
     <p style="font-size:12px;color:var(--muted);margin-top:6px">“Something's off” lives on the mirror screen.</p>
     <h4>Jump to</h4><div class="chips">${[["persona", "Who"], ["trail", "Trail"], ["mirror", "Mirror"], ["pool", "Options"], ["lock", "Lock"]].map(([s, l]) => `<button class="chip" data-act="jump:${s}">${l}</button>`).join("")}</div>
     <div style="height:14px"></div><button class="btn btn-secondary" style="height:44px;font-size:14px" data-act="reset">Reset demo</button>`;
@@ -2073,7 +2080,7 @@ function act(a, el) {
     case "saveLater": S.sl = { phone: S.sl.phone || S.phone, sent: false }; S.sheet = "saveLater"; render(); setTimeout(() => $("#slPh")?.focus(), 350); return;
     case "slSend": if (S.sl.phone.length !== 10) return; S.sl.sent = true; return render();
     case "toRoute": return go("route");
-    case "route": S.route = arg; return render();
+    case "route": S.route = vendorPayOn() ? arg : "bank"; return render();
     case "qAdd": S.qd = { stage: 0, idx: nextSample() }; S.sheet = "quote"; return render();
     case "qPick": S.qd.stage = 1; render(); setTimeout(() => { const b = $("#qBar"); if (b) b.style.width = "100%"; }, 50); setTimeout(() => { if (S.sheet === "quote" && S.qd.stage === 1) { S.qd.stage = 2; render(); } }, 1200); return;
     case "qAnother": { const n = PE().quoteSamples.length; S.qd = { stage: 0, idx: (S.qd.idx + 1) % n }; return render(); }
@@ -2106,6 +2113,7 @@ function act(a, el) {
       S.edge[arg] = !S.edge[arg]; S.draw = null;
       if (arg === "returning") { S.retDismissed = false; return render(); }
       if (arg === "existing") { S.welcomeAck = false; return render(); }
+      if (arg === "noVendor") { if (S.edge.noVendor && S.route === "supplier") S.route = "bank"; return render(); }
       if (arg === "termOnly") { if (S.edge.termOnly) S.product = "term"; return render(); }
       if (!S.persona) S.persona = "shop"; return render();
     }
