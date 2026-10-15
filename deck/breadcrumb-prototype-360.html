@@ -2265,9 +2265,7 @@ function demoHTML() {
     <h4>Lender setup</h4><div class="chips">${Object.entries(DATA.lender.presets).map(([k, pr]) => `<button class="chip ${S.lenderPreset === k ? "sel" : ""}" data-act="preset:${k}">${pr.label}</button>`).join("")}</div>
     <p style="font-size:12px;color:var(--muted);margin-top:6px">${DATA.lender.presetNote}</p>
     <h4>Borrower situations</h4>
-    ${tg("newBiz", "New business (&lt;1 year)")}${tg("cash", "Mostly cash / thin trail")}${tg("overAsk", "Asked for more than eligible")}
-    ${tg("returning", "Returning visitor")}${tg("existing", "Existing Kestrel customer")}
-    <p style="font-size:12px;color:var(--muted);margin-top:6px">Borrower notes live on the mirror screen.</p>
+    ${tg("overAsk", "Asked for more than eligible")}${tg("returning", "Returning visitor")}
     <h4>Source</h4><div class="chips">${DATA.sources.map(s => `<button class="chip ${S.source === s.id ? "sel" : ""}" data-act="source:${s.id}">${s.l}</button>`).join("")}</div>
     <h4>Jump to</h4><div class="chips">${[["persona", "Who"], ["trail", "Trail"], ["mirror", "Mirror"], ["pool", "Options"], ["lock", "Lock"]].map(([s, l]) => `<button class="chip" data-act="jump:${s}">${l}</button>`).join("")}</div>
     <div style="height:14px"></div><button class="btn btn-secondary" style="height:44px;font-size:14px" data-act="reset">Reset demo</button>`;
