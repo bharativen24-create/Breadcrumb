@@ -401,6 +401,23 @@ input[type=range]::-moz-range-thumb{width:24px;height:24px;border-radius:50%;bac
 .su.off{color:var(--lens-muted)}.su.off b{color:#FF8A7A}
 .app[lang=hi] .prod-h{letter-spacing:0}
 
+/* ---------- payout: account line + "where your money lands" ---------- */
+.acct-line{margin-top:10px;display:inline-flex;align-items:center;gap:6px;font-size:12.5px;color:var(--ink2);font-weight:500}
+.land-trail{position:relative;margin-top:22px}
+.lt-line{position:absolute;left:24px;top:30px;width:4px;height:calc(100% - 60px);overflow:visible;animation:ltDraw 1.5s var(--ease) .2s both}
+@keyframes ltDraw{from{clip-path:inset(0 0 100% 0)}to{clip-path:inset(0)}}
+.lt-stop{position:relative;display:flex;gap:14px;align-items:center;padding:8px 0;animation:enter .4s var(--ease) both;animation-delay:var(--d)}
+.lt-stop .ico{width:50px;height:50px;background:var(--surface);border:1px solid var(--hair);box-shadow:var(--shadow-1)}
+.lt-stop .ico svg{width:30px;height:30px}
+.lt-stop p{font-size:14px;line-height:1.45;color:var(--ink2)}
+.lt-n{display:block;font-size:11px;font-weight:600;color:var(--primary);letter-spacing:.04em;margin-bottom:1px}
+.minicard{position:relative;display:block;width:32px;height:22px;border-radius:5px;overflow:hidden;box-shadow:0 2px 6px rgba(44,72,255,.3)}
+.acct-card{display:flex;gap:12px;align-items:flex-start;margin-top:18px}
+.acct-card .mono{flex:none;width:44px;height:44px;border-radius:14px;display:grid;place-items:center;color:#fff;font-weight:700;font-size:13px}
+.acct-card b{display:block;font-size:15px}
+.acct-card span span,.acct-card > span > span{display:block;font-size:13px;color:var(--muted)}
+.acct-card > svg{flex:none;margin-top:4px}
+
 /* ---------- toast (css) ---------- */
 .toast{position:absolute;left:16px;right:16px;bottom:96px;z-index:60;background:var(--navy);color:#fff;border-radius:16px;padding:14px 16px;font-size:14px;display:flex;gap:10px;align-items:center;
   box-shadow:0 12px 30px rgba(10,13,43,.3);opacity:0;transform:translateY(10px);transition:all .25s var(--ease);pointer-events:none}
@@ -608,10 +625,16 @@ const DATA = {
   /* Kestrel Finance's own configuration — products, rates and vendor policy are the lender's */
   lender: {
     products: {
-      flex: { name: "Flexible business line", rate: 16.5, how: "Interest only on what you draw. Repay and draw again." },
-      term: { name: "Business term loan", rate: 15.5, months: 24, how: "One amount, fixed monthly EMI over 24 months." },
+      flex: { enabled: true, name: "Flexible business line", rate: 16.5, how: "Interest only on what you draw. Repay and draw again." },
+      term: { enabled: true, name: "Business term loan", rate: 15.5, months: 24, how: "One amount, fixed monthly EMI over 24 months." },
     },
     vendorPay: { enabled: true, discount: 2 },
+    /* demo presets — the same borrower seen by lenders with different catalogues */
+    presets: {
+      full: { label: "Full range", flex: true, vendorPay: true },
+      basic: { label: "Basic lender", flex: false, vendorPay: false },
+    },
+    presetNote: "Same borrower, different lender. Breadcrumb adapts to what the lender offers.",
   },
   starterPool: 50000,
   existingBoost: 1.1,
@@ -767,11 +790,25 @@ const DATA = {
         bankT: "Kestrel sends it to your bank account", bankD: "Use it however your business needs.",
         setBy: "Payout options and rates are set by Kestrel Finance.",
         bankOnly: "Kestrel sends approved money to your business account.",
+        acctLine: "To {bank} ••{last4} (the account you shared)",
+        acctLinePdf: "To {bank} ••{last4} (from your statement)",
         quotesT: "Vendor quotes", optional: "Optional for now", added: "{n} added",
         empty: "Upload a quote or invoice from each vendor if you have it ready, like a chair, a tool or rent. If not, you can share it later with the person who calls you.",
         uploadQuote: "Upload quote", addAnother: "Add another vendor",
         total: "Total to pay vendors", gstOk: "GST verified",
         overPool: "Your quotes are {diff} more than your estimate — pay the rest yourself, or add GST to unlock more.",
+      },
+      land: {
+        title: "If approved, your money lands in your business account.",
+        sub: "Nothing moves until you've spoken to Kestrel Finance and signed. Here's how it goes.",
+        steps: ["Kestrel confirms 2 details with you, by the call or WhatsApp you pick next", "You read and sign the Key Fact Statement", "Money lands within 2 working days"],
+        acct: "{bank} ••{last4} · {type}",
+        acctShared: "The account you shared earlier", acctPdf: "From the statement you uploaded",
+        change: "Use a different account", useAcc: "Use this account", changed: "Account updated",
+        rough: "You'll confirm your account on the call with Kestrel. No need to add it now.",
+        repay: "Repayments come from this same account, so there's nothing extra to set up.",
+        terms: "Timings and terms are Kestrel's (illustrative).",
+        cta: "Yes, use this account", ctaRough: "Continue",
       },
       quote: {
         title: "Upload a vendor quote",
@@ -956,11 +993,25 @@ const DATA = {
         bankT: "Kestrel इसे आपके बैंक खाते में भेजता है", bankD: "कारोबार की जो भी ज़रूरत हो, उसमें लगाएँ।",
         setBy: "पेमेंट के तरीके और ब्याज दरें Kestrel Finance तय करता है।",
         bankOnly: "मंज़ूर हुआ पैसा Kestrel आपके बिज़नेस खाते में भेजता है।",
+        acctLine: "{bank} ••{last4} में (आपका शेयर किया खाता)",
+        acctLinePdf: "{bank} ••{last4} में (आपके स्टेटमेंट से)",
         quotesT: "सप्लायर के कोटेशन", optional: "अभी ज़रूरी नहीं", added: "{n} जोड़े",
         empty: "अगर तैयार हो तो हर सप्लायर का कोटेशन या बिल अपलोड करें, जैसे माल, कोई सामान या किराया। नहीं तो बाद में उस व्यक्ति को दे सकते हैं जो आपको कॉल करेगा।",
         uploadQuote: "कोटेशन अपलोड करें", addAnother: "एक और सप्लायर जोड़ें",
         total: "सप्लायरों को कुल पेमेंट", gstOk: "GST सही पाया गया",
         overPool: "आपके कोटेशन आपके अंदाज़े से {diff} ज़्यादा हैं — बाकी खुद दें, या GST जोड़कर और पाएँ।",
+      },
+      land: {
+        title: "मंज़ूरी मिलने पर पैसा आपके बिज़नेस खाते में आएगा।",
+        sub: "जब तक आप Kestrel Finance से बात करके साइन नहीं करते, कुछ नहीं होगा। आगे ऐसे होगा।",
+        steps: ["Kestrel आपसे 2 बातें पक्की करेगा, उसी कॉल या WhatsApp पर जो आप अगले स्टेप में चुनेंगे", "आप KFS (Key Fact Statement) पढ़कर साइन करेंगे", "2 कामकाजी दिनों में पैसा खाते में आ जाएगा"],
+        acct: "{bank} ••{last4} · {type}",
+        acctShared: "वही खाता जो आपने पहले शेयर किया", acctPdf: "आपके अपलोड किए स्टेटमेंट से",
+        change: "दूसरा खाता इस्तेमाल करें", useAcc: "यही खाता इस्तेमाल करें", changed: "खाता बदल गया",
+        rough: "खाता आप Kestrel के साथ कॉल पर पक्का करेंगे। अभी जोड़ने की ज़रूरत नहीं।",
+        repay: "किस्तें भी इसी खाते से जाएँगी, इसलिए अलग से कुछ सेट नहीं करना।",
+        terms: "समय और शर्तें Kestrel की हैं (उदाहरण)।",
+        cta: "हाँ, यही खाता इस्तेमाल करें", ctaRough: "आगे बढ़ें",
       },
       quote: {
         title: "सप्लायर का कोटेशन अपलोड करें",
@@ -1218,6 +1269,8 @@ const SVGI = {
   shop: `<svg viewBox="0 0 48 48"><path d="M6 18l4-10h28l4 10z" fill="#99A7FF"/><path d="M6 18h36v3a5 5 0 01-9 3 5 5 0 01-9 0 5 5 0 01-9 0 5 5 0 01-9-3z" fill="#CCD3FF"/><rect x="9" y="24" width="30" height="17" rx="2" fill="#CCD3FF"/><rect x="13" y="28" width="9" height="13" rx="1.5" fill="#99A7FF"/><rect x="26" y="28" width="9" height="7" rx="1.5" fill="#fff"/><rect x="4" y="40" width="40" height="3" rx="1.5" fill="#99A7FF"/></svg>`,
   clinic: `<svg viewBox="0 0 48 48"><rect x="6" y="10" width="36" height="31" rx="6" fill="#CCD3FF"/><rect x="17" y="5" width="14" height="8" rx="3" fill="#99A7FF"/><circle cx="24" cy="25.5" r="10" fill="#fff"/><path d="M21.5 19.5h5v3.5H30v5h-3.5v3.5h-5V28H18v-5h3.5z" fill="#99A7FF"/></svg>`,
   local: `<svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="19" fill="#CCD3FF"/><path d="M29.5 12.5a7 7 0 00-8.8 8.9L12.6 29.5a3 3 0 004.2 4.2l8.1-8.1a7 7 0 008.9-8.8l-4.1 4.1-3.6-.6-.6-3.6z" fill="#99A7FF"/><circle cx="14.8" cy="31.6" r="1.4" fill="#fff"/></svg>`,
+  chat: `<svg viewBox="0 0 48 48"><path d="M8 10h32a4 4 0 014 4v17a4 4 0 01-4 4H22l-9 7v-7H8a4 4 0 01-4-4V14a4 4 0 014-4z" fill="#CCD3FF"/><path d="M19.5 16.5c.8-.8 2-.8 2.6.1l1.3 1.9c.5.7.4 1.6-.2 2.2l-1 1a10 10 0 004.1 4.1l1-1c.6-.6 1.5-.7 2.2-.2l1.9 1.3c.9.6.9 1.8.1 2.6l-1 1c-1.4 1.4-3.6 1.6-5.3.5a20 20 0 01-6.2-6.2c-1.1-1.7-.9-3.9.5-5.3z" fill="#99A7FF"/></svg>`,
+  doc: `<svg viewBox="0 0 48 48"><path d="M12 5h17l9 9v27a3 3 0 01-3 3H12a3 3 0 01-3-3V8a3 3 0 013-3z" fill="#CCD3FF"/><path d="M29 5v9h9z" fill="#99A7FF"/><rect x="15" y="20" width="16" height="3" rx="1.5" fill="#99A7FF"/><rect x="15" y="26" width="12" height="3" rx="1.5" fill="#99A7FF"/><path d="M15 36c3-4 5 2 8-1s4 1 6 0" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/></svg>`,
   bankSvg: `<svg viewBox="0 0 48 48"><path d="M24 5l19 10H5z" fill="#99A7FF"/><rect x="5" y="15" width="38" height="3.5" fill="#CCD3FF"/><rect x="9" y="20" width="5" height="15" rx="1.5" fill="#CCD3FF"/><rect x="17.5" y="20" width="5" height="15" rx="1.5" fill="#CCD3FF"/><rect x="26" y="20" width="5" height="15" rx="1.5" fill="#CCD3FF"/><rect x="34.5" y="20" width="5" height="15" rx="1.5" fill="#CCD3FF"/><rect x="5" y="37" width="38" height="5" rx="2" fill="#99A7FF"/><circle cx="24" cy="11" r="2" fill="#fff"/></svg>`,
 };
 const icon = key => SVGI[key] ? SVGI[key] : `<img src="${KIT_ICONS[key]}" alt="">`;
@@ -1242,7 +1295,8 @@ const fresh = () => ({
   trail: null, bank: null, consentStage: "ask", acc: "", acc2: "", accType: 0, otpConsent: "", pdfStage: 0, roughEarn: null, roughAsk: null,
   mirror: null, offNote: "", draw: null, route: null, product: null, quotes: [], qd: null,
   name: "", phone: "", otpSent: false, otp: "", phoneVerified: false, contact: null, slot: null, saved: false, welcomeAck: false,
-  edge: { newBiz: false, cash: false, overAsk: false, existing: false, returning: false, termOnly: false, noVendor: false },
+  edge: { newBiz: false, cash: false, overAsk: false, existing: false, returning: false },
+  lenderPreset: "full", payoutPick: false, acctConfirmed: false,
   source: "direct", retDismissed: false, recovered: false, sl: { phone: "", sent: false },
   sheet: null, hist: [], dir: 1, lensTab: "live",
 });
@@ -1290,11 +1344,19 @@ function drawAmt() {
   const def = o.kind === "starter" ? 25000 : (p.defaultDraw <= o.max * 0.8 ? p.defaultDraw : Math.round(o.max * 0.5 / step) * step);
   return clamp(S.draw == null ? def : S.draw, step, o.max);
 }
-const vendorPayOn = () => DATA.lender.vendorPay.enabled && !S.edge.noVendor;
+const vendorPayOn = () => DATA.lender.vendorPay.enabled;
+const flexOn = () => DATA.lender.products.flex.enabled;
+function applyPreset() { const pr = DATA.lender.presets[S.lenderPreset]; DATA.lender.products.flex.enabled = pr.flex; DATA.lender.vendorPay.enabled = pr.vendorPay; }
+/* the account the borrower already shared on the trail step (rough trail: none) */
+const sharedAcct = () => {
+  if (S.trail !== "bank" && S.trail !== "pdf") return null;
+  const bi = S.bank != null && !DATA.banks[S.bank].other ? S.bank : 0;
+  return { bank: DATA.banks[bi], last4: S.acc.slice(-4) || "4821", type: S.accType, pdf: S.trail === "pdf" };
+};
 const routeNow = () => !vendorPayOn() ? "bank" : S.route || (S.source === "vendor" ? "supplier" : PE().route);
 const quotesTotal = () => S.quotes.reduce((a, q) => a + q.amount, 0);
 /* Kestrel's products: which are on, which the borrower prefers, what they cost */
-const prodList = () => isNewBiz() ? ["term"] : ["flex", "term"].filter(id => id === "term" || !S.edge.termOnly);
+const prodList = () => isNewBiz() ? ["term"] : ["flex", "term"].filter(id => DATA.lender.products[id].enabled);
 const productNow = () => { const l = prodList(); return l.includes(S.product) ? S.product : (l.includes(PE().suggest) ? PE().suggest : l[0]); };
 const prodName = id => T("prod." + id + ".name");
 const prodNameE = id => DATA.lender.products[id].name;
@@ -1305,13 +1367,13 @@ const r10 = n => Math.round(n / 10) * 10;
 const costLine = (id, d) => id === "term"
   ? T("prod.costTerm", { emi: inr(r10(monthly(d, "term", routeRate("bank", "term")))), n: DATA.lender.products.term.months })
   : T("prod.costFlex", { interest: inr(r10(monthly(d, "flex", routeRate("bank", "flex")))), amt: inr(d) });
-const fitFor = (p, ui) => isNewBiz() ? ui.prod.starterFit : S.edge.termOnly ? p.fitTermOnly : p.fit;
+const fitFor = (p, ui) => isNewBiz() ? ui.prod.starterFit : !flexOn() ? p.fitTermOnly : p.fit;
 function productsBlock(d) {
   const list = prodList(), cur = productNow(), starter = isNewBiz(), p = P();
   // LLM call goes here — explain which of Kestrel's enabled products fits this borrower's cash flow
   return `<div class="lockup sm" style="margin-top:24px">${I.mark(16)}<span>${T("prod.label")}</span></div>
     <h3 class="prod-h">${T("prod.title")}</h3>
-    ${aiCard("fit-" + S.persona + (S.edge.termOnly ? "t" : "") + (starter ? "s" : ""), fitFor(p, DATA.ui[lang()].prod ? DATA.ui[lang()] : DATA.ui.en), T("prod.aiHead"))}
+    ${aiCard("fit-" + S.persona + (!flexOn() ? "t" : "") + (starter ? "s" : ""), fitFor(p, DATA.ui[lang()].prod ? DATA.ui[lang()] : DATA.ui.en), T("prod.aiHead"))}
     <div class="stack" style="margin-top:12px">${list.map(id => `
       <button class="choice prod ${cur === id ? "sel" : ""}" data-act="product:${id}">
         <span style="flex:1;min-width:0">
@@ -1575,7 +1637,8 @@ const Screens = {
   },
 
   route() {
-    const p = P(), r = routeNow(), d = drawAmt(), id = productNow();
+    if (!vendorPayOn()) return Screens.land();
+    const p = P(), r = routeNow(), d = drawAmt(), id = productNow(), acct = sharedAcct();
     const card = (rid, title, desc, badge, extra) => `
       <button class="choice route ${r === rid ? "sel" : ""}" data-act="route:${rid}">
         <span class="top"><span class="ico" style="width:44px;height:44px;border-radius:14px">${rid === "supplier" ? icon(S.persona === "clinic" ? "clinic" : "shop") : icon("bankSvg")}</span>
@@ -1596,11 +1659,35 @@ const Screens = {
       <div class="stack">
         ${vendorPayOn() ? `${r === "supplier" ? `<div class="quotes-wrap">` : ""}${card("supplier", p.supplier.t, p.supplier.d, T("route.lower"), `<span class="req-line">${I.pdf.replace(/34/g, "16")}${T("route.req")}</span>`)}
         ${r === "supplier" ? quotesBlock() + `</div>` : ""}` : ""}
-        ${card("bank", T("route.bankT"), T("route.bankD"), "")}
+        ${card("bank", T("route.bankT"), T("route.bankD"), "", acct ? `<span class="acct-line">${I.check("#14996A", 11)}${T(acct.pdf ? "route.acctLinePdf" : "route.acctLine", { bank: acct.bank.n, last4: esc(acct.last4) })}</span>` : "")}
       </div>
-      ${vendorPayOn() ? "" : `<p class="why">${I.info()}<span>${T("route.bankOnly")}</span></p>`}
       ${foot()}`,
       cta: btn(T("common.continue"), "toLock"),
+    };
+  },
+
+  land() {
+    const acct = sharedAcct(), L = T("land");
+    // "Where your money lands" — shown when the lender doesn't offer vendor pay
+    const icons = [SVGI.chat, SVGI.doc, `<span class="minicard">${cardArt()}</span>`];
+    return {
+      body: `
+      <h2 class="h">${L.title}</h2>
+      <p class="sub">${L.sub}</p>
+      <div class="land-trail">
+        <svg class="lt-line" viewBox="0 0 4 200" preserveAspectRatio="none" aria-hidden="true"><line x1="2" y1="0" x2="2" y2="200" stroke="#2C48FF" stroke-width="2.4" stroke-dasharray="0.1 7" stroke-linecap="round" vector-effect="non-scaling-stroke"/></svg>
+        ${L.steps.map((t, i) => `<div class="lt-stop" style="--d:${0.25 + i * 0.45}s"><span class="ico">${icons[i]}</span><p><span class="lt-n">${i + 1}</span>${t}</p></div>`).join("")}
+      </div>
+      ${acct ? `<div class="card pad acct-card">
+          <span class="mono" style="background:${acct.bank.c}">${acct.bank.m}</span>
+          <span style="flex:1;min-width:0"><b class="num">${fill(L.acct, { bank: acct.bank.n, last4: esc(acct.last4), type: T("consent.accTypes")[acct.type] })}</b><span>${acct.pdf ? L.acctPdf : L.acctShared}</span>
+            <button class="link quiet" style="min-height:32px;font-size:13px" data-act="changeAcct">${L.change}</button></span>
+          ${I.check("#14996A", 16)}
+        </div>` : `<div class="notice blue" style="margin-top:18px">${I.info("#2C48FF")}<span>${L.rough}</span></div>`}
+      <p class="why">${I.lock("#99A7FF")}<span>${L.repay}</span></p>
+      <p class="why" style="margin-top:6px">${I.mark(16)}<span>${L.terms}</span></p>
+      ${foot()}`,
+      cta: btn(acct ? L.cta : L.ctaRough, "landOk"),
     };
   },
 
@@ -1728,7 +1815,7 @@ const Sheets = {
           <div class="field"><label for="accNo2">${c("accNo2")}</label><input class="input num" id="accNo2" inputmode="numeric" maxlength="18" placeholder="${c("accNo2Ph")}" value="${esc(S.acc2)}" autocomplete="off"><span class="field-err" id="accErr"></span></div>
         </div>
         <p class="why">${I.lock("#99A7FF")}<span>${c("accSafe")}</span></p>
-        <div style="height:14px"></div>${btn(c("sendOtp"), "consentNext", { dis: !accOk(), id: "accBtn" })}${backLink(c("diffBank"))}`;
+        <div style="height:14px"></div>${S.payoutPick ? btn(T("land.useAcc"), "payoutAcc", { dis: !accOk(), id: "accBtn" }) : btn(c("sendOtp"), "consentNext", { dis: !accOk(), id: "accBtn" })}${backLink(c("diffBank"))}`;
     }
     const last4 = S.acc.slice(-4);
     return `${stepper}${bankHead}
@@ -1831,7 +1918,7 @@ function lensHTML() {
 }
 function setupHTML() {
   const L = DATA.lender.products;
-  const rows = [[L.term.name, L.term.rate + "%", true], [L.flex.name, L.flex.rate + "%", !S.edge.termOnly], [`Vendor pay −${DATA.lender.vendorPay.discount} pts`, "", vendorPayOn()]];
+  const rows = [[L.term.name, L.term.rate + "%", L.term.enabled], [L.flex.name, L.flex.rate + "%", flexOn()], [`Vendor pay −${DATA.lender.vendorPay.discount} pts`, "", vendorPayOn()]];
   return `<div class="lens-sec"><div class="lens-k">Kestrel's product setup</div>
     <div class="setup">${rows.map(([l, rt, on]) => `<div class="su ${on ? "" : "off"}"><span>${l}${rt ? ` <span class="lens-mono" style="color:var(--lens-muted)">${rt}</span>` : ""}</span><b>${on ? "✓" : "✕ off"}</b></div>`).join("")}</div>
     <p class="lens-empty" style="margin-top:8px;font-size:12px">Configured by the lender, not Breadcrumb.</p></div>`;
@@ -1858,6 +1945,7 @@ function liveHTML() {
   const notes = [];
   if (S.recovered) notes.push(["#5BE3A8", DATA.lens.recovered]);
   if (existingOn()) notes.push(["#5BE3A8", DATA.lens.existing]);
+  if (!vendorPayOn() && (S.acctConfirmed || stepIndex() >= 4)) notes.push(sharedAcct() ? ["#5BE3A8", "Disbursal account confirmed (matches the shared bank trail)"] : ["#FFC45E", "Disbursal account: to confirm on call"]);
   if (r === "supplier") notes.push(S.quotes.length ? ["#5BE3A8", `Vendor-pay: ${S.quotes.length} quote${S.quotes.length > 1 ? "s" : ""} on file (${inr(quotesTotal())}), vendor GST verified — funds can't be diverted`] : ["#FFC45E", "Vendor pay preferred — collect quote before disbursal"]);
   if (S.trail && S.trail !== "rough" && !isNewBiz()) notes.push(["#FFC45E", p.seasonal]);
   if (isCash()) notes.push(["#FFC45E", "Cash-heavy: verified inflow understates business — request GST / 2nd account"]);
@@ -1899,11 +1987,13 @@ function demoHTML() {
   const e = S.edge;
   const tg = (k, l) => `<button class="toggle ${e[k] ? "on" : ""}" data-act="edge:${k}">${l}<span class="sw2"></span></button>`;
   return `<h4>Persona shortcut</h4><div class="chips">${Object.entries(DATA.personas).map(([k, p]) => `<button class="chip ${S.persona === k ? "sel" : ""}" data-act="demoP:${k}">${p.short}</button>`).join("")}</div>
-    <h4>Source</h4><div class="chips">${DATA.sources.map(s => `<button class="chip ${S.source === s.id ? "sel" : ""}" data-act="source:${s.id}">${s.l}</button>`).join("")}</div>
-    <h4>Edge states</h4>
+    <h4>Lender setup</h4><div class="chips">${Object.entries(DATA.lender.presets).map(([k, pr]) => `<button class="chip ${S.lenderPreset === k ? "sel" : ""}" data-act="preset:${k}">${pr.label}</button>`).join("")}</div>
+    <p style="font-size:12px;color:var(--muted);margin-top:6px">${DATA.lender.presetNote}</p>
+    <h4>Borrower situations</h4>
     ${tg("newBiz", "New business (&lt;1 year)")}${tg("cash", "Mostly cash / thin trail")}${tg("overAsk", "Asked for more than eligible")}
-    ${tg("existing", "Existing Kestrel customer")}${tg("returning", "Returning visitor")}${tg("termOnly", "Lender offers term loans only")}${tg("noVendor", "Lender doesn't offer vendor pay")}
+    ${tg("returning", "Returning visitor")}${tg("existing", "Existing Kestrel customer")}
     <p style="font-size:12px;color:var(--muted);margin-top:6px">“Something's off” lives on the mirror screen.</p>
+    <h4>Source</h4><div class="chips">${DATA.sources.map(s => `<button class="chip ${S.source === s.id ? "sel" : ""}" data-act="source:${s.id}">${s.l}</button>`).join("")}</div>
     <h4>Jump to</h4><div class="chips">${[["persona", "Who"], ["trail", "Trail"], ["mirror", "Mirror"], ["pool", "Options"], ["lock", "Lock"]].map(([s, l]) => `<button class="chip" data-act="jump:${s}">${l}</button>`).join("")}</div>
     <div style="height:14px"></div><button class="btn btn-secondary" style="height:44px;font-size:14px" data-act="reset">Reset demo</button>`;
 }
@@ -2048,7 +2138,7 @@ function act(a, el) {
     case "start": return go("persona");
     case "back": return back();
     case "sheet": S.sheet = arg; if (arg === "consent") S.consentStage = "ask"; if (arg === "pdf") S.pdfStage = 0; return render();
-    case "closeSheet": S.sheet = null; return render();
+    case "closeSheet": S.sheet = null; S.payoutPick = false; return render();
     case "persona": if (S.persona !== arg) resetPersonaBits(); S.persona = arg; return render();
     case "lang": { S.lang = args[0]; if (args[1] === "go") return go("q", { qi: 0 }); return render(); }
     case "classify": { const c = classify(S.freeText); if (!c) return; S.classified = { ...c, id: c.id + c.key }; if (S.persona !== c.id) resetPersonaBits(); S.persona = c.id; render(); setTimeout(() => document.querySelector('#scroll .ai')?.scrollIntoView({ behavior: 'smooth', block: 'center' }), 60); return; }
@@ -2066,7 +2156,7 @@ function act(a, el) {
       if (S.consentStage === "banks") { S.consentStage = "account"; render(); setTimeout(() => $("#accNo")?.focus(), 80); return; }
       if (!accOk()) return;
       S.consentStage = "otp"; S.otpConsent = ""; render(); toast(T("toast.aaSent")); setTimeout(() => $("#aaOtp")?.focus(), 80); return;
-    case "consentBack": S.consentStage = { banks: "ask", account: "banks", otp: "account" }[S.consentStage] || "ask"; return render();
+    case "consentBack": if (S.payoutPick && S.consentStage === "banks") { S.sheet = null; S.payoutPick = false; return render(); } S.consentStage = { banks: "ask", account: "banks", otp: "account" }[S.consentStage] || "ask"; return render();
     case "accType": S.accType = +arg; return render();
     case "shareOnce": S.trail = "bank"; S.mirror = null; S.sheet = null; return go("loader");
     case "pickPdf": S.pdfStage = 1; render(); setTimeout(() => { const b = $("#pdfBar"); if (b) b.style.width = "100%"; }, 50); setTimeout(() => { if (S.sheet === "pdf") { S.pdfStage = 2; render(); } }, 1300); return;
@@ -2081,6 +2171,10 @@ function act(a, el) {
     case "slSend": if (S.sl.phone.length !== 10) return; S.sl.sent = true; return render();
     case "toRoute": return go("route");
     case "route": S.route = vendorPayOn() ? arg : "bank"; return render();
+    case "preset": S.lenderPreset = arg; applyPreset(); if (!flexOn()) S.product = "term"; if (!vendorPayOn() && S.route === "supplier") S.route = "bank"; return render();
+    case "landOk": S.route = "bank"; S.acctConfirmed = true; return go("lock");
+    case "changeAcct": S.payoutPick = true; S.consentStage = "banks"; S.sheet = "consent"; return render();
+    case "payoutAcc": if (!accOk()) return; S.payoutPick = false; S.sheet = null; render(); toast(T("land.changed")); return;
     case "qAdd": S.qd = { stage: 0, idx: nextSample() }; S.sheet = "quote"; return render();
     case "qPick": S.qd.stage = 1; render(); setTimeout(() => { const b = $("#qBar"); if (b) b.style.width = "100%"; }, 50); setTimeout(() => { if (S.sheet === "quote" && S.qd.stage === 1) { S.qd.stage = 2; render(); } }, 1200); return;
     case "qAnother": { const n = PE().quoteSamples.length; S.qd = { stage: 0, idx: (S.qd.idx + 1) % n }; return render(); }
@@ -2102,7 +2196,7 @@ function act(a, el) {
       S.dir = 1; S.step = "pool"; S.sheet = null; return render();
     }
     case "retFresh": S.retDismissed = true; return render();
-    case "reset": Object.keys(typed).forEach(k => delete typed[k]); Object.keys(counted).forEach(k => delete counted[k]); S = fresh(); lastStepKey = null; $("#demo").classList.remove("open"); closeLens(); return render();
+    case "reset": Object.keys(typed).forEach(k => delete typed[k]); Object.keys(counted).forEach(k => delete counted[k]); S = fresh(); applyPreset(); lastStepKey = null; $("#demo").classList.remove("open"); closeLens(); return render();
     case "openLens": $("#lensSheet").classList.add("open"); return;
     case "closeLens": return closeLens();
     case "lensTab": S.lensTab = arg; return renderLens();
@@ -2113,8 +2207,6 @@ function act(a, el) {
       S.edge[arg] = !S.edge[arg]; S.draw = null;
       if (arg === "returning") { S.retDismissed = false; return render(); }
       if (arg === "existing") { S.welcomeAck = false; return render(); }
-      if (arg === "noVendor") { if (S.edge.noVendor && S.route === "supplier") S.route = "bank"; return render(); }
-      if (arg === "termOnly") { if (S.edge.termOnly) S.product = "term"; return render(); }
       if (!S.persona) S.persona = "shop"; return render();
     }
     case "demoP": S.persona = arg; resetPersonaBits(); S.trail = S.trail || "bank"; S.hist = [{ step: "landing", qi: 0 }, { step: "persona", qi: 0 }, { step: "trail", qi: 0 }]; S.dir = 1; S.step = "mirror"; S.mirror = null; return render();
