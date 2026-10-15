@@ -481,6 +481,27 @@ input[type=range]::-moz-range-thumb{width:24px;height:24px;border-radius:50%;bac
 .remind{font-size:11px;font-weight:600;color:#5BE3A8;background:rgba(91,227,168,.1);border-radius:999px;padding:3px 8px;white-space:nowrap}
 .app[lang=hi] .ins-add{font-size:12px}
 
+/* ---------- finish readiness + submitted ---------- */
+.btn-primary.soft{background:var(--p4);box-shadow:none}
+.input.bad{border-color:var(--red)}
+.nudge{animation:nudge .5s var(--ease) 2}
+@keyframes nudge{0%,100%{transform:none}30%{transform:translateX(-4px)}70%{transform:translateX(4px)}}
+.cta-hint:empty{display:none}
+.sub-wrap{display:flex;flex-direction:column;align-items:center;padding-top:18px}
+.celebrate{position:relative;width:120px;height:120px;display:grid;place-items:center;margin-bottom:14px}
+.celebrate i{position:absolute;left:50%;top:50%;width:6px;height:6px;margin:-3px;border-radius:50%;background:var(--p4);opacity:0;
+  transform:rotate(var(--a)) translateY(0);animation:crumb 1.1s var(--ease) both;animation-delay:calc(.35s + var(--d))}
+.celebrate i:nth-child(3n){background:var(--green)}
+.celebrate i:nth-child(4n){background:var(--primary)}
+@keyframes crumb{0%{opacity:0;transform:rotate(var(--a)) translateY(0) scale(.4)}40%{opacity:1}100%{opacity:.0;transform:rotate(var(--a)) translateY(-56px) scale(1)}}
+.sub-badge{width:76px;height:76px;border-radius:26px;background:var(--green);display:grid;place-items:center;box-shadow:0 12px 28px rgba(20,153,106,.28);animation:popIn .45s var(--ease) both}
+@keyframes popIn{from{transform:scale(.6);opacity:0}to{transform:none;opacity:1}}
+.sub-badge .draw{stroke-dasharray:24;stroke-dashoffset:24;animation:drawCheck .45s var(--ease) .3s forwards}
+@keyframes drawCheck{to{stroke-dashoffset:0}}
+.sub-ref{display:inline-flex;gap:8px;align-items:center;margin-top:14px;padding:6px 14px;border-radius:999px;background:var(--surface);border:1px solid var(--hair);font-size:13px;color:var(--muted)}
+.sub-ref b{color:var(--ink);font-family:var(--mono);font-weight:500;letter-spacing:.04em}
+@media (prefers-reduced-motion: reduce){.celebrate i{display:none}.sub-badge .draw{stroke-dashoffset:0}}
+
 /* ---------- toast (css) ---------- */
 .toast{position:absolute;left:16px;right:16px;bottom:96px;z-index:60;background:var(--navy);color:#fff;border-radius:16px;padding:14px 16px;font-size:14px;display:flex;gap:10px;align-items:center;
   box-shadow:0 12px 30px rgba(10,13,43,.3);opacity:0;transform:translateY(10px);transition:all .25s var(--ease);pointer-events:none}
@@ -920,11 +941,20 @@ const DATA = {
           { w: "Last", d: "You read and sign the Key Fact Statement, then get a cooling-off day to cancel without penalty" },
         ],
         cta: "Finish my application", later: "I'll finish later. Send me a link on WhatsApp",
+        left: "To finish: {items}", need: { name: "your name", phone: "verify your mobile", pan: "PAN", aadhaar: "Aadhaar" },
+        panErr: "That doesn't look like a PAN. It's 5 letters, 4 numbers, then 1 letter.",
         welcome: {
           t: "Welcome back — you're already with Kestrel Finance.", d: "Your repayment history counts in your favour.",
           pool: "Your estimate", here: "Continue here", app: "Open Kestrel app",
           applied: "Repayment history applied · your estimate is now {amt}",
         },
+      },
+      submitted: {
+        title: "Application submitted", sub: "Kestrel Finance has your application. Nothing is signed, and nothing moves without you.",
+        ref: "Reference", hold: "Your {amt} estimate is held until {date}.",
+        nextT: "What happens next",
+        next: ["Kestrel checks your documents and asks for anything missing", "Riya, your loan officer, may call once to confirm 2 details", "You read the Key Fact Statement and sign only if you want to go ahead"],
+        cta: "See my application status",
       },
       digi: { title: "DigiLocker", connecting: "Connecting to DigiLocker…", sub: "Sharing your Aadhaar details with Kestrel Finance, with your consent." },
       done: {
@@ -1157,11 +1187,20 @@ const DATA = {
           { w: "आखिर में", d: "आप KFS (Key Fact Statement) पढ़कर साइन करेंगे, फिर एक दिन मिलेगा जिसमें बिना पेनल्टी कैंसल कर सकते हैं" },
         ],
         cta: "मेरा आवेदन पूरा करें", later: "बाद में पूरा करें — मुझे WhatsApp पर लिंक भेजें",
+        left: "पूरा करने के लिए: {items}", need: { name: "आपका नाम", phone: "मोबाइल नंबर पक्का करें", pan: "PAN", aadhaar: "आधार" },
+        panErr: "यह PAN जैसा नहीं लगता। इसमें 5 अक्षर, 4 अंक और फिर 1 अक्षर होता है।",
         welcome: {
           t: "फिर से स्वागत है — आप पहले से Kestrel Finance के ग्राहक हैं।", d: "आपके समय पर किए गए पेमेंट आपके काम आते हैं।",
           pool: "आपका अंदाज़ा", here: "यहीं आगे बढ़ें", app: "Kestrel ऐप खोलें",
           applied: "पेमेंट का रिकॉर्ड जुड़ गया · अब आपका अंदाज़ा {amt} है",
         },
+      },
+      submitted: {
+        title: "आवेदन जमा हो गया", sub: "आपका आवेदन Kestrel Finance के पास है। कुछ भी साइन नहीं हुआ, और आपकी मर्ज़ी के बिना कुछ नहीं होगा।",
+        ref: "रेफ़रेंस", hold: "आपका {amt} का अंदाज़ा {date} तक रखा है।",
+        nextT: "आगे क्या होगा",
+        next: ["Kestrel आपके डॉक्यूमेंट जाँचेगा और जो कमी हो वो माँगेगा", "आपकी लोन ऑफ़िसर रिया 2 बातें पक्की करने के लिए एक बार कॉल कर सकती हैं", "आप KFS (Key Fact Statement) पढ़ेंगे, और आगे बढ़ना चाहें तभी साइन करेंगे"],
+        cta: "मेरे आवेदन की स्थिति देखें",
       },
       digi: { title: "DigiLocker", connecting: "DigiLocker से जुड़ रहे हैं…", sub: "आपकी सहमति से आपकी आधार जानकारी Kestrel Finance के साथ शेयर हो रही है।" },
       done: {
@@ -1206,7 +1245,7 @@ const DATA = {
     sourceLabel: "Source",
     existing: "Existing customer · routed to relationship team · not billed as new acquisition",
     recovered: "Saved progress · last step: {step} · resume link sent",
-    stepNames: { q: "Questions", trail: "Trail", mirror: "Mirror", pool: "Options", route: "Payout", lock: "Finish", done: "Submitted" },
+    stepNames: { q: "Questions", trail: "Trail", mirror: "Mirror", pool: "Options", route: "Payout", lock: "Finish", submitted: "Submitted", done: "Submitted" },
     routing: "Only identity-verified leads are sent to sales.",
     docsNote: "Status only. Files live in Kestrel's system, not Breadcrumb's.",
     reminder: "Reminder sent: 'Just your {doc} left, {name}. A photo works.'",
@@ -1494,12 +1533,12 @@ function saveProgress() {
   if (!S.persona || ["landing", "persona", "loader"].includes(S.step)) return false;
   const snap = { t: Date.now(), step: S.step, qi: S.qi, persona: S.persona, lang: S.lang, answers: S.answers, trail: S.trail, roughEarn: S.roughEarn, roughAsk: S.roughAsk,
     notes: S.notes, chk: S.chk, product: S.product, route: S.route, draw: S.draw, estimate: offer().max, first: S.name.trim().split(/\s+/)[0] || "",
-    idOk: idOk(), docs: S.docs, updates: S.updates, slot: S.slot, finished: S.step === "done" };
+    idOk: idOk(), docs: S.docs, updates: S.updates, slot: S.slot, refNo: S.refNo, finished: S.step === "done" || S.step === "submitted" };
   try { localStorage.setItem(SAVE_KEY, JSON.stringify(snap)); return true; } catch (e) { return false; }
 }
 function loadProgress() { try { const v = JSON.parse(localStorage.getItem(SAVE_KEY) || "null"); if (v && Date.now() - v.t < SAVE_TTL) return v; } catch (e) {} return null; }
 function clearProgress() { try { localStorage.removeItem(SAVE_KEY); } catch (e) {} }
-const stepsLeft = st => { const i = { q: 1, trail: 2, mirror: 2, pool: 3, route: 3, lock: 4, done: 5 }[st] ?? 0; return i < 3 ? { n: 3 - i, est: true } : { n: Math.max(1, 5 - i), est: false }; };
+const stepsLeft = st => { const i = { q: 1, trail: 2, mirror: 2, pool: 3, route: 3, lock: 4, submitted: 5, done: 5 }[st] ?? 0; return i < 3 ? { n: 3 - i, est: true } : { n: Math.max(1, 5 - i), est: false }; };
 const demoSnap = () => ({ demo: true, step: "pool", qi: 0, persona: S.persona || "shop", answers: S.answers, trail: S.trail || "bank", first: S.name.trim().split(/\s+/)[0] || "", estimate: DATA.personas[S.persona || "shop"].pool });
 function restore(sn) {
   const keep = { edge: S.edge, lenderPreset: S.lenderPreset, source: S.source, lensTab: S.lensTab };
@@ -1509,7 +1548,8 @@ function restore(sn) {
     panOk: !!sn.idOk, aadhaarOk: !!sn.idOk, docs: sn.docs || {}, updates: sn.updates || "app", slot: sn.slot ?? null,
     recovered: true, retDismissed: true, aheadHidden: true,
   });
-  const st = sn.step === "loader" ? "mirror" : sn.step;
+  const st = sn.step === "loader" ? "mirror" : sn.step === "submitted" ? "done" : sn.step;
+  S.refNo = sn.refNo || null;
   if (["pool", "route", "lock", "done"].includes(st)) S.mirror = S.notes.length ? "off" : "ok";
   if (st === "done") { S.saved = true; S.phoneVerified = true; }
   const key = st === "q" ? "q" + (sn.qi || 0) : st;
@@ -1593,7 +1633,7 @@ function quotesBlock() {
   </div>`;
 }
 const confidence = () => S.trail === "bank" ? ["Bank-verified via AA (6 months)", "ok"] : S.trail === "pdf" ? ["Statement-verified (6 months)", "ok"] : S.trail === "rough" ? ["Self-declared (rough)", "warn"] : ["Self-declared", "warn"];
-const stepIndex = () => ({ landing: -1, persona: 0, q: 1, trail: 2, loader: 2, mirror: 2, pool: 3, route: 3, lock: 4, done: 5 })[S.step];
+const stepIndex = () => ({ landing: -1, persona: 0, q: 1, trail: 2, loader: 2, mirror: 2, pool: 3, route: 3, lock: 4, submitted: 5, done: 5 })[S.step];
 
 function score() {
   const sig = [
@@ -1943,7 +1983,7 @@ const Screens = {
         <p class="sec-h">${L.idT}</p>
         <p class="sec-s">${L.idSub}</p>
         <div class="field" style="margin-top:14px"><label for="pan">${L.pan} <span style="color:var(--faint);font-weight:400">${L.panHint}</span></label>
-          ${S.panOk ? `<div class="okline"><b class="num">${esc(S.pan || "•••••••••")}</b>${okRow(L.panOk)}</div>` : `<input class="input num pan" id="pan" maxlength="10" placeholder="${L.panPh}" value="${esc(S.pan)}" autocomplete="off" autocapitalize="characters">`}
+          ${S.panOk ? `<div class="okline"><b class="num">${esc(S.pan || "•••••••••")}</b>${okRow(L.panOk)}</div>` : `<input class="input num pan ${S.pan.length === 10 ? "bad" : ""}" id="pan" maxlength="10" placeholder="${L.panPh}" value="${esc(S.pan)}" autocomplete="off" autocapitalize="characters"><span class="field-err" id="panErr">${S.pan.length === 10 ? L.panErr : ""}</span>`}
         </div>
         <div style="margin-top:12px">${S.aadhaarOk ? okRow(L.aadhaarOk) : `<button class="btn btn-secondary" style="height:52px;font-size:15px" data-act="digi">${I.lock("#2C48FF")}${L.aadhaarBtn}</button>`}</div>
       </div>
@@ -1973,7 +2013,31 @@ const Screens = {
         <div class="timeline">${L.tl.map(x => `<div class="tl"><div class="w">${x.w}</div><div class="d">${x.d}</div></div>`).join("")}</div>
       </div>
       ${foot()}`,
-      cta: btn(L.cta, "save", { dis: !lockReady(), id: "saveBtn" }) + `<button class="btn btn-ghost later-link" data-act="saveLater:lock">${L.later}</button>`,
+      cta: `<p class="cta-hint" id="lockLeft" aria-live="polite">${lockLeftText()}</p>` + btn(L.cta, "save", { id: "saveBtn", cls: "btn-primary" + (lockReady() ? "" : " soft") }) + `<button class="btn btn-ghost later-link" data-act="saveLater:lock">${L.later}</button>`,
+    };
+  },
+
+  submitted() {
+    const U = T("submitted"), o = offer();
+    const until = new Date(Date.now() + 7 * 864e5).toLocaleDateString(lang() === "hi" ? "hi-IN" : "en-IN", { day: "numeric", month: "short", year: "numeric" });
+    return {
+      body: `
+      <div class="sub-wrap">
+        <div class="celebrate" aria-hidden="true">
+          ${Array.from({ length: 12 }, (_, i) => `<i style="--a:${i * 30}deg;--d:${(i % 3) * 60}ms"></i>`).join("")}
+          <span class="sub-badge"><svg viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path class="draw" d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>
+        </div>
+        <h2 class="h" style="text-align:center">${U.title}</h2>
+        <p class="sub" style="text-align:center">${U.sub}</p>
+        <p class="sub-ref"><span>${U.ref}</span><b class="num">${esc(S.refNo || "")}</b></p>
+      </div>
+      <div class="notice green" style="margin-top:20px">${I.check("#14996A", 15)}<span>${fill(U.hold, { amt: `<b class="num">${inr(o.max)}</b>`, date: until })}</span></div>
+      <div class="card pad" style="margin-top:14px">
+        <p style="font-weight:600;font-size:15px;margin-bottom:14px">${U.nextT}</p>
+        <div class="timeline">${U.next.map((x, i) => `<div class="tl"><div class="w">${i + 1}</div><div class="d">${x}</div></div>`).join("")}</div>
+      </div>
+      ${foot()}`,
+      cta: btn(U.cta, "toStatus"),
     };
   },
 
@@ -2305,7 +2369,7 @@ function render() {
   if (!isNew) saveProgress();
   const pr = $("#progress"); pr.innerHTML = progressHTML(); pr.classList.toggle("hide", S.step === "landing");
   $("#langSw").innerHTML = langSwHTML(); $(".topbar").classList.toggle("has-lang", !!langSwHTML());
-  const back = $("#backBtn"); back.disabled = S.step === "landing" || S.step === "loader" || S.step === "done"; $(".topbar").classList.toggle("home", S.step === "landing" || S.step === "done");
+  const back = $("#backBtn"); back.disabled = S.step === "landing" || S.step === "loader" || S.step === "done" || S.step === "submitted"; $(".topbar").classList.toggle("home", S.step === "landing" || S.step === "done" || S.step === "submitted");
   back.setAttribute("aria-label", T("common.back"));
   renderSheet();
   renderLens();
@@ -2357,10 +2421,20 @@ function runLoader(token) {
 }
 
 /* ---------- inputs that must not re-render on every keystroke ---------- */
-function lockReady() { return S.name.trim().length > 1 && S.phoneVerified && idOk(); }
+function lockMissing() {
+  const m = [];
+  if (S.name.trim().length < 2) m.push("name");
+  if (!S.phoneVerified) m.push("phone");
+  if (!S.panOk) m.push("pan");
+  if (!S.aadhaarOk) m.push("aadhaar");
+  return m;
+}
+function lockReady() { return !lockMissing().length; }
+const lockLeftText = () => { const m = lockMissing(), N = T("lock.need"); return m.length ? T("lock.left", { items: m.map(k => N[k]).join(" · ") }) : ""; };
+function updateLockCta() { const h = $("#lockLeft"), b = $("#saveBtn"); if (h) h.textContent = lockLeftText(); if (b) b.classList.toggle("soft", !lockReady()); }
 function bindInputs() {
   const ft = $("#freeText"); if (ft) { ft.oninput = e => S.freeText = e.target.value; ft.onkeydown = e => { if (e.key === "Enter") act("classify"); }; }
-  const nm = $("#nm"); if (nm) nm.oninput = e => { S.name = e.target.value; $("#saveBtn").disabled = !lockReady(); renderLens(); };
+  const nm = $("#nm"); if (nm) { nm.oninput = e => { S.name = e.target.value; updateLockCta(); renderLens(); }; nm.onchange = nm.oninput; }
   const ph = $("#ph"); if (ph) ph.oninput = e => { e.target.value = e.target.value.replace(/\D/g, "").slice(0, 10); S.phone = e.target.value; const b = $("#sendOtp"); if (b) b.disabled = S.phone.length !== 10; };
   const otp = $("#otp"); if (otp) otp.oninput = e => { e.target.value = e.target.value.replace(/\D/g, "").slice(0, 6); S.otp = e.target.value; if (S.otp.length === 6) { S.phoneVerified = true; syncDrawToQuotes(); render(); toast(T("toast.verified")); } };
   const aa = $("#aaOtp"); if (aa) aa.oninput = e => { e.target.value = e.target.value.replace(/\D/g, "").slice(0, 6); S.otpConsent = e.target.value; $("#shareBtn").disabled = S.otpConsent.length !== 6; };
@@ -2369,7 +2443,7 @@ function bindInputs() {
   if (an) an.oninput = e => { e.target.value = e.target.value.replace(/\D/g, "").slice(0, 18); S.acc = e.target.value; accUi(); };
   if (an2) an2.oninput = e => { e.target.value = e.target.value.replace(/\D/g, "").slice(0, 18); S.acc2 = e.target.value; accUi(); };
   const sl = $("#slPh"); if (sl) sl.oninput = e => { e.target.value = e.target.value.replace(/\D/g, "").slice(0, 10); S.sl.phone = e.target.value; $("#slBtn").disabled = S.sl.phone.length !== 10; };
-  const pn = $("#pan"); if (pn) pn.oninput = e => { const v = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, "").slice(0, 10); e.target.value = v; S.pan = v; if (/^[A-Z]{5}[0-9]{4}[A-Z]$/.test(v)) { S.panOk = true; render(); } };
+  const pn = $("#pan"); if (pn) pn.oninput = e => { const v = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, "").slice(0, 10); e.target.value = v; S.pan = v; if (/^[A-Z]{5}[0-9]{4}[A-Z]$/.test(v)) { S.panOk = true; render(); return; } const bad = v.length === 10; pn.classList.toggle("bad", bad); $("#panErr").textContent = bad ? T("lock.panErr") : ""; };
   const nt = $("#noteTxt"); if (nt) nt.oninput = e => { S.noteText = e.target.value; $("#noteBtn").disabled = !S.noteChips.length && !S.noteText.trim(); };
   const rg = $("#drawR"); if (rg) rg.oninput = e => { S.draw = +e.target.value; updatePool(); };
 }
@@ -2383,7 +2457,7 @@ function updatePool() {
 
 /* ---------- toast ---------- */
 let toastT;
-function toast(msg) { const t = $("#toast"); t.innerHTML = `${I.check("#5BE3A8", 15)}<span>${msg}</span>`; t.classList.add("on"); clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove("on"), 2600); }
+function toast(msg) { const t = $("#toast"); const cb = $("#cta"); t.style.bottom = ((cb && cb.offsetHeight) || 84) + 12 + "px"; t.innerHTML = `${I.check("#5BE3A8", 15)}<span>${msg}</span>`; t.classList.add("on"); clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove("on"), 2600); }
 
 /* =========================================================
    Actions
@@ -2478,7 +2552,18 @@ function act(a, el) {
     case "openApp": toast(T("toast.app")); return;
     case "contact": S.contact = +arg; if (S.contact !== 1) S.slot = null; return render();
     case "slot": S.slot = +arg; return render();
-    case "save": if (!lockReady()) return; S.saved = true; if (S.quotes.length) S.docs.quote = true; return go("done");
+    case "save": {
+      const nmEl = $("#nm"); if (nmEl) S.name = nmEl.value;
+      const pnEl = $("#pan"); if (pnEl && /^[A-Z]{5}[0-9]{4}[A-Z]$/.test(pnEl.value.toUpperCase())) { S.pan = pnEl.value.toUpperCase(); S.panOk = true; }
+      if (!lockReady()) {
+        render();
+        const first = { name: "#nm", phone: "#ph", pan: "#pan", aadhaar: '[data-act="digi"]' }[lockMissing()[0]];
+        const el = $(first); if (el) { el.scrollIntoView({ behavior: "smooth", block: "center" }); el.classList.add("nudge"); setTimeout(() => el.classList.remove("nudge"), 1200); if (el.focus && first !== '[data-act="digi"]') el.focus({ preventScroll: true }); }
+        return;
+      }
+      S.saved = true; if (S.quotes.length) S.docs.quote = true; S.refNo = S.refNo || "BC-" + String(Date.now()).slice(-6); return go("submitted");
+    }
+    case "toStatus": return go("done", { noHist: true });
     case "shareCA": toast(T("toast.shareCA")); return;
     case "resume": { const sn = S.resumeSnap || loadProgress() || demoSnap(); restore(sn); return render(); }
     case "retFresh": clearProgress(); S.retDismissed = true; S.edge.returning = false; return render();
