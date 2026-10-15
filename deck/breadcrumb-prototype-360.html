@@ -972,7 +972,8 @@ const DATA = {
         now: "Now",
         officerT: "Your Kestrel loan officer: Riya", officerS: "Kestrel Finance",
         officerD: "Riya tells you Kestrel's decision. You'll also see every update here.",
-        updT: "How should we update you?", upd: ["In the app + WhatsApp", "Also call me"],
+        updT: "How should we update you?", upd: ["In the app + WhatsApp", "Call me"],
+        updSaved: "Saved from earlier: Riya will reach you on {how}. You can change it here.",
         work: "Your work", poolRow: "Estimate", est: " (est.)", first: "You need", prod: "Preferred product", to: "Money goes to",
         vendors: "{n} vendor(s), paid directly", vendorsNone: "Your vendors, paid directly · quote to follow", bank: "Your bank account",
         identity: "Identity", verified: "Verified", docs: "Documents", docsN: "{n} of {total} sent", docsNone: "Nothing else needed",
@@ -1219,7 +1220,8 @@ const DATA = {
         now: "अभी",
         officerT: "आपकी Kestrel लोन ऑफ़िसर: रिया", officerS: "Kestrel Finance",
         officerD: "Kestrel का फ़ैसला रिया आपको बताएँगी। हर अपडेट आपको यहाँ भी दिखेगा।",
-        updT: "हम आपको अपडेट कैसे दें?", upd: ["ऐप + WhatsApp पर", "कॉल भी करें"],
+        updT: "हम आपको अपडेट कैसे दें?", upd: ["ऐप + WhatsApp पर", "कॉल करें"],
+        updSaved: "आपने पहले चुना था: रिया आपसे {how} पर बात करेंगी। आप इसे यहाँ बदल सकते हैं।",
         work: "आपका काम", poolRow: "अंदाज़ा", est: " (अंदाज़ा)", first: "आपको चाहिए", prod: "आपकी पसंद का प्रोडक्ट", to: "पैसा कहाँ जाएगा",
         vendors: "{n} सप्लायर, सीधे पेमेंट", vendorsNone: "आपके सप्लायर, सीधे पेमेंट · कोटेशन बाद में", bank: "आपका बैंक खाता",
         identity: "पहचान", verified: "पक्की", docs: "डॉक्यूमेंट", docsN: "{total} में से {n} भेजे", docsNone: "और कुछ नहीं चाहिए",
@@ -1537,7 +1539,7 @@ function saveProgress() {
   if (!S.persona || ["landing", "persona", "loader"].includes(S.step)) return false;
   const snap = { t: Date.now(), step: S.step, qi: S.qi, persona: S.persona, lang: S.lang, answers: S.answers, trail: S.trail, roughEarn: S.roughEarn, roughAsk: S.roughAsk,
     notes: S.notes, chk: S.chk, product: S.product, route: S.route, draw: S.draw, estimate: offer().max, first: S.name.trim().split(/\s+/)[0] || "",
-    idOk: idOk(), docs: S.docs, updates: S.updates, slot: S.slot, refNo: S.refNo, finished: S.step === "done" || S.step === "submitted" };
+    idOk: idOk(), docs: S.docs, updates: S.updates, slot: S.slot, prefFromHelp: !!S.prefFromHelp, refNo: S.refNo, finished: S.step === "done" || S.step === "submitted" };
   try { localStorage.setItem(SAVE_KEY, JSON.stringify(snap)); return true; } catch (e) { return false; }
 }
 function loadProgress() { try { const v = JSON.parse(localStorage.getItem(SAVE_KEY) || "null"); if (v && Date.now() - v.t < SAVE_TTL) return v; } catch (e) {} return null; }
@@ -1553,7 +1555,7 @@ function restore(sn) {
     recovered: true, retDismissed: true, aheadHidden: true,
   });
   const st = sn.step === "loader" ? "mirror" : sn.step === "submitted" ? "done" : sn.step;
-  S.refNo = sn.refNo || null;
+  S.refNo = sn.refNo || null; S.prefFromHelp = !!sn.prefFromHelp;
   if (["pool", "route", "lock", "done"].includes(st)) S.mirror = S.notes.length ? "off" : "ok";
   if (st === "done") { S.saved = true; S.phoneVerified = true; }
   const key = st === "q" ? "q" + (sn.qi || 0) : st;
@@ -2065,6 +2067,7 @@ const Screens = {
       </div>
       <p class="why" style="margin-top:10px">${I.info()}<span>${D.officerD}</span></p>
       <p class="label-s" style="margin-top:20px">${D.updT}</p>
+      ${S.prefFromHelp ? `<p class="why" style="margin:-2px 0 10px">${I.check("#14996A", 13)}<span>${fill(D.updSaved, { how: S.updates === "call" ? (S.slot != null ? T("lock.slots")[S.slot] : D.upd[1]) : "WhatsApp" })}</span></p>` : ""}
       <div class="chips">${D.upd.map((t, i) => { const v = i ? "call" : "app"; return `<button class="chip ${S.updates === v ? "sel" : ""}" data-act="updates:${v}">${t}</button>`; }).join("")}</div>
       ${S.updates === "call" ? `<p class="label-s">${T("lock.pickTime")}</p><div class="chips">${T("lock.slots").map((t, i) => `<button class="chip ${S.slot === i ? "sel" : ""}" data-act="slot:${i}">${t}</button>`).join("")}</div>` : ""}
       <div class="card pad rows" style="margin-top:18px">
@@ -2320,7 +2323,7 @@ function liveHTML() {
     ${showHandoff ? `<div class="lens-sec"><div class="lens-k">${DATA.lens.handoffTitle} ${S.saved && idOk() ? `<span style="color:#5BE3A8;text-transform:none;letter-spacing:0">· sent to sales queue</span>` : ""}</div>
       <p class="lens-empty" style="margin:-4px 0 10px;font-size:12px">${DATA.lens.routing}</p>
       <div class="handoff"><div class="hd"><span class="nm">${esc(name)}</span><span class="tag" style="background:rgba(91,227,168,.12);color:#5BE3A8">${S.phoneVerified ? "Phone verified" : "Unverified"}</span></div>
-        <div class="kv"><span>${DATA.lens.sourceLabel}</span><b style="font-family:Inter">${source}</b>${existingOn() ? `<span>Customer</span><b style="font-family:Inter">Existing · relationship team</b>` : ""}<span>Persona</span><b style="font-family:Inter">${p.label}</b><span>Verified avg inflow</span><b>${S.trail === "rough" ? "—" : inr(p.avg * (isCash() ? .45 : 1))}</b><span>Estimate</span><b>${inr(o.max)}</b><span>Preferred product</span><b style="font-family:Inter">${prodNameE(pid)}</b><span>Route</span><b style="font-family:Inter">${routeNow() === "supplier" ? "Vendor pay" : "Bank transfer"}</b>${routeNow() === "supplier" ? S.quotes.map(q => `<span>↳ ${esc(q.vendor)}</span><b>${inr(q.amount)}</b>`).join("") : ""}<span>Quote</span><b style="font-family:Inter">${routeNow() === "supplier" ? (S.quotes.length ? `Verified (${S.quotes.length})` : "Pending") : "Not needed"}</b><span>Identity</span><b style="font-family:Inter">${idOk() ? "Verified (PAN + Aadhaar)" : "Pending"}</b><span>Documents</span><b>${bizE.length ? `${bizSent} of ${bizE.length}` : "None needed"}</b><span>Updates</span><b style="font-family:Inter">${S.updates === "call" ? "app + WhatsApp + call" + (S.slot != null ? ` (${slotsE[S.slot]})` : "") : "app + WhatsApp"}</b><span>Assigned to</span><b style="font-family:Inter">Riya (loan officer)</b>${S.phoneVerified ? `<span>Mobile</span><b>+91 ${S.phone.slice(0, 5)} ${S.phone.slice(5)}</b>` : ""}</div>
+        <div class="kv"><span>${DATA.lens.sourceLabel}</span><b style="font-family:Inter">${source}</b>${existingOn() ? `<span>Customer</span><b style="font-family:Inter">Existing · relationship team</b>` : ""}<span>Persona</span><b style="font-family:Inter">${p.label}</b><span>Verified avg inflow</span><b>${S.trail === "rough" ? "—" : inr(p.avg * (isCash() ? .45 : 1))}</b><span>Estimate</span><b>${inr(o.max)}</b><span>Preferred product</span><b style="font-family:Inter">${prodNameE(pid)}</b><span>Route</span><b style="font-family:Inter">${routeNow() === "supplier" ? "Vendor pay" : "Bank transfer"}</b>${routeNow() === "supplier" ? S.quotes.map(q => `<span>↳ ${esc(q.vendor)}</span><b>${inr(q.amount)}</b>`).join("") : ""}<span>Quote</span><b style="font-family:Inter">${routeNow() === "supplier" ? (S.quotes.length ? `Verified (${S.quotes.length})` : "Pending") : "Not needed"}</b><span>Identity</span><b style="font-family:Inter">${idOk() ? "Verified (PAN + Aadhaar)" : "Pending"}</b><span>Documents</span><b>${bizE.length ? `${bizSent} of ${bizE.length}` : "None needed"}</b><span>Preferred contact</span><b style="font-family:Inter">${S.updates === "call" ? "Call" + (S.slot != null ? ` · ${slotsE[S.slot]}` : "") : "WhatsApp"}${S.prefFromHelp ? " (set by borrower)" : ""}</b><span>Updates</span><b style="font-family:Inter">${S.updates === "call" ? "app + call" : "app + WhatsApp"}</b><span>Assigned to</span><b style="font-family:Inter">Riya (loan officer)</b>${S.phoneVerified ? `<span>Mobile</span><b>+91 ${S.phone.slice(0, 5)} ${S.phone.slice(5)}</b>` : ""}</div>
         <div class="sum"><span style="color:#99A7FF;font-size:11px;font-weight:600;letter-spacing:.06em;display:block;margin-bottom:4px">AI SUMMARY FOR CALLER</span>${esc(p.handoff.replace(p.who, name))}${S.notes.length ? ` Borrower notes: ${S.notes.map(n => "“" + esc(noteText(n, pe)) + "”").join(", ")}.` : ""}${pendE.length ? ` Ask for the ${pendE.map(([dd]) => dd.s.toLowerCase().replace(/^the /, "").replace(/^gst/, "GST").replace(/^udyam/, "Udyam")).join(" and the ")}.` : ""}${!idOk() ? " Identity not verified yet." : ""}${quotePending ? " Collect the vendor quote on the call." : ""}${lang() === "hi" ? " Prefers Hindi." : ""}</div>
         <!-- LLM call goes here — one-line caller summary from the lead record -->
       </div></div>` : ""}`;
@@ -2459,6 +2462,12 @@ function updatePool() {
   renderLens();
 }
 
+/* scroll only the screen's own scroller, never the phone frame */
+function scrollInScreen(el) {
+  const sc = $("#scroll"); if (!el || !sc) return;
+  const top = el.getBoundingClientRect().top - sc.getBoundingClientRect().top + sc.scrollTop - sc.clientHeight / 2 + el.offsetHeight / 2;
+  sc.scrollTo({ top: Math.max(0, top), behavior: "smooth" });
+}
 /* ---------- toast ---------- */
 let toastT;
 function toast(msg, kind) { const t = $("#toast"); const cb = $("#cta"); t.style.bottom = ((cb && cb.offsetHeight) || 84) + 12 + "px"; t.classList.toggle("warn", kind === "warn"); t.innerHTML = `${kind === "warn" ? I.info("#FFC45E") : I.check("#5BE3A8", 15)}<span>${msg}</span>`; t.classList.add("on"); clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove("on"), 2600); }
@@ -2497,7 +2506,7 @@ function act(a, el) {
     case "closeSheet": if (S.sheet === "digi") return; S.sheet = null; S.payoutPick = false; return render();
     case "persona": if (S.persona !== arg) resetPersonaBits(); S.persona = arg; return render();
     case "lang": { S.lang = args[0]; if (args[1] === "go") return go("q", { qi: 0 }); return render(); }
-    case "classify": { const c = classify(S.freeText); if (!c) return; S.classified = { ...c, id: c.id + c.key }; if (S.persona !== c.id) resetPersonaBits(); S.persona = c.id; render(); setTimeout(() => document.querySelector('#scroll .ai')?.scrollIntoView({ behavior: 'smooth', block: 'center' }), 60); return; }
+    case "classify": { const c = classify(S.freeText); if (!c) return; S.classified = { ...c, id: c.id + c.key }; if (S.persona !== c.id) resetPersonaBits(); S.persona = c.id; render(); setTimeout(() => scrollInScreen($('#scroll .ai')), 60); return; }
     case "toQuestions": return go("q", { qi: 0 });
     case "answer": {
       const [qid, idx] = args; S.answers[qid] = PE().questions[S.qi].o[+idx];
@@ -2532,7 +2541,7 @@ function act(a, el) {
     case "help": S.helpOpen = !S.helpOpen; return render();
     case "helpVia": S.help = +arg; if (S.help === 0) S.helpSlot = null; return render();
     case "helpSlot": S.helpSlot = +arg; return render();
-    case "updates": S.updates = arg; if (arg === "app") S.slot = null; return render();
+    case "updates": S.updates = arg; if (arg === "app") S.slot = null; saveProgress(); return render();
     case "remind": { const dd = PE().docs.find(x => x.id === arg); toast(fill(DATA.lens.reminder, { doc: dd.s.toLowerCase().replace(/^the /, "").replace(/^gst/, "GST").replace(/^udyam/, "Udyam"), name: (S.name.trim().split(/\s+/)[0] || PE().who) })); return; }
     case "offGo": S.mirror = "off"; S.sheet = null; return go("pool");
     case "lever": toast(T("toast.lever")); return;
@@ -2555,7 +2564,7 @@ function act(a, el) {
     case "welcomeHere": S.welcomeAck = true; return render();
     case "openApp": toast(T("toast.app")); return;
     case "contact": S.contact = +arg; if (S.contact !== 1) S.slot = null; return render();
-    case "slot": S.slot = +arg; return render();
+    case "slot": S.slot = +arg; saveProgress(); return render();
     case "save": {
       const nmEl = $("#nm"); if (nmEl) S.name = nmEl.value;
       const pnEl = $("#pan"); if (pnEl && /^[A-Z]{5}[0-9]{4}[A-Z]$/.test(pnEl.value.toUpperCase())) { S.pan = pnEl.value.toUpperCase(); S.panOk = true; }
@@ -2563,9 +2572,11 @@ function act(a, el) {
         updateLockCta();
         toast(T("lock.blocked", { items: lockMissing().map(k => T("lock.need")[k]).join(" · ") }), "warn");
         const first = { name: "#nm", phone: "#ph", pan: "#pan", aadhaar: '[data-act="digi"]' }[lockMissing()[0]];
-        const el = $(first); if (el) { el.scrollIntoView({ behavior: "smooth", block: "center" }); el.classList.add("nudge"); setTimeout(() => el.classList.remove("nudge"), 1200); if (el.focus && first !== '[data-act="digi"]') el.focus({ preventScroll: true }); }
+        const el = $(first); if (el) { scrollInScreen(el); el.classList.add("nudge"); setTimeout(() => el.classList.remove("nudge"), 1200); if (el.focus && first !== '[data-act="digi"]') el.focus({ preventScroll: true }); }
         return;
       }
+      if (S.help === 0) { S.updates = "app"; S.slot = null; S.prefFromHelp = true; }
+      else if (S.help === 1) { S.updates = "call"; S.slot = S.helpSlot; S.prefFromHelp = true; }
       S.saved = true; if (S.quotes.length) S.docs.quote = true; S.refNo = S.refNo || "BC-" + String(Date.now()).slice(-6); return go("submitted");
     }
     case "toStatus": return go("done", { noHist: true });
