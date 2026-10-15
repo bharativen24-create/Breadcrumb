@@ -388,6 +388,19 @@ input[type=range]::-moz-range-thumb{width:24px;height:24px;border-radius:50%;bac
 .tile .tv b{color:#5BE3A8;font-weight:600}
 .tile .td{font-size:11.5px;color:var(--lens-muted);line-height:1.4}
 
+/* ---------- Kestrel's options ---------- */
+.prod-h{font-size:18px;font-weight:700;letter-spacing:-.015em;margin:6px 0 12px}
+.choice.prod{align-items:flex-start}
+.choice.prod .radio{margin-top:2px}
+.prod-top{display:flex;align-items:baseline;gap:8px;justify-content:space-between}
+.prod-rate{font-size:13px;font-weight:600;color:var(--muted);white-space:nowrap}
+.prod-cost{display:block;margin-top:10px;padding-top:10px;border-top:1px dashed var(--hair);font-size:14px;font-weight:600;color:var(--ink)}
+.setup{display:flex;flex-direction:column;gap:6px}
+.su{display:flex;justify-content:space-between;align-items:center;font-size:13px;padding:8px 12px;border-radius:10px;background:var(--navy2)}
+.su b{font-family:var(--mono);font-weight:500;color:#5BE3A8}
+.su.off{color:var(--lens-muted)}.su.off b{color:#FF8A7A}
+.app[lang=hi] .prod-h{letter-spacing:0}
+
 /* ---------- toast (css) ---------- */
 .toast{position:absolute;left:16px;right:16px;bottom:96px;z-index:60;background:var(--navy);color:#fff;border-radius:16px;padding:14px 16px;font-size:14px;display:flex;gap:10px;align-items:center;
   box-shadow:0 12px 30px rgba(10,13,43,.3);opacity:0;transform:translateY(10px);transition:all .25s var(--ease);pointer-events:none}
@@ -558,7 +571,7 @@ const DATA = {
     lender: "Kestrel Finance Ltd",
     lenderShort: "Kestrel Finance",
     lenderLine: "Lending partner: Kestrel Finance Ltd (RBI-registered NBFC)",
-    lockup: "Lending by Kestrel Finance · RBI-registered NBFC",
+    lockup: "Lending by Kestrel Finance · RBI-registered NBFC (fictional stand-in)",
   },
   landing: {
     eyebrow: "For the self-employed",
@@ -570,11 +583,11 @@ const DATA = {
     how: [
       { t: "Tell us who you are", d: "Pick the kind of work you do. Every question after that is written for you." },
       { t: "Let your payments speak", d: "Share your bank trail once, with consent. We show you your business the way we see it." },
-      { t: "See your credit pool", d: "A limit you draw from when you need it. Interest only on what you use." },
+      { t: "See what you could get", d: "Kestrel's options, explained for your kind of business." },
     ],
     howTitle: "How Breadcrumb works",
     gotIt: "Got it",
-    heroCard: { pool: "Credit pool", upTo: "Up to", amt: "₹4,50,000", unused: "Interest on unused", time: "Time to know", timeV: "45 sec" },
+    heroCard: { pool: "Your estimate", upTo: "Up to", amt: "₹4,50,000", final: "Final amount", finalV: "After review", time: "Time to know", timeV: "45 sec" },
     vendorBanner: { t: "Financing your purchase from Sharma Dental Supplies", d: "Their quote comes with you — we'll pay them directly." },
     returning: { t: "Welcome back — you were 2 steps from your offer.", d: "Pick up where you left off?", cont: "Continue", fresh: "Start fresh" },
   },
@@ -592,8 +605,14 @@ const DATA = {
     langNote: "Prefer Hindi? The rest of your path can be in simple Hindi.",
   },
   langSwitch: { en: "EN", hi: "हिं" },
-  rates: { bank: 16.5, supplier: 14.5 },
-  fees: { bank: 1.5, supplier: 1.0 },
+  /* Kestrel Finance's own configuration — products, rates and vendor policy are the lender's */
+  lender: {
+    products: {
+      flex: { name: "Flexible business line", rate: 16.5, how: "Interest only on what you draw. Repay and draw again." },
+      term: { name: "Business term loan", rate: 15.5, months: 24, how: "One amount, fixed monthly EMI over 24 months." },
+    },
+    vendorDiscount: 2,
+  },
   starterPool: 50000,
   existingBoost: 1.1,
   trailIcons: { bank: "bankSvg", pdf: "history", rough: "search" },
@@ -618,7 +637,7 @@ const DATA = {
   /* ---------- user-facing copy, per screen, English + Hindi ---------- */
   ui: {
     en: {
-      steps: ["Who", "About", "Trail", "Pool", "Lock"],
+      steps: ["Who", "About", "Trail", "Options", "Lock"],
       footer: "Prototype for demonstration. Kestrel Finance Ltd is fictional. Amounts, rates and fees are illustrative, not an offer.",
       lakh: "lakh",
       common: { continue: "Continue", gotIt: "Got it", back: "Back", pa: "p.a." },
@@ -640,7 +659,7 @@ const DATA = {
         title: "Breadcrumb would like to read your bank statement",
         sub: "To check what you're eligible for, we need to see the last 6 months of transactions from your business account — through RBI's Account Aggregator framework.",
         share: { t: "You're sharing", d: "Transactions from 1 account · last 6 months · one time only" },
-        use: { t: "Used only for your eligibility", d: "To work out your credit pool. Never for marketing, never sold, never shared outside Kestrel Finance" },
+        use: { t: "Used only for your eligibility", d: "To work out your estimate. Never for marketing, never sold, never shared outside Kestrel Finance" },
         kestrel: { t: "Shared only with Kestrel Finance", d: "Your lender, an RBI-registered NBFC. No one else sees it." },
         not: { t: "We will NOT see or do", d: "Your contacts, SMS or photos. No CIBIL check. We can never move money from your account" },
         del: { t: "Deleted after 30 days", d: "If you don't continue, your data is deleted automatically" },
@@ -680,8 +699,8 @@ const DATA = {
         go: "See my estimate",
       },
       loader: {
-        lines: ["Reading 6 months of payments…", "Spotting your busy season…", "Working out your pool…"],
-        rough: ["Reading your answers…", "Comparing with businesses like yours…", "Working out a rough pool…"],
+        lines: ["Reading 6 months of payments…", "Spotting your busy season…", "Working out your estimate…"],
+        rough: ["Reading your answers…", "Comparing with businesses like yours…", "Working out a rough estimate…"],
         sub: "Your data stays encrypted and read-only", subRough: "Using only what you told us",
       },
       months: ["Apr", "May", "Jun", "Jul", "Aug", "Sep"],
@@ -692,7 +711,7 @@ const DATA = {
         best: "Best month", slowest: "Slowest", moneyIn: "Money in",
         busiestP: "Busiest: {v}", slowestP: "Slowest: {v}", cashPayers: "Most customers pay in cash",
         cashNotice: "<b>Your trail is thin — most of your money moves in cash.</b> Add GST returns or a second account later to unlock more. This is never a dead end.",
-        cashSummary: "Your trail is thin — most of your money moves in cash, so your bank only sees part of your business. That's okay. We've made a smaller, safe offer today, and adding GST or a second account will show us the rest.",
+        cashSummary: "Your trail is thin — most of your money moves in cash, so your bank only sees part of your business. That's okay. Kestrel's estimate is smaller for now, and adding GST or a second account will show the rest.",
         aiHead: "In plain words", ok: "Looks right", off: "Something's off",
       },
       off: {
@@ -700,49 +719,57 @@ const DATA = {
         ph: "e.g. September also includes a one-time family transfer", go: "Send and continue",
       },
       pool: {
-        starterTitle: "Here's a starter pool to begin your trail.",
-        title: "You could have a credit pool of up to {amt}",
-        labels: { verified: "Based on your verified trail", rough: "Rough estimate", thin: "Estimated from a thin trail", starter: "Starter pool" },
+        starterTitle: "Here's a starter amount to begin your trail.",
+        title: "You could be eligible for up to {amt}",
+        labels: { verified: "Based on your verified trail", rough: "Rough estimate", thin: "Estimated from a thin trail", starter: "Starter amount" },
         likely: "Likely {lo} – {hi}",
-        offerFrom: "Offer from Kestrel Finance",
+        offerFrom: "Estimate from Kestrel Finance · final amount after review",
         checked: "Thanks — a person will check this before your offer is final.",
-        overAsk: "You asked for <b>{ask}</b>. Today we can do <b>{max}</b> — {link}.",
+        overAsk: "You asked for <b>{ask}</b>. Kestrel's estimate today is <b>{max}</b> — {link}.",
         overAskLink: "here's what would unlock more",
         need: "Your need: <b>{need}</b>. We've set it below — change it any time.",
-        cardStarter: "Starter pool", cardPool: "Your credit pool",
-        available: "Available to draw", unused: "Interest on unused", drawK: "Draw & repay", drawV: "Any time",
+        cardStarter: "Starter amount", cardPool: "Your estimate",
+        available: "Up to", final: "Final amount", finalV: "After Kestrel's review",
         sliderQ: "How much do you need right now?",
-        inUse: "In use", zero: "₹0 interest",
-        payOn: "You pay interest on {amt}", intLine: "about {int}/month interest at {rate}% p.a.",
-        waiting: "{amt} waiting for you", waitingD: "₹0 interest until you use it",
         growTitle: "Here's how to grow it in 6 months",
-        checklist: ["Route all business payments into one account", "Register on Udyam (free, 10 minutes)", "Repay your starter pool on time for 3 months", "Come back and reconnect — most limits grow 3–5×"],
+        checklist: ["Route all business payments into one account", "Register on Udyam (free, 10 minutes)", "Repay your starter amount on time for 3 months", "Come back and reconnect — most limits grow 3–5×"],
         whyLink: "Why this amount?",
-        fees: "<b>Fees, plainly:</b> one-time setup fee of {fee}% of the amount you use the first time. No interest on unused money. No prepayment charges.",
+        fees: "<b>Fees, plainly:</b> set by Kestrel Finance and shown in your Key Fact Statement before you sign. No prepayment charges on these options (illustrative).",
         saveLater: "Save and finish later",
+      },
+      prod: {
+        label: "Products and rates set by Kestrel Finance (illustrative)",
+        title: "Kestrel's options that fit you",
+        aiHead: "Why these fit",
+        fitTag: "Fits your business", starterTag: "Starter option", pa: "% p.a.",
+        flex: { name: "Flexible business line", how: "Interest only on what you draw. Repay and draw again." },
+        term: { name: "Business term loan", how: "One amount, fixed monthly EMI over 24 months." },
+        costFlex: "≈ {interest}/month interest on {amt}",
+        costTerm: "EMI ≈ {emi}/month for {n} months",
+        starterFit: "As a newer business, Kestrel's starter option is a small term loan with one fixed EMI — easy to plan, and it builds your trail.",
+        pref: "This is your preference. Kestrel Finance confirms the product at review.",
       },
       why: {
         title: "Why {amt}?", sub: "Rules decide the amount. Here they are, explained.",
-        head: "Your pool, explained", counted: "What counted", unlock: "Ways to unlock more",
-        aiNew: "Because your business is less than a year old, we start with a small starter pool. Rules, not guesses, set this: once you have six months of trail and on-time repayments, the pool is recalculated — usually several times larger.",
+        head: "Your estimate, explained", counted: "What counted", unlock: "Ways to unlock more",
+        aiNew: "Because your business is less than a year old, Kestrel starts with a small starter amount. Rules, not guesses, set this: once you have six months of trail and on-time repayments, the estimate is recalculated — usually several times larger.",
         aiRough: "This is a range because it's based on your answers rather than your bank trail. Connecting your bank takes 30 seconds and usually narrows the range to a single, firm number.",
         fGst: "GST-registered", fNoGst: "No GST yet",
         fCash: "Most income moves in cash — bank sees less", fNew: "Business is under 1 year old", fRough: "Based on your answers, not your bank trail",
         leverRough: ["Connect my bank", "firm number in 30 sec"],
       },
       route: {
-        title: "Where should we send it?",
-        sub: "Paying your vendors directly saves you about {save} on {amt}.", perMonth: "/month",
-        lower: "Lower rate", bestFit: "Best fit for you", rateLine: "p.a. · setup fee {fee}%",
+        title: "If approved, where should the money go?",
+        sub: "Pick what suits you. You can change it later, and nothing is final until Kestrel Finance reviews your application.",
+        save: "Paying your vendors directly saves you about {save} on {amt}, at Kestrel's rates.", perMonth: "/month",
+        lower: "Lower rate · Kestrel's policy", rateLine: "p.a. · {product}",
         req: "A quote is needed for each vendor",
         bankT: "Send to my bank account", bankD: "Use it however your business needs.",
-        note: "You can choose differently each time you withdraw.",
-        hintNone: "Add at least one vendor quote to continue",
-        quotesT: "Vendor quotes", required: "Required", added: "{n} added",
-        empty: "Upload a quote or invoice from each vendor — a chair, a tool, or your rent. We pay each one exactly what their quote says, so the money only goes where you intended.",
+        quotesT: "Vendor quotes", optional: "Optional for now", added: "{n} added",
+        empty: "Upload a quote or invoice from each vendor if you have it ready, like a chair, a tool or rent. If not, you can share it later with the person who calls you.",
         uploadQuote: "Upload quote", addAnother: "Add another vendor",
         total: "Total to pay vendors", gstOk: "GST verified",
-        overPool: "Your quotes are {diff} more than your pool — pay the rest yourself, or add GST to unlock more.",
+        overPool: "Your quotes are {diff} more than your estimate — pay the rest yourself, or add GST to unlock more.",
       },
       quote: {
         title: "Upload a vendor quote",
@@ -751,7 +778,7 @@ const DATA = {
         reading: "Reading your quote…", aiHead: "Read from your quote",
         aiLine: "This is a quote from {vendor} for {item}, {amt}. Their GST number checks out.",
         item: "Item", amount: "Amount", vendor: "Vendor", gst: "Vendor GST", gstOk: "Verified",
-        over: "This quote is {diff} more than your pool — pay the rest yourself, or add GST to unlock more.",
+        over: "This quote is {diff} more than your estimate — pay the rest yourself, or add GST to unlock more.",
         add: "Add quote", another: "Upload a different file",
       },
       lock: {
@@ -772,22 +799,22 @@ const DATA = {
         cta: "Save my offer",
         welcome: {
           t: "Welcome back — you're already with Kestrel Finance.", d: "Your repayment history counts in your favour.",
-          pool: "Your pool", here: "Continue here", app: "Open Kestrel app",
-          applied: "Repayment history applied · your pool is now {amt}",
+          pool: "Your estimate", here: "Continue here", app: "Open Kestrel app",
+          applied: "Repayment history applied · your estimate is now {amt}",
         },
       },
       done: {
         title: "Your trail is saved.",
         sub: "Your offer is held until {date}. Nothing is signed, and nothing moves without you.",
-        starter: "Starter pool", pool: "Credit pool", valid: "Valid till {date}", upTo: "Up to", holder: "Pool holder", rate: "Rate",
-        work: "Your work", poolRow: "Pool", est: " (est.)", first: "Using first", to: "Money goes to", reach: "We'll reach you",
-        vendors: "{n} vendor(s), paid directly", bank: "Your bank account", call: "Call · {slot}",
+        starter: "Starter amount", pool: "Your saved estimate", valid: "Valid till {date}", upTo: "Up to", holder: "Name", rate: "Rate",
+        work: "Your work", poolRow: "Estimate", est: " (est.)", first: "You need", to: "Money goes to", reach: "We'll reach you",
+        vendors: "{n} vendor(s), paid directly", vendorsNone: "Your vendors, paid directly · quote to follow", bank: "Your bank account", call: "Call · {slot}",
         share: "Share with my CA", over: "Start over",
       },
       saveLater: {
         title: "Save and finish later", sub: "Just your mobile number. Everything you've done so far stays saved.",
         mobile: "Mobile number", note: "We'll send a link on WhatsApp. No calls.", send: "Send me the link",
-        doneT: "Link sent on WhatsApp", doneD: "Check WhatsApp on +91 {mobile}. Your pool stays saved for 7 days.", close: "Done",
+        doneT: "Link sent on WhatsApp", doneD: "Check WhatsApp on +91 {mobile}. Your estimate stays saved for 7 days.", close: "Done",
       },
       toast: {
         verified: "Number verified", codeSent: "Code sent to +91 {m}", aaSent: "Code sent to the mobile linked with this account",
@@ -797,7 +824,7 @@ const DATA = {
     },
 
     hi: {
-      steps: ["आप", "जानकारी", "लेन-देन", "पूल", "पक्का"],
+      steps: ["आप", "जानकारी", "लेन-देन", "विकल्प", "पक्का"],
       footer: "यह सिर्फ़ डेमो है। Kestrel Finance Ltd असली कंपनी नहीं है। रकम, ब्याज दर और फ़ीस सिर्फ़ उदाहरण हैं, कोई ऑफ़र नहीं।",
       lakh: "लाख",
       common: { continue: "आगे बढ़ें", gotIt: "ठीक है", back: "पीछे", pa: "सालाना" },
@@ -819,7 +846,7 @@ const DATA = {
         title: "Breadcrumb आपका बैंक स्टेटमेंट देखना चाहता है",
         sub: "आपको कितना मिल सकता है, यह जानने के लिए हमें आपके बिज़नेस खाते के पिछले 6 महीने के लेन-देन देखने होंगे — RBI के Account Aggregator सिस्टम से।",
         share: { t: "आप यह शेयर कर रहे हैं", d: "1 खाते के लेन-देन · पिछले 6 महीने · सिर्फ़ एक बार" },
-        use: { t: "सिर्फ़ आपकी योग्यता के लिए", d: "आपका क्रेडिट पूल तय करने के लिए। न मार्केटिंग के लिए, न बेचा जाएगा, न Kestrel Finance के बाहर किसी को दिया जाएगा" },
+        use: { t: "सिर्फ़ आपकी योग्यता के लिए", d: "आपका अंदाज़ा तय करने के लिए। न मार्केटिंग के लिए, न बेचा जाएगा, न Kestrel Finance के बाहर किसी को दिया जाएगा" },
         kestrel: { t: "सिर्फ़ Kestrel Finance के साथ शेयर", d: "आपको लोन देने वाली कंपनी, जो RBI में रजिस्टर्ड NBFC है। और कोई नहीं देखेगा।" },
         not: { t: "हम यह न देखेंगे, न करेंगे", d: "आपके कॉन्टैक्ट, SMS या फ़ोटो। कोई CIBIL जाँच नहीं। हम आपके खाते से कभी पैसे नहीं निकाल सकते" },
         del: { t: "30 दिन में डिलीट", d: "अगर आप आगे नहीं बढ़ते, तो आपका डेटा अपने-आप डिलीट हो जाएगा" },
@@ -859,8 +886,8 @@ const DATA = {
         go: "मेरा अंदाज़ा देखें",
       },
       loader: {
-        lines: ["6 महीने के पेमेंट पढ़ रहे हैं…", "आपका सबसे व्यस्त समय देख रहे हैं…", "आपका पूल तय कर रहे हैं…"],
-        rough: ["आपके जवाब पढ़ रहे हैं…", "आप जैसे कारोबारों से मिला रहे हैं…", "मोटा-मोटा पूल तय कर रहे हैं…"],
+        lines: ["6 महीने के पेमेंट पढ़ रहे हैं…", "आपका सबसे व्यस्त समय देख रहे हैं…", "आपका अंदाज़ा तय कर रहे हैं…"],
+        rough: ["आपके जवाब पढ़ रहे हैं…", "आप जैसे कारोबारों से मिला रहे हैं…", "मोटा-मोटा अंदाज़ा तय कर रहे हैं…"],
         sub: "आपका डेटा सुरक्षित है और सिर्फ़ पढ़ा जा रहा है", subRough: "सिर्फ़ वही जो आपने बताया",
       },
       months: ["अप्रैल", "मई", "जून", "जुलाई", "अगस्त", "सितंबर"],
@@ -871,7 +898,7 @@ const DATA = {
         best: "सबसे अच्छा महीना", slowest: "सबसे धीमा", moneyIn: "आने वाले पैसे",
         busiestP: "सबसे व्यस्त: {v}", slowestP: "सबसे धीमा: {v}", cashPayers: "ज़्यादातर ग्राहक कैश देते हैं",
         cashNotice: "<b>बैंक में लेन-देन कम दिखता है — आपका ज़्यादातर पैसा कैश में चलता है।</b> बाद में GST रिटर्न या दूसरा खाता जोड़कर और पा सकते हैं। रास्ता कभी बंद नहीं होता।",
-        cashSummary: "आपका ज़्यादातर पैसा कैश में चलता है, इसलिए बैंक में आपके कारोबार का सिर्फ़ कुछ हिस्सा दिखता है। कोई बात नहीं। आज हमने एक छोटा, सुरक्षित ऑफ़र दिया है — GST या दूसरा खाता जोड़ेंगे तो बाकी भी दिख जाएगा।",
+        cashSummary: "आपका ज़्यादातर पैसा कैश में चलता है, इसलिए बैंक में आपके कारोबार का सिर्फ़ कुछ हिस्सा दिखता है। कोई बात नहीं। अभी Kestrel का अंदाज़ा छोटा है — GST या दूसरा खाता जोड़ेंगे तो बाकी भी दिख जाएगा।",
         aiHead: "आसान शब्दों में", ok: "हाँ, सही है", off: "कुछ गलत लग रहा है",
       },
       off: {
@@ -879,49 +906,57 @@ const DATA = {
         ph: "जैसे, सितंबर में परिवार से एक बार पैसे आए थे", go: "भेजें और आगे बढ़ें",
       },
       pool: {
-        starterTitle: "शुरुआत के लिए यह रहा आपका स्टार्टर पूल।",
-        title: "आपको {amt} तक का क्रेडिट पूल मिल सकता है",
-        labels: { verified: "आपके पक्के लेन-देन के आधार पर", rough: "मोटा-मोटा अंदाज़ा", thin: "कम लेन-देन के आधार पर अंदाज़ा", starter: "स्टार्टर पूल" },
+        starterTitle: "शुरुआत के लिए यह रही आपकी स्टार्टर रकम।",
+        title: "आप {amt} तक के लिए योग्य हो सकते हैं",
+        labels: { verified: "आपके पक्के लेन-देन के आधार पर", rough: "मोटा-मोटा अंदाज़ा", thin: "कम लेन-देन के आधार पर अंदाज़ा", starter: "स्टार्टर रकम" },
         likely: "लगभग {lo} – {hi}",
-        offerFrom: "Kestrel Finance की तरफ़ से ऑफ़र",
+        offerFrom: "Kestrel Finance का अंदाज़ा · पक्की रकम जाँच के बाद",
         checked: "धन्यवाद — ऑफ़र पक्का होने से पहले एक इंसान इसे जाँचेगा।",
-        overAsk: "आपने <b>{ask}</b> माँगा था। आज हम <b>{max}</b> दे सकते हैं — {link}।",
+        overAsk: "आपने <b>{ask}</b> माँगा था। आज Kestrel का अंदाज़ा <b>{max}</b> है — {link}।",
         overAskLink: "और पाने का तरीका यहाँ देखें",
         need: "आपकी ज़रूरत: <b>{need}</b>। हमने नीचे यही रखा है — कभी भी बदल सकते हैं।",
-        cardStarter: "स्टार्टर पूल", cardPool: "आपका क्रेडिट पूल",
-        available: "निकालने के लिए तैयार", unused: "बिना इस्तेमाल पर ब्याज", drawK: "निकालें और लौटाएँ", drawV: "कभी भी",
+        cardStarter: "स्टार्टर रकम", cardPool: "आपका अंदाज़ा",
+        available: "अधिकतम", final: "पक्की रकम", finalV: "Kestrel की जाँच के बाद",
         sliderQ: "अभी आपको कितना चाहिए?",
-        inUse: "इस्तेमाल में", zero: "₹0 ब्याज",
-        payOn: "आप {amt} पर ब्याज देंगे", intLine: "लगभग {int} हर महीने ब्याज, {rate}% सालाना पर",
-        waiting: "{amt} आपके लिए रखे हैं", waitingD: "जब तक इस्तेमाल न करें, ₹0 ब्याज",
         growTitle: "6 महीने में इसे ऐसे बढ़ाएँ",
-        checklist: ["कारोबार के सारे पेमेंट एक ही खाते में लें", "Udyam पर रजिस्टर करें (मुफ़्त, 10 मिनट)", "3 महीने तक स्टार्टर पूल समय पर लौटाएँ", "फिर से जुड़ें — ज़्यादातर लिमिट 3–5 गुना बढ़ जाती है"],
+        checklist: ["कारोबार के सारे पेमेंट एक ही खाते में लें", "Udyam पर रजिस्टर करें (मुफ़्त, 10 मिनट)", "3 महीने तक स्टार्टर रकम समय पर लौटाएँ", "फिर से जुड़ें — ज़्यादातर लिमिट 3–5 गुना बढ़ जाती है"],
         whyLink: "यही रकम क्यों?",
-        fees: "<b>फ़ीस, साफ़-साफ़:</b> पहली बार जितना इस्तेमाल करेंगे, उसका {fee}% एक बार की सेटअप फ़ीस। बिना इस्तेमाल के पैसे पर कोई ब्याज नहीं। जल्दी लौटाने पर कोई चार्ज नहीं।",
+        fees: "<b>फ़ीस, साफ़-साफ़:</b> Kestrel Finance तय करता है, और साइन करने से पहले आपके KFS (Key Fact Statement) में लिखी होती है। इन विकल्पों पर जल्दी लौटाने का कोई चार्ज नहीं (उदाहरण)।",
         saveLater: "सेव करें, बाद में पूरा करें",
+      },
+      prod: {
+        label: "प्रोडक्ट और ब्याज दर Kestrel Finance तय करता है (उदाहरण)",
+        title: "Kestrel के विकल्प जो आपके लिए सही हैं",
+        aiHead: "ये क्यों सही हैं",
+        fitTag: "आपके कारोबार के लिए सही", starterTag: "स्टार्टर विकल्प", pa: "% सालाना",
+        flex: { name: "फ़्लेक्सिबल बिज़नेस लाइन", how: "जितना निकालें, सिर्फ़ उसी पर ब्याज। लौटाएँ और फिर से निकालें।" },
+        term: { name: "बिज़नेस टर्म लोन", how: "एक बार में पूरी रकम, 24 महीने तक तय मासिक EMI।" },
+        costFlex: "{amt} पर लगभग {interest} हर महीने ब्याज",
+        costTerm: "EMI लगभग {emi} हर महीने, {n} महीने तक",
+        starterFit: "नए कारोबार के लिए Kestrel का स्टार्टर विकल्प एक छोटा टर्म लोन है, जिसमें एक तय EMI होती है — प्लान करना आसान, और इससे आपका रिकॉर्ड भी बनता है।",
+        pref: "यह आपकी पसंद है। प्रोडक्ट Kestrel Finance जाँच के समय पक्का करेगा।",
       },
       why: {
         title: "{amt} ही क्यों?", sub: "रकम नियम तय करते हैं। यहाँ वो नियम आसान भाषा में हैं।",
-        head: "आपका पूल, आसान भाषा में", counted: "किन बातों से फ़र्क पड़ा", unlock: "और पाने के तरीके",
-        aiNew: "आपका कारोबार एक साल से कम पुराना है, इसलिए हम छोटे स्टार्टर पूल से शुरू करते हैं। यह नियम से तय होता है, अंदाज़े से नहीं: 6 महीने के लेन-देन और समय पर पेमेंट के बाद पूल फिर से तय होता है — अक्सर कई गुना बड़ा।",
+        head: "आपका अंदाज़ा, आसान भाषा में", counted: "किन बातों से फ़र्क पड़ा", unlock: "और पाने के तरीके",
+        aiNew: "आपका कारोबार एक साल से कम पुराना है, इसलिए Kestrel छोटी स्टार्टर रकम से शुरू करता है। यह नियम से तय होता है, अंदाज़े से नहीं: 6 महीने के लेन-देन और समय पर पेमेंट के बाद अंदाज़ा फिर से तय होता है — अक्सर कई गुना बड़ा।",
         aiRough: "यह एक रेंज है क्योंकि यह आपके जवाबों पर आधारित है, बैंक के लेन-देन पर नहीं। बैंक जोड़ने में 30 सेकंड लगते हैं और अक्सर एक पक्का नंबर मिल जाता है।",
         fGst: "GST में रजिस्टर्ड", fNoGst: "अभी GST नहीं",
         fCash: "ज़्यादातर कमाई कैश में — बैंक में कम दिखती है", fNew: "कारोबार 1 साल से कम पुराना", fRough: "आपके जवाबों पर आधारित, बैंक के लेन-देन पर नहीं",
         leverRough: ["मेरा बैंक जोड़ें", "30 सेकंड में पक्का नंबर"],
       },
       route: {
-        title: "पैसा कहाँ भेजें?",
-        sub: "सप्लायर को सीधे पेमेंट करने से {amt} पर लगभग {save} बचते हैं।", perMonth: " हर महीने",
-        lower: "कम ब्याज", bestFit: "आपके लिए सबसे सही", rateLine: "सालाना · सेटअप फ़ीस {fee}%",
+        title: "मंज़ूरी मिलने पर पैसा कहाँ भेजें?",
+        sub: "जो आपको ठीक लगे, वो चुनें। आप इसे बाद में बदल सकते हैं, और Kestrel Finance की जाँच से पहले कुछ भी पक्का नहीं है।",
+        save: "सप्लायर को सीधे पेमेंट करने से {amt} पर लगभग {save} बचते हैं, Kestrel की दरों पर।", perMonth: " हर महीने",
+        lower: "कम ब्याज · Kestrel की पॉलिसी", rateLine: "सालाना · {product}",
         req: "हर सप्लायर का कोटेशन चाहिए",
         bankT: "मेरे बैंक खाते में भेजें", bankD: "कारोबार की जो भी ज़रूरत हो, उसमें लगाएँ।",
-        note: "हर बार पैसे निकालते समय आप अलग चुन सकते हैं।",
-        hintNone: "आगे बढ़ने के लिए कम से कम एक कोटेशन जोड़ें",
-        quotesT: "सप्लायर के कोटेशन", required: "ज़रूरी", added: "{n} जोड़े",
-        empty: "हर सप्लायर का कोटेशन या बिल अपलोड करें — माल, सामान या किराया। हम हर एक को ठीक उतना पेमेंट करते हैं जितना कोटेशन में लिखा है, ताकि पैसा वहीं जाए जहाँ आप चाहते हैं।",
+        quotesT: "सप्लायर के कोटेशन", optional: "अभी ज़रूरी नहीं", added: "{n} जोड़े",
+        empty: "अगर तैयार हो तो हर सप्लायर का कोटेशन या बिल अपलोड करें, जैसे माल, कोई सामान या किराया। नहीं तो बाद में उस व्यक्ति को दे सकते हैं जो आपको कॉल करेगा।",
         uploadQuote: "कोटेशन अपलोड करें", addAnother: "एक और सप्लायर जोड़ें",
         total: "सप्लायरों को कुल पेमेंट", gstOk: "GST सही पाया गया",
-        overPool: "आपके कोटेशन आपके पूल से {diff} ज़्यादा हैं — बाकी खुद दें, या GST जोड़कर और पाएँ।",
+        overPool: "आपके कोटेशन आपके अंदाज़े से {diff} ज़्यादा हैं — बाकी खुद दें, या GST जोड़कर और पाएँ।",
       },
       quote: {
         title: "सप्लायर का कोटेशन अपलोड करें",
@@ -930,7 +965,7 @@ const DATA = {
         reading: "आपका कोटेशन पढ़ रहे हैं…", aiHead: "आपके कोटेशन से पढ़ा गया",
         aiLine: "यह {vendor} का {item} के लिए {amt} का कोटेशन है। उनका GST नंबर सही पाया गया।",
         item: "सामान", amount: "रकम", vendor: "सप्लायर", gst: "सप्लायर का GST", gstOk: "सही पाया गया",
-        over: "यह कोटेशन आपके पूल से {diff} ज़्यादा है — बाकी खुद दें, या GST जोड़कर और पाएँ।",
+        over: "यह कोटेशन आपके अंदाज़े से {diff} ज़्यादा है — बाकी खुद दें, या GST जोड़कर और पाएँ।",
         add: "कोटेशन जोड़ें", another: "दूसरी फ़ाइल अपलोड करें",
       },
       lock: {
@@ -951,22 +986,22 @@ const DATA = {
         cta: "मेरा ऑफ़र सेव करें",
         welcome: {
           t: "फिर से स्वागत है — आप पहले से Kestrel Finance के ग्राहक हैं।", d: "आपके समय पर किए गए पेमेंट आपके काम आते हैं।",
-          pool: "आपका पूल", here: "यहीं आगे बढ़ें", app: "Kestrel ऐप खोलें",
-          applied: "पेमेंट का रिकॉर्ड जुड़ गया · अब आपका पूल {amt} है",
+          pool: "आपका अंदाज़ा", here: "यहीं आगे बढ़ें", app: "Kestrel ऐप खोलें",
+          applied: "पेमेंट का रिकॉर्ड जुड़ गया · अब आपका अंदाज़ा {amt} है",
         },
       },
       done: {
         title: "आपकी जानकारी सेव हो गई।",
         sub: "आपका ऑफ़र {date} तक रखा गया है। कुछ भी साइन नहीं हुआ, और आपकी मर्ज़ी के बिना कुछ नहीं होगा।",
-        starter: "स्टार्टर पूल", pool: "क्रेडिट पूल", valid: "{date} तक", upTo: "अधिकतम", holder: "नाम", rate: "ब्याज दर",
-        work: "आपका काम", poolRow: "पूल", est: " (अंदाज़ा)", first: "पहले इस्तेमाल", to: "पैसा कहाँ जाएगा", reach: "हम संपर्क करेंगे",
-        vendors: "{n} सप्लायर, सीधे पेमेंट", bank: "आपका बैंक खाता", call: "कॉल · {slot}",
+        starter: "स्टार्टर रकम", pool: "आपका सेव किया अंदाज़ा", valid: "{date} तक", upTo: "अधिकतम", holder: "नाम", rate: "ब्याज दर",
+        work: "आपका काम", poolRow: "अंदाज़ा", est: " (अंदाज़ा)", first: "आपको चाहिए", to: "पैसा कहाँ जाएगा", reach: "हम संपर्क करेंगे",
+        vendors: "{n} सप्लायर, सीधे पेमेंट", vendorsNone: "आपके सप्लायर, सीधे पेमेंट · कोटेशन बाद में", bank: "आपका बैंक खाता", call: "कॉल · {slot}",
         share: "अपने CA के साथ शेयर करें", over: "फिर से शुरू करें",
       },
       saveLater: {
         title: "सेव करें, बाद में पूरा करें", sub: "बस आपका मोबाइल नंबर। अब तक जो किया है, सब सेव रहेगा।",
         mobile: "मोबाइल नंबर", note: "हम WhatsApp पर एक लिंक भेजेंगे। कोई कॉल नहीं।", send: "मुझे लिंक भेजें",
-        doneT: "WhatsApp पर लिंक भेज दिया", doneD: "+91 {mobile} पर WhatsApp देखें। आपका पूल 7 दिन तक सेव रहेगा।", close: "ठीक है",
+        doneT: "WhatsApp पर लिंक भेज दिया", doneD: "+91 {mobile} पर WhatsApp देखें। आपका अंदाज़ा 7 दिन तक सेव रहेगा।", close: "ठीक है",
       },
       toast: {
         verified: "नंबर पक्का हो गया", codeSent: "+91 {m} पर कोड भेजा गया", aaSent: "इस खाते से जुड़े मोबाइल पर कोड भेजा गया",
@@ -1017,15 +1052,17 @@ const DATA = {
         { vendor: "Prime Properties", item: "Shop rent", amount: 30000, gstin: "27AAJCP7710M1Z8" },
         { vendor: "CoolTech Appliances", item: "Display fridge", amount: 45000, gstin: "27AACCC3302F1Z1" },
       ],
-      product: "Stock line via supplier pay (inventory credit)",
+      suggest: "flex", read: "Seasonal stock buyer, July dip.",
+      fit: "Your sales dip in July. A flexible line lets you draw less in slow months; a term loan gives you one fixed EMI to plan around.",
+      fitTermOnly: "Kestrel offers term loans. We've sized your EMI so it stays comfortable even in July.",
       seasonal: "Seasonal dip in July (−25%) — suggest flexible EMI",
       questions: [
         { id: "pay", q: "How do customers usually pay?", o: ["Mostly UPI / cards", "About half cash", "Mostly cash"], why: "Cash isn't a problem — it just changes which proof works best for you." },
-        { id: "tenure", q: "How long has the shop been running?", o: ["Less than 1 year", "1–3 years", "3–5 years", "5+ years"], why: "Newer shops get a starter pool that grows as your trail gets longer." },
-        { id: "gst", q: "Is it GST-registered?", o: ["Yes", "No", "Not sure"], why: "Not required. GST simply helps us offer a bigger pool." },
+        { id: "tenure", q: "How long has the shop been running?", o: ["Less than 1 year", "1–3 years", "3–5 years", "5+ years"], why: "Newer shops get a starter amount that grows as your trail gets longer." },
+        { id: "gst", q: "Is it GST-registered?", o: ["Yes", "No", "Not sure"], why: "Not required. GST simply helps Kestrel offer more." },
       ],
       mirror: "Your shop is steady — money comes in almost every day, mostly by UPI. Sales jump around festivals and dip in the monsoon. That consistency works in your favour.",
-      whyAi: "Your pool is about 1.6× your average monthly takings. We size it so that even in your slowest month — July — the repayment stays comfortably below what comes in.",
+      whyAi: "Your estimate is about 1.6× your average monthly takings. Kestrel's rules size it so that even in your slowest month — July — the repayment stays comfortably below what comes in.",
       factors: [["+", "6 months of steady UPI income"], ["+", "860 different customers — no single one you depend on"], ["gst", ""], ["−", "July dip of about 25%"]],
       levers: [["Add GST details", "up to ₹5,20,000"], ["Connect a second account", "more accurate"]],
       handoff: "Ramesh runs a 5-year kirana in Chembur with steady daily UPI inflow (~₹2.8L/mo). Wants stock credit before festive season; prefers supplier-pay. Confirm GST status and shop ownership.",
@@ -1038,18 +1075,20 @@ const DATA = {
         quoteItems: ["महीने का माल", "दुकान का किराया", "डिस्प्ले फ़्रिज"],
         questions: [
           { q: "ग्राहक आम तौर पर पैसे कैसे देते हैं?", o: ["ज़्यादातर UPI / कार्ड", "आधा-आधा कैश", "ज़्यादातर कैश"], why: "कैश में कोई दिक्कत नहीं — इससे बस यह तय होता है कि आपके लिए कौन-सा सबूत सबसे अच्छा रहेगा।" },
-          { q: "दुकान कितने समय से चल रही है?", o: ["1 साल से कम", "1–3 साल", "3–5 साल", "5+ साल"], why: "नई दुकानों को पहले छोटा पूल मिलता है, जो लेन-देन बढ़ने के साथ बढ़ता है।" },
-          { q: "क्या दुकान GST में रजिस्टर्ड है?", o: ["हाँ", "नहीं", "पता नहीं"], why: "ज़रूरी नहीं है। GST होने से बस हम बड़ा पूल दे पाते हैं।" },
+          { q: "दुकान कितने समय से चल रही है?", o: ["1 साल से कम", "1–3 साल", "3–5 साल", "5+ साल"], why: "नई दुकानों को पहले छोटी स्टार्टर रकम मिलती है, जो लेन-देन बढ़ने के साथ बढ़ती है।" },
+          { q: "क्या दुकान GST में रजिस्टर्ड है?", o: ["हाँ", "नहीं", "पता नहीं"], why: "ज़रूरी नहीं है। GST होने से बस Kestrel ज़्यादा दे पाता है।" },
         ],
         mirror: "आपकी दुकान का काम लगातार अच्छा चलता है — लगभग हर दिन पैसे आते हैं, ज़्यादातर UPI से। त्योहारों पर बिक्री बढ़ती है और बारिश में थोड़ी कम होती है। यही भरोसा आपके काम आता है।",
-        whyAi: "आपका पूल आपकी औसत महीने की कमाई का लगभग 1.6 गुना है। हमने इसे ऐसे तय किया है कि सबसे धीमे महीने — जुलाई — में भी किस्त आराम से आपकी कमाई से कम रहे।",
+        whyAi: "आपका अंदाज़ा आपकी औसत महीने की कमाई का लगभग 1.6 गुना है। Kestrel के नियम इसे ऐसे तय करते हैं कि सबसे धीमे महीने — जुलाई — में भी किस्त आराम से आपकी कमाई से कम रहे।",
         factors: [["+", "6 महीने से लगातार UPI से कमाई"], ["+", "860 अलग-अलग ग्राहक — किसी एक पर निर्भर नहीं"], ["gst", ""], ["−", "जुलाई में लगभग 25% कमी"]],
         levers: [["GST की जानकारी जोड़ें", "₹5,20,000 तक"], ["दूसरा खाता जोड़ें", "और सही अंदाज़ा"]],
+        fit: "जुलाई में आपकी बिक्री कम होती है। फ़्लेक्सिबल लाइन से धीमे महीनों में कम निकाल सकते हैं; टर्म लोन में एक तय EMI रहती है, जिससे प्लान करना आसान है।",
+        fitTermOnly: "Kestrel टर्म लोन देता है। हमने आपकी EMI ऐसी रखी है कि जुलाई में भी आराम से भरी जा सके।",
       },
     },
     clinic: {
       label: "Clinic & practice", short: "Clinic", examples: "Doctor, dentist, CA, architect",
-      who: "Dr. Neha", biz: "dental clinic",
+      who: "Dr. Ananya", biz: "dental clinic",
       avg: 460000, pool: 1200000, defaultDraw: 650000, overAsk: 1800000, step: 10000,
       series: [430, 395, 420, 450, 520, 545],
       busiest: "September (post-monsoon visits)", slowest: "May (summer break)", payers: "Paid by 480 different patients",
@@ -1062,7 +1101,9 @@ const DATA = {
         { vendor: "Precision Instruments", item: "Dental tools", amount: 120000, gstin: "27AAECP9014H1Z2" },
         { vendor: "Prime Properties", item: "Clinic rent", amount: 90000, gstin: "27AAJCP7710M1Z8" },
       ],
-      product: "Equipment financing via vendor pay",
+      suggest: "term", read: "One big equipment purchase, steady receipts.",
+      fit: "You're buying one big item. A term loan paid straight to the vendor is usually the cheapest way to do it.",
+      fitTermOnly: "Kestrel offers term loans. Paid straight to the vendor, a term loan is usually the cheapest way to buy one big item.",
       seasonal: "Mild dip in May (summer break) — no action needed",
       questions: [
         { id: "council", q: "Are you registered with your professional council?", o: ["Yes", "In progress"], why: "Your registration is what makes practice loans cheaper than general ones." },
@@ -1070,10 +1111,10 @@ const DATA = {
         { id: "use", q: "What's the money mainly for?", o: ["New equipment", "Fit-out / renovation", "Running costs"], why: "Equipment can be paid straight to your vendor — at a lower rate." },
       ],
       mirror: "Your practice earns evenly through the year — patients pay mostly by UPI and card, with a small, predictable dip during the May holidays. A trail this regular is exactly what we like to see.",
-      whyAi: "Your pool is about 2.6× your average monthly receipts. Practices with council registration and six months of steady receipts qualify for a higher multiple, and equipment paid to a vendor carries less risk.",
+      whyAi: "Your estimate is about 2.6× your average monthly receipts. Practices with council registration and six months of steady receipts qualify for a higher multiple, and equipment paid to a vendor carries less risk.",
       factors: [["+", "Regular receipts in all 6 months"], ["+", "Professional registration"], ["+", "Equipment purpose — paid to vendor"], ["−", "Single account connected"]],
-      levers: [["Upload the chair quote", "vendor rate 14.5%"], ["Connect your second account", "up to ₹14,00,000"]],
-      handoff: "Dr. Neha, dentist, steady ~₹4.6L/mo receipts across 480 patients. Needs a ₹6.5L dental chair — route to vendor-pay. Collect vendor quote and council certificate.",
+      levers: [["Upload the chair quote", "lower vendor rate"], ["Connect your second account", "up to ₹14,00,000"]],
+      handoff: "Dr. Ananya, dentist, steady ~₹4.6L/mo receipts across 480 patients. Needs a ₹6.5L dental chair — route to vendor-pay. Collect vendor quote and council certificate.",
     },
     creator: {
       label: "Creator & freelancer", short: "Creator", examples: "YouTube, Instagram, design, consulting",
@@ -1089,15 +1130,17 @@ const DATA = {
         { vendor: "EditBay Systems", item: "Editing workstation", amount: 120000, gstin: "27AAECE2287Q1Z4" },
         { vendor: "Prime Properties", item: "Studio rent", amount: 25000, gstin: "27AAJCP7710M1Z8" },
       ],
-      product: "Flexible working-capital line to bank",
+      suggest: "flex", read: "Bursty income, many payers.",
+      fit: "Your income comes in bursts. A flexible line costs less in quiet months; a term loan's EMI stays the same every month.",
+      fitTermOnly: "Kestrel offers term loans. We've sized your EMI against your quieter months, so it never squeezes you.",
       seasonal: "Bursty income — 2 of 6 months below ₹1.5L; suggest interest-only months",
       questions: [
         { id: "source", q: "Where does most of your income come from?", o: ["Platform payouts", "Brand deals", "Client projects", "Clients abroad"], why: "Every source counts — they just show up differently in your bank." },
-        { id: "steady", q: "How steady is it?", o: ["Every month", "Most months", "Comes in bursts"], why: "Bursts are normal for creators. A pool is built for exactly that." },
-        { id: "tenure", q: "How long have you been doing this full-time?", o: ["Less than 1 year", "1–3 years", "3+ years"], why: "Newer creators get a starter pool that grows with your trail." },
+        { id: "steady", q: "How steady is it?", o: ["Every month", "Most months", "Comes in bursts"], why: "Bursts are normal for creators. Your estimate already takes them into account." },
+        { id: "tenure", q: "How long have you been doing this full-time?", o: ["Less than 1 year", "1–3 years", "3+ years"], why: "Newer creators get a starter amount that grows with your trail." },
       ],
-      mirror: "Your income comes in bursts — big months when brand deals land, quieter ones in between. Platform payouts keep a steady floor under it. A pool suits this: draw in the quiet months, repay in the big ones.",
-      whyAi: "Your pool is about 1.6× your average month. Because income is bursty, we size it against your quieter months rather than your best ones, so repayments never squeeze you.",
+      mirror: "Your income comes in bursts — big months when brand deals land, quieter ones in between. Platform payouts keep a steady floor under it. A flexible option could suit this: draw in the quiet months, repay in the big ones.",
+      whyAi: "Your estimate is about 1.6× your average month. Because income is bursty, Kestrel sizes it against your quieter months rather than your best ones, so repayments never squeeze you.",
       factors: [["+", "Regular platform payouts every month"], ["+", "9 different brands — not dependent on one"], ["−", "Income varies a lot month to month"], ["−", "Single account connected"]],
       levers: [["Link brand contracts", "up to ₹3,60,000"], ["Connect a second account", "more accurate"]],
       handoff: "Kabir, full-time YouTuber, ~₹1.9L/mo average but bursty (May low, Sep high). Paid by 9 brands + 3 platforms. Prefers funds to bank. Offer interest-only flexibility.",
@@ -1116,15 +1159,17 @@ const DATA = {
         { vendor: "ToolPro Traders", item: "Repair bench & tools", amount: 30000, gstin: "27AAHCT1145R1Z5" },
         { vendor: "Prime Properties", item: "Shop rent", amount: 18000, gstin: "27AAJCP7710M1Z8" },
       ],
-      product: "Small-ticket working-capital line",
+      suggest: "term", read: "Many small UPI payments, steady most months.",
+      fit: "Lots of small payments, steady most months. A term loan with an EMI sized for your slowest month keeps things simple.",
+      fitTermOnly: "Kestrel offers term loans. Your EMI is sized for your slowest month, June, so it stays easy.",
       seasonal: "Monsoon dip in June — suggest flexible EMI",
       questions: [
         { id: "pay", q: "How do customers usually pay?", o: ["Mostly UPI / cards", "About half cash", "Mostly cash"], why: "Cash isn't a problem — it just changes which proof works best for you." },
-        { id: "tenure", q: "How long has it been running?", o: ["Less than 1 year", "1–3 years", "3–5 years", "5+ years"], why: "Newer businesses get a starter pool that grows as your trail gets longer." },
+        { id: "tenure", q: "How long has it been running?", o: ["Less than 1 year", "1–3 years", "3–5 years", "5+ years"], why: "Newer businesses get a starter amount that grows as your trail gets longer." },
         { id: "space", q: "Do you have a shop or space?", o: ["Own", "Rent", "Work from home"], why: "Working from home is fine. This only changes which address proof we ask for." },
       ],
       mirror: "Your business runs on lots of small payments — over a thousand customers in six months, almost all by UPI. It's busiest around festivals and slows a little in the monsoon. That spread of customers is a real strength.",
-      whyAi: "Your pool is about 1.4× your average month. Many small customers make your income dependable, and we keep the limit where your slowest month — June — still covers repayments easily.",
+      whyAi: "Your estimate is about 1.4× your average month. Many small customers make your income dependable, and Kestrel keeps the limit where your slowest month — June — still covers repayments easily.",
       factors: [["+", "1,100 different customers — very spread out"], ["+", "Money in on most days of the month"], ["−", "No Udyam / GST registration yet"], ["−", "Monsoon dip in June"]],
       levers: [["Register on Udyam (free)", "up to ₹2,40,000"], ["Connect a second account", "more accurate"]],
       handoff: "Salim runs a mobile repair shop with ~₹1.4L/mo across 1,100 small UPI customers. Wants working capital to bank account. Suggest Udyam registration to lift limit.",
@@ -1191,9 +1236,9 @@ I.mark = (s = 18) => `<svg width="${s}" height="${s}" viewBox="0 0 20 20" aria-h
 const fresh = () => ({
   step: "landing", qi: 0, persona: null, answers: {}, freeText: "", classified: null, lang: "en",
   trail: null, bank: null, consentStage: "ask", acc: "", acc2: "", accType: 0, otpConsent: "", pdfStage: 0, roughEarn: null, roughAsk: null,
-  mirror: null, offNote: "", draw: null, route: null, quotes: [], qd: null,
+  mirror: null, offNote: "", draw: null, route: null, product: null, quotes: [], qd: null,
   name: "", phone: "", otpSent: false, otp: "", phoneVerified: false, contact: null, slot: null, saved: false, welcomeAck: false,
-  edge: { newBiz: false, cash: false, overAsk: false, existing: false, returning: false },
+  edge: { newBiz: false, cash: false, overAsk: false, existing: false, returning: false, termOnly: false },
   source: "direct", retDismissed: false, recovered: false, sl: { phone: "", sent: false },
   sheet: null, hist: [], dir: 1, lensTab: "live",
 });
@@ -1243,7 +1288,37 @@ function drawAmt() {
 }
 const routeNow = () => S.route || (S.source === "vendor" ? "supplier" : PE().route);
 const quotesTotal = () => S.quotes.reduce((a, q) => a + q.amount, 0);
-const quotesOk = () => S.quotes.length > 0;
+/* Kestrel's products: which are on, which the borrower prefers, what they cost */
+const prodList = () => isNewBiz() ? ["term"] : ["flex", "term"].filter(id => id === "term" || !S.edge.termOnly);
+const productNow = () => { const l = prodList(); return l.includes(S.product) ? S.product : (l.includes(PE().suggest) ? PE().suggest : l[0]); };
+const prodName = id => T("prod." + id + ".name");
+const prodNameE = id => DATA.lender.products[id].name;
+const routeRate = (route, id = productNow()) => DATA.lender.products[id].rate - (route === "supplier" ? DATA.lender.vendorDiscount : 0);
+const emi = (amt, rate, n) => { const k = rate / 1200; return amt * k * Math.pow(1 + k, n) / (Math.pow(1 + k, n) - 1); };
+const monthly = (amt, id, rate) => id === "term" ? emi(amt, rate, DATA.lender.products.term.months) : amt * rate / 1200;
+const r10 = n => Math.round(n / 10) * 10;
+const costLine = (id, d) => id === "term"
+  ? T("prod.costTerm", { emi: inr(r10(monthly(d, "term", routeRate("bank", "term")))), n: DATA.lender.products.term.months })
+  : T("prod.costFlex", { interest: inr(r10(monthly(d, "flex", routeRate("bank", "flex")))), amt: inr(d) });
+const fitFor = (p, ui) => isNewBiz() ? ui.prod.starterFit : S.edge.termOnly ? p.fitTermOnly : p.fit;
+function productsBlock(d) {
+  const list = prodList(), cur = productNow(), starter = isNewBiz(), p = P();
+  // LLM call goes here — explain which of Kestrel's enabled products fits this borrower's cash flow
+  return `<div class="lockup sm" style="margin-top:24px">${I.mark(16)}<span>${T("prod.label")}</span></div>
+    <h3 class="prod-h">${T("prod.title")}</h3>
+    ${aiCard("fit-" + S.persona + (S.edge.termOnly ? "t" : "") + (starter ? "s" : ""), fitFor(p, DATA.ui[lang()].prod ? DATA.ui[lang()] : DATA.ui.en), T("prod.aiHead"))}
+    <div class="stack" style="margin-top:12px">${list.map(id => `
+      <button class="choice prod ${cur === id ? "sel" : ""}" data-act="product:${id}">
+        <span style="flex:1;min-width:0">
+          <span class="prod-top"><span class="ttl">${prodName(id)}</span><span class="prod-rate num">${DATA.lender.products[id].rate}${T("prod.pa")}</span></span>
+          ${starter ? `<span class="tag tag-blue" style="margin-top:8px">${T("prod.starterTag")}</span>` : PE().suggest === id ? `<span class="tag tag-green" style="margin-top:8px">${I.check("#14996A", 11)}${T("prod.fitTag")}</span>` : ""}
+          <span class="dsc" style="display:block;margin-top:6px">${T("prod." + id + ".how")}</span>
+          <span class="prod-cost num" id="cost-${id}">${costLine(id, d)}</span>
+        </span>
+        <span class="radio"></span>
+      </button>`).join("")}</div>
+    <p class="why">${I.info()}<span>${T("prod.pref")}</span></p>`;
+}
 const accOk = () => S.acc.length >= 9 && S.acc === S.acc2;
 const syncDrawToQuotes = () => { if (S.quotes.length) S.draw = Math.min(quotesTotal(), offer().max); };
 const nextSample = () => { const n = PE().quoteSamples.length; for (let i = 0; i < n; i++) if (!S.quotes.some(q => q.idx === i)) return i; return S.quotes.length % n; };
@@ -1251,7 +1326,7 @@ const quoteFromSample = i => { const s = PE().quoteSamples[i]; return { idx: i, 
 function quotesBlock() {
   const o = offer(), t = quotesTotal(), items = P().quoteSamples;
   return `<div class="quotes">
-    <div class="qhead"><b>${T("route.quotesT")}</b><span class="tag ${S.quotes.length ? "tag-green" : "tag-amber"}">${S.quotes.length ? T("route.added", { n: S.quotes.length }) : T("route.required")}</span></div>
+    <div class="qhead"><b>${T("route.quotesT")}</b><span class="tag ${S.quotes.length ? "tag-green" : "tag-blue"}">${S.quotes.length ? T("route.added", { n: S.quotes.length }) : T("route.optional")}</span></div>
     ${S.quotes.length ? S.quotes.map((q, i) => `<div class="qrow"><span class="ico">${I.pdf}</span><span class="qt"><b>${esc(q.vendor)}</b><span>${esc(items[q.idx].item)}</span><span class="gst-ok">${I.check("#14996A", 10)}${T("route.gstOk")}</span></span><span class="qa num">${inr(q.amount)}</span><button class="iconbtn" data-act="qRemove:${i}" aria-label="Remove quote">${I.close}</button></div>`).join("")
       : `<p class="qempty">${T("route.empty")}</p>`}
     <button class="qadd" data-act="qAdd">${I.upload}${S.quotes.length ? T("route.addAnother") : T("route.uploadQuote")}</button>
@@ -1268,7 +1343,7 @@ function score() {
     ["Questions answered", Object.keys(S.answers).length * 5],
     ["Money trail shared", S.trail === "bank" ? 25 : S.trail === "pdf" ? 20 : S.trail === "rough" ? 6 : 0],
     ["Mirror confirmed", S.mirror === "ok" ? 10 : S.mirror === "off" ? 6 : 0],
-    ["Payout route chosen", S.route ? 5 : 0],
+    ["Payout route chosen", S.route ? 10 : 0],
     ["Phone verified", S.phoneVerified ? 15 : 0],
     ["Contact preference", S.contact == null ? 0 : S.contact === 2 ? 2 : 6],
     ["Offer saved", S.saved ? 4 : 0],
@@ -1307,7 +1382,7 @@ const Screens = {
           <div class="cardface">
             <div class="brand"><span style="display:flex;gap:8px;align-items:center"><span class="crumbs"><i></i><i></i><i></i></span>${H.pool}</span><span style="opacity:.8;font-weight:500;font-size:12px">${DATA.brand.lenderShort}</span></div>
             <div style="margin-top:22px" class="lbl">${H.upTo}</div><div class="amt num">${H.amt}</div>
-            <div class="row"><div><div class="k">${H.unused}</div><div class="v">₹0</div></div><div style="text-align:right"><div class="k">${H.time}</div><div class="v">${H.timeV}</div></div></div>
+            <div class="row"><div><div class="k">${H.final}</div><div class="v">${H.finalV}</div></div><div style="text-align:right"><div class="k">${H.time}</div><div class="v">${H.timeV}</div></div></div>
           </div>
         </div>
       </div>
@@ -1455,9 +1530,8 @@ const Screens = {
   },
 
   pool() {
-    const p = P(), o = offer(), d = drawAmt(), rate = DATA.rates.bank;
+    const p = P(), o = offer(), d = drawAmt();
     const step = o.max <= 100000 ? 5000 : p.step;
-    const pct = d / o.max * 100;
     const starter = o.kind === "starter";
     return {
       body: `
@@ -1475,25 +1549,20 @@ const Screens = {
         <div class="cardface">
           <div class="brand"><span style="display:flex;gap:8px;align-items:center"><span class="crumbs"><i></i><i></i><i></i></span>${starter ? T("pool.cardStarter") : T("pool.cardPool")}</span><span style="opacity:.8;font-weight:500;font-size:12px">${DATA.brand.lenderShort}</span></div>
           <div style="margin-top:20px" class="lbl">${T("pool.available")}</div><div class="amt num">${starter ? inr(o.max) : countUp("pool2-" + o.max, o.max)}</div>
-          <div class="row"><div><div class="k">${T("pool.unused")}</div><div class="v">₹0</div></div><div style="text-align:right"><div class="k">${esc(T("pool.drawK"))}</div><div class="v">${T("pool.drawV")}</div></div></div>
+          <div class="row"><div><div class="k">${T("pool.final")}</div><div class="v">${T("pool.finalV")}</div></div></div>
         </div>
       </div>
       <div class="slider-head"><span class="q">${T("pool.sliderQ")}</span><span class="v num" id="drawV">${inr(d)}</span></div>
       <input type="range" id="drawR" min="${step}" max="${o.max}" step="${step}" value="${d}" style="--pct:${(d - step) / (o.max - step) * 100}%" aria-label="${T("pool.sliderQ")}">
       <div class="range-ends num"><span>${inr(step)}</span><span>${inr(o.max)}</span></div>
-      <div class="gap-s"></div>
-      <div class="pool-track"><div class="pool-fill ${pct >= 99.9 ? "full" : ""}" id="poolFill" style="width:${pct}%"><span id="poolFillT">${pct > 28 ? T("pool.inUse") : ""}</span></div><span class="pool-free" id="poolFree">${pct < 72 ? T("pool.zero") : ""}</span></div>
-      <div class="card pad stat-rows">
-        <div class="stat"><span class="sw" style="background:var(--primary)"></span><span class="t" id="sDrawT">${poolLines(d, o).a}</span></div>
-        <div class="stat"><span class="sw" style="background:repeating-linear-gradient(135deg,#F3F5FF 0 3px,#CCD3FF 3px 6px)"></span><span class="t" id="sFreeT">${poolLines(d, o).b}</span></div>
-      </div>
+      ${productsBlock(d)}
       ${starter ? `
         <div class="card pad" style="margin-top:14px">
           <p style="font-weight:600;font-size:15px">${T("pool.growTitle")}</p>
           <div class="stack" style="gap:10px;margin-top:12px">${T("pool.checklist").map((c, i) => `<div style="display:flex;gap:12px;font-size:14px;color:var(--ink2)"><span class="how"><span class="n" style="width:24px;height:24px;font-size:12px">${i + 1}</span></span>${c}</div>`).join("")}</div>
         </div>` : ""}
       <div style="margin-top:6px"><button class="link" data-act="sheet:why">${I.info("#2C48FF")}${T("pool.whyLink")}</button></div>
-      <div class="fees card pad" style="margin-top:4px">${I.info("#6F7490")}<span>${T("pool.fees", { fee: DATA.fees.bank })}</span></div>
+      <div class="fees card pad" style="margin-top:4px">${I.info("#6F7490")}<span>${T("pool.fees")}</span></div>
       <div style="text-align:center;margin-top:10px"><button class="link quiet" data-act="saveLater">${T("pool.saveLater")}</button></div>
       ${foot()}`,
       cta: btn(T("common.continue"), "toRoute"),
@@ -1501,30 +1570,30 @@ const Screens = {
   },
 
   route() {
-    const p = P(), r = routeNow(), d = drawAmt();
-    const card = (id, title, desc, rate, badge, extra) => `
-      <button class="choice route ${r === id ? "sel" : ""}" data-act="route:${id}">
-        <span class="top"><span class="ico" style="width:44px;height:44px;border-radius:14px">${id === "supplier" ? icon(S.persona === "clinic" ? "clinic" : "shop") : icon("bankSvg")}</span>
+    const p = P(), r = routeNow(), d = drawAmt(), id = productNow();
+    const card = (rid, title, desc, badge, extra) => `
+      <button class="choice route ${r === rid ? "sel" : ""}" data-act="route:${rid}">
+        <span class="top"><span class="ico" style="width:44px;height:44px;border-radius:14px">${rid === "supplier" ? icon(S.persona === "clinic" ? "clinic" : "shop") : icon("bankSvg")}</span>
           <span class="ttl" style="flex:1">${title}</span><span class="radio"></span></span>
-        ${badge ? `<span style="margin-top:12px"><span class="tag tag-green">${badge}</span>${PE().route === id ? ` <span class="tag tag-blue">${T("route.bestFit")}</span>` : ""}</span>` : (PE().route === id ? `<span style="margin-top:12px"><span class="tag tag-blue">${T("route.bestFit")}</span></span>` : "")}
-        <span class="rate"><b class="num">${rate}%</b><span>${T("route.rateLine", { fee: DATA.fees[id] })}</span></span>
+        ${badge ? `<span style="margin-top:12px"><span class="tag tag-green">${badge}</span></span>` : ""}
+        <span class="rate"><b class="num">${routeRate(rid, id)}%</b><span>${T("route.rateLine", { product: prodName(id) })}</span></span>
         <span class="dsc">${desc}</span>
         ${extra || ""}
       </button>`;
-    const saving = Math.round(d * (DATA.rates.bank - DATA.rates.supplier) / 100 / 12 / 10) * 10;
+    const saving = r10(monthly(d, id, routeRate("bank", id)) - monthly(d, id, routeRate("supplier", id)));
     return {
       body: `
       <h2 class="h">${T("route.title")}</h2>
-      <p class="sub">${T("route.sub", { save: `<b class="num" style="color:var(--green)">${inr(saving)}${T("route.perMonth")}</b>`, amt: inr(d) })}</p>
+      <p class="sub">${T("route.sub")}</p>
+      <p class="sub" style="margin-top:8px">${T("route.save", { save: `<b class="num" style="color:var(--green)">${inr(saving)}${T("route.perMonth")}</b>`, amt: inr(d) })}</p>
       <div class="gap"></div>
       <div class="stack">
-        ${r === "supplier" ? `<div class="quotes-wrap">` : ""}${card("supplier", p.supplier.t, p.supplier.d, DATA.rates.supplier, T("route.lower"), `<span class="req-line">${I.pdf.replace(/34/g, "16")}${T("route.req")}</span>`)}
+        ${r === "supplier" ? `<div class="quotes-wrap">` : ""}${card("supplier", p.supplier.t, p.supplier.d, T("route.lower"), `<span class="req-line">${I.pdf.replace(/34/g, "16")}${T("route.req")}</span>`)}
         ${r === "supplier" ? quotesBlock() + `</div>` : ""}
-        ${card("bank", T("route.bankT"), T("route.bankD"), DATA.rates.bank, "")}
+        ${card("bank", T("route.bankT"), T("route.bankD"), "")}
       </div>
-      <p class="why" style="justify-content:center">${I.info()}<span>${T("route.note")}</span></p>
       ${foot()}`,
-      cta: (r === "supplier" && !quotesOk() ? `<p class="cta-hint">${T("route.hintNone")}</p>` : "") + btn(T("common.continue"), "toLock", { dis: r === "supplier" && !quotesOk() }),
+      cta: btn(T("common.continue"), "toLock"),
     };
   },
 
@@ -1586,14 +1655,14 @@ const Screens = {
         <div class="cardface">
           <div class="brand"><span style="display:flex;gap:8px;align-items:center"><span class="crumbs"><i></i><i></i><i></i></span>${o.kind === "starter" ? T("done.starter") : T("done.pool")}</span><span style="opacity:.8;font-weight:500;font-size:12px">${T("done.valid", { date: until })}</span></div>
           <div style="margin-top:20px" class="lbl">${T("done.upTo")}</div><div class="amt num">${inr(o.max)}</div>
-          <div class="row"><div><div class="k">${T("done.holder")}</div><div class="v">${esc(S.name.toUpperCase() || p.who.toUpperCase())}</div></div><div style="text-align:right"><div class="k">${T("done.rate")}</div><div class="v">${DATA.rates[r]}% ${T("common.pa")}</div></div></div>
+          <div class="row"><div><div class="k">${T("done.holder")}</div><div class="v">${esc(S.name.toUpperCase() || p.who.toUpperCase())}</div></div><div style="text-align:right"><div class="k">${T("done.rate")}</div><div class="v">${routeRate(r)}% ${T("common.pa")}</div></div></div>
         </div>
       </div>
       <div class="card pad rows" style="margin-top:16px">
         <div class="r"><span>${T("done.work")}</span><b>${p.label}</b></div>
         <div class="r"><span>${T("done.poolRow")}</span><b class="num">${inr(o.max)}${o.low ? T("done.est") : ""}</b></div>
         <div class="r"><span>${T("done.first")}</span><b class="num">${inr(drawAmt())}</b></div>
-        <div class="r"><span>${T("done.to")}</span><b>${r === "supplier" ? T("done.vendors", { n: S.quotes.length }) : T("done.bank")}</b></div>
+        <div class="r"><span>${T("done.to")}</span><b>${r === "supplier" ? (S.quotes.length ? T("done.vendors", { n: S.quotes.length }) : T("done.vendorsNone")) : T("done.bank")}</b></div>
         <div class="r"><span>${T("done.reach")}</span><b>${contact}</b></div>
       </div>
       <div class="stack" style="margin-top:16px;gap:8px">
@@ -1605,14 +1674,6 @@ const Screens = {
     };
   },
 };
-function poolLines(d, o) {
-  const rate = DATA.rates.bank;
-  return {
-    a: `${T("pool.payOn", { amt: `<b class="num">${inr(d)}</b>` })}<span class="m num">${T("pool.intLine", { int: inr(Math.round(d * rate / 100 / 12 / 10) * 10), rate })}</span>`,
-    b: `${T("pool.waiting", { amt: `<b class="num">${inr(o.max - d)}</b>` })}<span class="m">${T("pool.waitingD")}</span>`,
-  };
-}
-
 /* ---------- sheets ---------- */
 const Sheets = {
   how() {
@@ -1761,9 +1822,15 @@ function lensHTML() {
   const tabs = `<div class="lens-tabs">${Object.entries(DATA.lens.tabs).map(([k, l]) => `<button class="${S.lensTab === k ? "on" : ""}" data-act="lensTab:${k}">${l}</button>`).join("")}</div>`;
   return tabs + (S.lensTab === "funnel" ? funnelHTML() : liveHTML());
 }
+function setupHTML() {
+  const L = DATA.lender.products;
+  const rows = [[L.term.name, L.term.rate + "%", true], [L.flex.name, L.flex.rate + "%", !S.edge.termOnly], [`Vendor pay −${DATA.lender.vendorDiscount} pts`, "", true]];
+  return `<div class="lens-sec"><div class="lens-k">Kestrel's product setup</div>
+    <div class="setup">${rows.map(([l, rt, on]) => `<div class="su ${on ? "" : "off"}"><span>${l}${rt ? ` <span class="lens-mono" style="color:var(--lens-muted)">${rt}</span>` : ""}</span><b>${on ? "✓" : "✕ off"}</b></div>`).join("")}</div>
+    <p class="lens-empty" style="margin-top:8px;font-size:12px">Configured by the lender, not Breadcrumb.</p></div>`;
+}
 function liveHTML() {
   const sc = score(), t = sc.total;
-  const lab = t >= 70 ? "Sales-ready" : t >= 35 ? "Warm" : "Cold";
   const col = t >= 70 ? "#5BE3A8" : t >= 35 ? "#FFC45E" : "#99A7FF";
   const C = 2 * Math.PI * 36;
   const [conf, ck] = confidence();
@@ -1771,44 +1838,52 @@ function liveHTML() {
   const srcLine = `<div class="kv" style="margin-top:12px"><span>${DATA.lens.sourceLabel}</span><b style="font-family:Inter">${source}</b></div>`;
   if (!S.persona) {
     return `<div class="lens-sec"><div class="lens-k">Lead quality</div><div class="score"><div class="score-ring"><svg viewBox="0 0 84 84"><circle cx="42" cy="42" r="36" fill="none" stroke="#1C2156" stroke-width="7"/></svg><span class="n">0</span></div><div><div class="lab">Waiting for a visitor</div><div class="hint">This panel shows what Kestrel Finance sees, live, as the borrower moves through Breadcrumb.</div></div></div>${srcLine}</div>
+      ${setupHTML()}
       <div class="lens-sec"><div class="lens-k">What we capture</div><p class="lens-empty">Nothing yet. No phone number, no name, no bureau pull — until the borrower chooses to share.</p></div>`;
   }
-  const p = PE(), o = offer(), d = drawAmt(), r = S.route || (stepIndex() >= 3 ? routeNow() : null);
-  const fee = d * DATA.fees[r || "bank"] / 100, mi = d * DATA.rates[r || "bank"] / 100 / 12;
+  const p = PE(), o = offer(), d = drawAmt(), r = S.route || (stepIndex() >= 3 ? routeNow() : null), pid = productNow();
+  const rate = routeRate(r || "bank", pid), mo = monthly(d, pid, rate);
+  const quotePending = r === "supplier" && !S.quotes.length;
+  const lab = t >= 70 ? (quotePending ? "Sales-ready · quote pending" : "Sales-ready") : t >= 35 ? "Warm" : "Cold";
+  const routeL = r === "supplier" ? "Vendor pay" : "Bank transfer";
+  const quoteL = r === "supplier" ? (S.quotes.length ? `verified (${S.quotes.length})` : "pending") : "Not needed";
   const slotsE = DATA.ui.en.lock.slots;
   const notes = [];
   if (S.recovered) notes.push(["#5BE3A8", DATA.lens.recovered]);
   if (existingOn()) notes.push(["#5BE3A8", DATA.lens.existing]);
-  if (r === "supplier") notes.push(["#5BE3A8", S.quotes.length ? `Vendor-pay: ${S.quotes.length} quote${S.quotes.length > 1 ? "s" : ""} on file (${inr(quotesTotal())}), vendor GST verified — funds can't be diverted` : "Vendor-pay selected — awaiting vendor quotes"]);
+  if (r === "supplier") notes.push(S.quotes.length ? ["#5BE3A8", `Vendor-pay: ${S.quotes.length} quote${S.quotes.length > 1 ? "s" : ""} on file (${inr(quotesTotal())}), vendor GST verified — funds can't be diverted`] : ["#FFC45E", "Vendor pay preferred — collect quote before disbursal"]);
   if (S.trail && S.trail !== "rough" && !isNewBiz()) notes.push(["#FFC45E", p.seasonal]);
   if (isCash()) notes.push(["#FFC45E", "Cash-heavy: verified inflow understates business — request GST / 2nd account"]);
   if (isNewBiz()) notes.push(["#99A7FF", "Under 1 year: starter limit, nurture track (6-month re-score)"]);
   if (o.over) notes.push(["#99A7FF", `Ask exceeds eligibility by ${inr(o.ask - o.max)} — upsell path via GST / vendor quote`]);
   if (S.mirror === "off") notes.push(["#FF8A7A", `User flagged mirror data${S.offNote ? `: “${esc(S.offNote.slice(0, 70))}”` : ""} — manual check before KFS`]);
   if (S.trail === "rough") notes.push(["#FFC45E", "Self-declared only — verify before sanction"]);
-  if (S.answers.gst && S.answers.gst !== "Yes") notes.push(["#99A7FF", "No GST — limit capped; GST would lift pool to ₹5.2L"]);
+  if (S.answers.gst && S.answers.gst !== "Yes") notes.push(["#99A7FF", "No GST — limit capped; GST would lift the estimate to ₹5.2L"]);
   const showHandoff = stepIndex() >= 4;
   const name = S.name.trim() || p.who;
   return `
     <div class="lens-sec"><div class="lens-k">Lead quality</div>
       <div class="score"><div class="score-ring"><svg viewBox="0 0 84 84"><circle cx="42" cy="42" r="36" fill="none" stroke="#1C2156" stroke-width="7"/><circle cx="42" cy="42" r="36" fill="none" stroke="${col}" stroke-width="7" stroke-linecap="round" stroke-dasharray="${C}" stroke-dashoffset="${C * (1 - t / 100)}"/></svg><span class="n">${t}</span></div>
-        <div><div class="lab" style="color:${col}">${lab}</div><div class="hint">${lab === "Sales-ready" ? "Verified cash flow + reachable. Route to sales." : lab === "Warm" ? "Engaged. Needs trail or verification." : "Early signal only."}</div></div></div>
+        <div><div class="lab" style="color:${col}">${lab}</div><div class="hint">${t >= 70 ? (quotePending ? "Verified cash flow + reachable. Collect the vendor quote on the call." : "Verified cash flow + reachable. Route to sales.") : t >= 35 ? "Engaged. Needs trail or verification." : "Early signal only."}</div></div></div>
       <div class="signals">${sc.sig.map(s => `<div class="sig ${s[1] ? "on" : ""}"><span>${s[0]}</span><span class="p">${s[1] ? "+" + s[1] : "—"}</span></div>`).join("")}</div>
       ${srcLine}
     </div>
+    ${setupHTML()}
     <div class="lens-sec"><div class="lens-k">Data confidence</div><div class="conf"><span class="pill ${ck}">${conf}</span></div>
-      ${S.trail && S.trail !== "rough" ? `<div class="kv" style="margin-top:12px"><span>Verified avg inflow</span><b class="num">${inr(p.avg * (isCash() ? .45 : 1))}/mo</b><span>Months of trail</span><b>6</b></div>` : ""}</div>
-    <div class="lens-sec"><div class="lens-k">Persona &amp; suggested product</div><div class="lens-v"><b style="font-weight:600">${p.label}</b> → ${isNewBiz() ? "Starter line, nurture track" : p.product}${lang() === "hi" ? ` <span class="tag" style="background:var(--navy3);color:var(--lens-ink);height:20px">Viewing in Hindi</span>` : ""}</div>
+      ${S.trail && S.trail !== "rough" ? `<div class="kv" style="margin-top:12px"><span>Verified avg inflow</span><b class="num">${inr(p.avg * (isCash() ? .45 : 1))}/mo</b><span>Months of trail</span><b>6</b></div>` : ""}
+      ${stepIndex() >= 3 ? `<div class="kv" style="margin-top:10px"><span>Preference</span><b style="font-family:Inter">${prodNameE(pid)}${r ? " · " + routeL : ""}</b>${r === "supplier" ? `<span>Quote</span><b style="font-family:Inter">${quoteL}</b>` : ""}</div>` : ""}</div>
+    <div class="lens-sec"><div class="lens-k">Persona &amp; Breadcrumb's read</div><div class="lens-v"><b style="font-weight:600">${p.label}</b> → Breadcrumb's read: ${isNewBiz() ? "New business, nurture track." : p.read}${lang() === "hi" ? ` <span class="tag" style="background:var(--navy3);color:var(--lens-ink);height:20px">Viewing in Hindi</span>` : ""}</div>
+      <p class="lens-empty" style="margin-top:6px;font-size:12.5px">${fitFor(p, DATA.ui.en)}</p>
       ${Object.keys(S.answers).length ? `<div class="kv" style="margin-top:12px">${p.questions.filter(q => S.answers[q.id]).map(q => `<span>${q.q.replace(/\?$/, "").replace("…", "").slice(0, 34)}</span><b style="font-family:Inter">${S.answers[q.id]}</b>`).join("")}</div>` : ""}</div>
     <div class="lens-sec"><div class="lens-k">Risk notes</div>${notes.length ? `<div class="notes">${notes.map(n => `<div class="note"><i style="background:${n[0]}"></i><span>${n[1]}</span></div>`).join("")}</div>` : `<p class="lens-empty">No flags yet.</p>`}</div>
     ${stepIndex() >= 3 ? `<div class="lens-sec"><div class="lens-k">Revenue view <span style="text-transform:none;letter-spacing:0;font-weight:400">· illustrative</span></div>
-      <div class="kv"><span>Pool approved</span><b>${inr(o.max)}</b><span>Drawn today</span><b>${inr(d)}</b><span>Setup fee earned (${DATA.fees[r || "bank"]}%)</span><b class="hl">${inr(fee)}</b><span>Expected interest / month</span><b class="hl">${inr(mi)}</b><span>Rate</span><b>${DATA.rates[r || "bank"]}% p.a.</b></div>
-      <div class="capbar"><i style="width:${d / o.max * 100}%"></i></div>
-      <p style="font-size:12.5px;color:var(--lens-muted);margin-top:8px">Capital committed today: <span class="lens-mono" style="color:var(--lens-ink)">${inr(d)}</span> (not ${inr(o.max)})</p></div>` : ""}
+      <div class="kv"><span>Estimate</span><b>${inr(o.max)}</b><span>Need today</span><b>${inr(d)}</b><span>Preferred product</span><b style="font-family:Inter">${prodNameE(pid)}</b><span>Rate (Kestrel)</span><b>${rate}% p.a.</b><span>${pid === "flex" ? "Expected interest / month" : "EMI / month"}</span><b class="hl">${inr(mo)}</b></div>
+      ${pid === "flex" ? `<div class="capbar"><i style="width:${d / o.max * 100}%"></i></div>
+      <p style="font-size:12.5px;color:var(--lens-muted);margin-top:8px">Capital committed today: <span class="lens-mono" style="color:var(--lens-ink)">${inr(d)}</span> (not ${inr(o.max)})</p>` : ""}</div>` : ""}
     ${showHandoff ? `<div class="lens-sec"><div class="lens-k">${DATA.lens.handoffTitle} ${S.saved ? `<span style="color:#5BE3A8;text-transform:none;letter-spacing:0">· sent to queue</span>` : ""}</div>
       <div class="handoff"><div class="hd"><span class="nm">${esc(name)}</span><span class="tag" style="background:rgba(91,227,168,.12);color:#5BE3A8">${S.phoneVerified ? "Phone verified" : "Unverified"}</span></div>
-        <div class="kv"><span>${DATA.lens.sourceLabel}</span><b style="font-family:Inter">${source}</b>${existingOn() ? `<span>Customer</span><b style="font-family:Inter">Existing · relationship team</b>` : ""}<span>Persona</span><b style="font-family:Inter">${p.label}</b><span>Verified avg inflow</span><b>${S.trail === "rough" ? "—" : inr(p.avg * (isCash() ? .45 : 1))}</b><span>Pool</span><b>${inr(o.max)}</b><span>Route</span><b style="font-family:Inter">${routeNow() === "supplier" ? "Vendor pay" : "Bank transfer"}</b>${routeNow() === "supplier" ? S.quotes.map(q => `<span>↳ ${esc(q.vendor)}</span><b>${inr(q.amount)}</b>`).join("") : ""}<span>Contact</span><b style="font-family:Inter">${S.contact == null ? "—" : S.contact === 1 ? "Call · " + (S.slot != null ? slotsE[S.slot] : "slot pending") : S.contact === 2 ? "Do not call" : "WhatsApp"}</b>${S.phoneVerified ? `<span>Mobile</span><b>+91 ${S.phone.slice(0, 5)} ${S.phone.slice(5)}</b>` : ""}</div>
-        <div class="sum"><span style="color:#99A7FF;font-size:11px;font-weight:600;letter-spacing:.06em;display:block;margin-bottom:4px">AI SUMMARY FOR CALLER</span>${esc(p.handoff.replace(p.who, name))}${S.mirror === "off" ? " Borrower flagged data — check note first." : ""}${lang() === "hi" ? " Prefers Hindi." : ""}</div>
+        <div class="kv"><span>${DATA.lens.sourceLabel}</span><b style="font-family:Inter">${source}</b>${existingOn() ? `<span>Customer</span><b style="font-family:Inter">Existing · relationship team</b>` : ""}<span>Persona</span><b style="font-family:Inter">${p.label}</b><span>Verified avg inflow</span><b>${S.trail === "rough" ? "—" : inr(p.avg * (isCash() ? .45 : 1))}</b><span>Estimate</span><b>${inr(o.max)}</b><span>Preferred product</span><b style="font-family:Inter">${prodNameE(pid)}</b><span>Route</span><b style="font-family:Inter">${routeNow() === "supplier" ? "Vendor pay" : "Bank transfer"}</b>${routeNow() === "supplier" ? S.quotes.map(q => `<span>↳ ${esc(q.vendor)}</span><b>${inr(q.amount)}</b>`).join("") : ""}<span>Quote</span><b style="font-family:Inter">${routeNow() === "supplier" ? (S.quotes.length ? `Verified (${S.quotes.length})` : "Pending") : "Not needed"}</b><span>Contact</span><b style="font-family:Inter">${S.contact == null ? "—" : S.contact === 1 ? "Call · " + (S.slot != null ? slotsE[S.slot] : "slot pending") : S.contact === 2 ? "Do not call" : "WhatsApp"}</b>${S.phoneVerified ? `<span>Mobile</span><b>+91 ${S.phone.slice(0, 5)} ${S.phone.slice(5)}</b>` : ""}</div>
+        <div class="sum"><span style="color:#99A7FF;font-size:11px;font-weight:600;letter-spacing:.06em;display:block;margin-bottom:4px">AI SUMMARY FOR CALLER</span>${esc(p.handoff.replace(p.who, name))}${S.mirror === "off" ? " Borrower flagged data — check note first." : ""}${quotePending ? " Collect the vendor quote on the call." : ""}${lang() === "hi" ? " Prefers Hindi." : ""}</div>
         <!-- LLM call goes here — one-line caller summary from the lead record -->
       </div></div>` : ""}`;
 }
@@ -1820,9 +1895,9 @@ function demoHTML() {
     <h4>Source</h4><div class="chips">${DATA.sources.map(s => `<button class="chip ${S.source === s.id ? "sel" : ""}" data-act="source:${s.id}">${s.l}</button>`).join("")}</div>
     <h4>Edge states</h4>
     ${tg("newBiz", "New business (&lt;1 year)")}${tg("cash", "Mostly cash / thin trail")}${tg("overAsk", "Asked for more than eligible")}
-    ${tg("existing", "Existing Kestrel customer")}${tg("returning", "Returning visitor")}
+    ${tg("existing", "Existing Kestrel customer")}${tg("returning", "Returning visitor")}${tg("termOnly", "Lender offers term loans only")}
     <p style="font-size:12px;color:var(--muted);margin-top:6px">“Something's off” lives on the mirror screen.</p>
-    <h4>Jump to</h4><div class="chips">${[["persona", "Who"], ["trail", "Trail"], ["mirror", "Mirror"], ["pool", "Pool"], ["lock", "Lock"]].map(([s, l]) => `<button class="chip" data-act="jump:${s}">${l}</button>`).join("")}</div>
+    <h4>Jump to</h4><div class="chips">${[["persona", "Who"], ["trail", "Trail"], ["mirror", "Mirror"], ["pool", "Options"], ["lock", "Lock"]].map(([s, l]) => `<button class="chip" data-act="jump:${s}">${l}</button>`).join("")}</div>
     <div style="height:14px"></div><button class="btn btn-secondary" style="height:44px;font-size:14px" data-act="reset">Reset demo</button>`;
 }
 
@@ -1924,12 +1999,10 @@ function bindInputs() {
   const rg = $("#drawR"); if (rg) rg.oninput = e => { S.draw = +e.target.value; updatePool(); };
 }
 function updatePool() {
-  const o = offer(), d = drawAmt(), rg = $("#drawR");
-  const pct = d / o.max * 100, min = +rg.min, L = poolLines(d, o);
+  const o = offer(), d = drawAmt(), rg = $("#drawR"), min = +rg.min;
   rg.style.setProperty("--pct", ((d - min) / (o.max - min) * 100) + "%");
-  $("#drawV").textContent = inr(d); $("#sDrawT").innerHTML = L.a; $("#sFreeT").innerHTML = L.b;
-  const f = $("#poolFill"); f.style.width = pct + "%"; f.classList.toggle("full", pct >= 99.9);
-  $("#poolFillT").textContent = pct > 28 ? T("pool.inUse") : ""; $("#poolFree").textContent = pct < 72 ? T("pool.zero") : "";
+  $("#drawV").textContent = inr(d);
+  prodList().forEach(id => { const el = $("#cost-" + id); if (el) el.textContent = costLine(id, d); });
   renderLens();
 }
 
@@ -1961,7 +2034,7 @@ function classify(text) {
   const line = hit ? fill(D.clsHit, { label: DATA.personas[id].label, desc: (/^(a|an|the)\s/i.test(desc) ? "" : "a ") + desc.toLowerCase() }) : fill(D.clsMiss, { label: DATA.personas[id].label });
   return { id, line, key: Date.now() };
 }
-const resetPersonaBits = () => { S.answers = {}; S.draw = null; S.route = null; S.quotes = []; };
+const resetPersonaBits = () => { S.answers = {}; S.draw = null; S.route = null; S.product = null; S.quotes = []; };
 function act(a, el) {
   const [cmd, ...args] = a.split(":"); const arg = args.join(":");
   switch (cmd) {
@@ -2006,7 +2079,8 @@ function act(a, el) {
     case "qAnother": { const n = PE().quoteSamples.length; S.qd = { stage: 0, idx: (S.qd.idx + 1) % n }; return render(); }
     case "qSave": S.quotes.push(quoteFromSample(S.qd.idx)); S.qd = null; S.route = "supplier"; S.sheet = null; syncDrawToQuotes(); render(); toast(T("toast.quoteAdded")); return;
     case "qRemove": S.quotes.splice(+arg, 1); syncDrawToQuotes(); return render();
-    case "toLock": if (!S.route) S.route = routeNow(); if (S.route === "supplier" && !quotesOk()) return; return go("lock");
+    case "product": S.product = arg; return render();
+    case "toLock": if (!S.route) S.route = routeNow(); return go("lock");
     case "sendOtp": S.otpSent = true; render(); toast(T("toast.codeSent", { m: S.phone.slice(0, 5) + " " + S.phone.slice(5) })); setTimeout(() => $("#otp")?.focus(), 50); return;
     case "welcomeHere": S.welcomeAck = true; return render();
     case "openApp": toast(T("toast.app")); return;
@@ -2032,6 +2106,7 @@ function act(a, el) {
       S.edge[arg] = !S.edge[arg]; S.draw = null;
       if (arg === "returning") { S.retDismissed = false; return render(); }
       if (arg === "existing") { S.welcomeAck = false; return render(); }
+      if (arg === "termOnly") { if (S.edge.termOnly) S.product = "term"; return render(); }
       if (!S.persona) S.persona = "shop"; return render();
     }
     case "demoP": S.persona = arg; resetPersonaBits(); S.trail = S.trail || "bank"; S.hist = [{ step: "landing", qi: 0 }, { step: "persona", qi: 0 }, { step: "trail", qi: 0 }]; S.dir = 1; S.step = "mirror"; S.mirror = null; return render();
@@ -2039,7 +2114,6 @@ function act(a, el) {
       if (!S.persona) S.persona = "shop";
       if (["mirror", "pool", "lock"].includes(arg) && !S.trail) S.trail = "bank";
       if (arg === "lock" && !S.route) S.route = routeNow();
-      if (arg === "lock" && S.route === "supplier" && !S.quotes.length) { S.quotes.push(quoteFromSample(0)); syncDrawToQuotes(); }
       S.sheet = null; return go(arg);
     }
   }
