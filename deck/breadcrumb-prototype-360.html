@@ -134,6 +134,34 @@ h2.h{font-size:24px;line-height:1.22;font-weight:700;letter-spacing:-.022em}
 .opt.sel{border-color:var(--primary);background:var(--p7);color:var(--primary)}
 .opt .chev{color:var(--faint)}
 .opt.sel .chev{color:var(--primary)}
+/* multi-select rows: whole row toggles */
+.q-help{font-size:14px;color:var(--ink2);margin-top:8px;line-height:1.45}
+.q-def{font-size:12.5px;color:var(--muted);margin-top:4px;line-height:1.45}
+.mstack{display:flex;flex-direction:column;gap:8px}
+.mopt{width:100%;min-height:52px;padding:12px 16px;border-radius:16px;background:var(--surface);border:1.5px solid var(--hair);display:flex;align-items:center;gap:12px;
+  text-align:left;cursor:pointer;box-shadow:var(--shadow-1);transition:border-color .2s, background .2s;-webkit-tap-highlight-color:transparent;user-select:none}
+.mopt:hover{border-color:var(--p5)}
+.mopt:focus{outline:none}
+.mopt:focus-visible{outline:2px solid var(--primary);outline-offset:2px}
+.mopt.sel{border-color:var(--primary);background:var(--p7)}
+.mo-box{flex:none;width:20px;height:20px;border-radius:6px;border:2px solid var(--p4);background:#fff;display:grid;place-items:center;transition:all .15s}
+.mopt.sel .mo-box{background:var(--primary);border-color:var(--primary)}
+.mo-t{flex:1;min-width:0;display:flex;flex-direction:column}
+.mo-l{font-size:15px;font-weight:500;line-height:1.3;color:var(--ink)}
+.mopt.sel .mo-l{color:var(--primary)}
+.mo-s{font-size:12.5px;color:var(--muted);line-height:1.3;margin-top:2px}
+.mo-tag{display:inline-flex;align-items:center;height:18px;padding:0 7px;margin-left:6px;border-radius:var(--r-pill);background:var(--primary);color:#fff;font-size:10.5px;font-weight:600;vertical-align:2px;white-space:nowrap}
+.mo-mk{display:inline-flex;align-items:center;height:22px;padding:0 8px;margin-left:6px;border-radius:var(--r-pill);background:#fff;border:1px solid var(--p5);color:var(--primary);font-size:11px;font-weight:600;vertical-align:1px;white-space:nowrap}
+.mo-mk:hover{background:var(--p6)}
+.mo-i{flex:none;width:32px;height:32px;margin:-3px 0;border-radius:10px;background:var(--p7);display:grid;place-items:center;transition:background .2s}
+.mopt.sel .mo-i{background:var(--p6)}
+.mo-i svg{width:20px;height:20px;display:block}
+/* a touch deeper than the persona icons so 20px shapes read on the pale square */
+.mo-i [fill="#CCD3FF"]{fill:#BFC8FF}
+.mo-i [fill="#99A7FF"]{fill:#8696FF}
+.mo-i [stroke="#99A7FF"]{stroke:#8696FF}
+.mo-other{margin-top:-2px}
+.mo-other .input{height:44px;font-size:15px;border-radius:14px}
 
 .chips{display:flex;flex-wrap:wrap;gap:8px}
 .chip{min-height:44px;padding:0 16px;border-radius:var(--r-pill);background:var(--surface);border:1.5px solid var(--hair);font-size:14px;font-weight:500;display:inline-flex;align-items:center;gap:8px;transition:all .2s}
@@ -248,6 +276,10 @@ input[type=range]::-moz-range-thumb{width:24px;height:24px;border-radius:50%;bac
 .route .rate b{font-size:26px;font-weight:700;letter-spacing:-.02em}
 .route .rate span{color:var(--muted);font-size:13px}
 .route .dsc{margin-top:6px}
+.route .tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:12px}
+.route .vq-btn{margin-top:12px;align-self:flex-start}
+.route:focus{outline:none}
+.route:focus-visible{outline:2px solid var(--primary);outline-offset:2px}
 .route .sub-act{margin-top:10px;font-size:13px;color:var(--primary);font-weight:500;display:inline-flex;align-items:center;gap:6px;min-height:36px}
 
 /* ---------- timeline ---------- */
@@ -753,7 +785,10 @@ const DATA = {
       lakh: "lakh",
       common: { continue: "Continue", gotIt: "Got it", back: "Back", pa: "p.a.", saved: "Saved", later: "Save and continue later" },
       ahead: { title: "What Kestrel will need later", bold: "You don't need any of it to see your estimate.", muted: "Finishing takes about 5 minutes once you decide to go ahead.", hide: "Hide", show: "Show" },
-      q: { eyebrow: "{label} · {n} of {total}" },
+      q: { eyebrow: "{label} · {n} of {total}", helpPurpose: "Pick all that apply. Your main reason first.", helpAll: "Pick all that apply.",
+        def: "We've ticked the most common one for {noun} like yours. Change it if it's not you.",
+        main: "Main", makeMain: "Make main", other: "Something else", otherPh: "Tell us in a few words",
+        quoteDoc: "A quote or invoice, if you have one" },
       trail: {
         title: "Let your business speak for itself.",
         sub: "Instead of guessing numbers, let us read the trail your payments already left.",
@@ -849,7 +884,6 @@ const DATA = {
         checked: "Thanks — a person will check this before your offer is final.",
         overAsk: "You asked for <b>{ask}</b>. Kestrel's estimate today is <b>{max}</b> — {link}.",
         overAskLink: "here's what would unlock more",
-        need: "Your need: <b>{need}</b>. We've set it below — change it any time.",
         cardStarter: "Starter amount", cardPool: "Your estimate",
         available: "Up to", final: "Final amount", finalV: "After Kestrel's review",
         sliderQ: "How much do you need right now?",
@@ -884,7 +918,7 @@ const DATA = {
         title: "If approved, where should the money go?",
         sub: "Pick what suits you. You can change it later, and nothing is final until Kestrel Finance reviews your application.",
         save: "Paying your vendors directly saves you about {save} on {amt}, at Kestrel's rates.", perMonth: "/month",
-        lower: "Lower rate · Kestrel's policy", rateLine: "p.a. · {product}",
+        lower: "Lower rate · Kestrel's policy", rateLine: "p.a. · {product}", fitsBuy: "Fits your purchase",
         req: "A quote is needed for each vendor",
         bankT: "Kestrel sends it to your bank account", bankD: "Use it however your business needs.",
         setBy: "Payout options and rates are set by Kestrel Finance.",
@@ -1001,7 +1035,10 @@ const DATA = {
       lakh: "लाख",
       common: { continue: "आगे बढ़ें", gotIt: "ठीक है", back: "पीछे", pa: "सालाना", saved: "सेव हो गया", later: "सेव करें, बाद में जारी रखें" },
       ahead: { title: "Kestrel को बाद में क्या चाहिए होगा", bold: "अपना अंदाज़ा देखने के लिए इनमें से कुछ नहीं चाहिए।", muted: "आगे बढ़ने का फ़ैसला करने पर पूरा करने में लगभग 5 मिनट लगते हैं।", hide: "छिपाएँ", show: "दिखाएँ" },
-      q: { eyebrow: "{label} · सवाल {n}/{total}" },
+      q: { eyebrow: "{label} · सवाल {n}/{total}", helpPurpose: "जो भी लागू हों, सब चुनें। सबसे ज़रूरी कारण पहले।", helpAll: "जो भी लागू हों, सब चुनें।",
+        def: "आप जैसी {noun} के लिए हमने सबसे आम विकल्प चुन दिया है। अगर यह आप पर लागू नहीं होता, तो बदल दें।",
+        main: "मुख्य", makeMain: "मुख्य बनाएँ", other: "कुछ और", otherPh: "कुछ शब्दों में बताएँ",
+        quoteDoc: "कोटेशन या बिल, अगर है" },
       trail: {
         title: "आपका कारोबार खुद अपनी बात कहे।",
         sub: "अंदाज़े से नंबर भरने की जगह, हमें वो लेन-देन देखने दें जो आपके पेमेंट पहले से बता रहे हैं।",
@@ -1097,7 +1134,6 @@ const DATA = {
         checked: "धन्यवाद — ऑफ़र पक्का होने से पहले एक इंसान इसे जाँचेगा।",
         overAsk: "आपने <b>{ask}</b> माँगा था। आज Kestrel का अंदाज़ा <b>{max}</b> है — {link}।",
         overAskLink: "और पाने का तरीका यहाँ देखें",
-        need: "आपकी ज़रूरत: <b>{need}</b>। हमने नीचे यही रखा है — कभी भी बदल सकते हैं।",
         cardStarter: "स्टार्टर रकम", cardPool: "आपका अंदाज़ा",
         available: "अधिकतम", final: "पक्की रकम", finalV: "Kestrel की जाँच के बाद",
         sliderQ: "अभी आपको कितना चाहिए?",
@@ -1132,7 +1168,7 @@ const DATA = {
         title: "मंज़ूरी मिलने पर पैसा कहाँ भेजें?",
         sub: "जो आपको ठीक लगे, वो चुनें। आप इसे बाद में बदल सकते हैं, और Kestrel Finance की जाँच से पहले कुछ भी पक्का नहीं है।",
         save: "सप्लायर को सीधे पेमेंट करने से {amt} पर लगभग {save} बचते हैं, Kestrel की दरों पर।", perMonth: " हर महीने",
-        lower: "कम ब्याज · Kestrel की पॉलिसी", rateLine: "सालाना · {product}",
+        lower: "कम ब्याज · Kestrel की पॉलिसी", rateLine: "सालाना · {product}", fitsBuy: "आपकी ख़रीद के लिए सही",
         req: "हर सप्लायर का कोटेशन चाहिए",
         bankT: "Kestrel इसे आपके बैंक खाते में भेजता है", bankD: "कारोबार की जो भी ज़रूरत हो, उसमें लगाएँ।",
         setBy: "पेमेंट के तरीके और ब्याज दरें Kestrel Finance तय करता है।",
@@ -1281,7 +1317,6 @@ const DATA = {
       avg: 280000, pool: 450000, defaultDraw: 150000, overAsk: 800000, step: 5000,
       series: [290, 275, 250, 215, 280, 370],
       busiest: "September (festive season)", slowest: "July (monsoon)", payers: "Paid by 860 different customers",
-      route: "supplier",
       hint: "Your UPI collections and supplier payments already tell your story.",
       supplier: { t: "Kestrel pays your vendor directly", d: "Kestrel pays your wholesaler, equipment seller or landlord — exactly what their quote says." },
       quoteSamples: [
@@ -1291,7 +1326,7 @@ const DATA = {
       ],
       docs: [{ id: "pan", l: "PAN", s: "PAN" }, { id: "aadhaar", l: "Aadhaar (via DigiLocker)", s: "Aadhaar" }, { id: "rent", l: "Shop rent agreement or ownership proof", s: "Shop rent agreement or ownership proof" }, { id: "gst", l: "GST certificate, if you have one", s: "GST, if you have it" }],
       noteChips: [{ id: "cash", l: "I also take cash" }, { id: "july", l: "July is always slow (monsoon)" }, { id: "oneoff", l: "One month had a one-time transfer" }],
-      suggest: "flex", read: "Seasonal stock buyer, July dip.",
+      suggest: "flex", read: "Seasonal sales, July dip.", noun: "shops",
       fit: "Your sales dip in July. A flexible line lets you draw less in slow months; a term loan gives you one fixed EMI to plan around.",
       fitTermOnly: "Kestrel offers term loans. We've sized your EMI so it stays comfortable even in July.",
       seasonal: "Seasonal dip in July (−25%) — suggest flexible EMI",
@@ -1299,15 +1334,22 @@ const DATA = {
         { id: "pay", q: "How do customers usually pay?", o: ["Mostly UPI / cards", "About half cash", "Mostly cash"], why: "Cash isn't a problem — it just changes which proof works best for you." },
         { id: "tenure", q: "How long has the shop been running?", o: ["Less than 1 year", "1–3 years", "3–5 years", "5+ years"], why: "Newer shops get a starter amount that grows as your trail gets longer." },
         { id: "gst", q: "Is it GST-registered?", o: ["Yes", "No", "Not sure"], why: "Not required. GST simply helps Kestrel offer more." },
+        { id: "purpose", multi: true, help: "helpPurpose", def: "stock", other: true, q: "What's the money for?", opts: [
+          { id: "stock", l: "Stock for the season", icon: "boxes", kind: "flex", fit: "Stock for the season suits a flexible line: draw before the festive rush, repay as it sells, and draw less in July.", also: "The stock can sit on a flexible line." },
+          { id: "fitout", l: "Shop fit-out or renovation", icon: "roller", kind: "term", buy: true, fit: "A fit-out is a one-time cost. A term loan paid straight to your contractor gives you one fixed EMI at a lower rate.", also: "The fit-out can be paid straight to your contractor." },
+          { id: "equip", l: "Equipment", s: "fridge, display, billing machine", icon: "fridge", kind: "term", buy: true, fit: "Equipment is a one-time buy. A term loan paid straight to the seller gives you one fixed EMI at a lower rate.", also: "The equipment can be paid straight to the seller." },
+          { id: "slow", l: "Cover slow months", icon: "calDown", kind: "flex", fit: "Your sales dip in July. A flexible line lets you draw only in slow months and pay interest only on what you use.", also: "A flexible line can carry you through July." },
+          { id: "second", l: "Open a second shop", icon: "storePlus", fit: "A second shop takes a few months to find its feet. A flexible line lets you draw in stages as it sets up.", also: "The second shop can be drawn in stages." },
+        ] },
       ],
       mirror: "Your shop is steady — money comes in almost every day, mostly by UPI. Sales jump around festivals and dip in the monsoon. That consistency works in your favour.",
       whyAi: "Your estimate is about 1.6× your average monthly takings. Kestrel's rules size it so that even in your slowest month — July — the repayment stays comfortably below what comes in.",
       factors: [["+", "6 months of steady UPI income"], ["+", "860 different customers — no single one you depend on"], ["gst", ""], ["−", "July dip of about 25%"]],
       levers: [["Add GST details", "up to ₹5,20,000"], ["Connect a second account", "more accurate"]],
-      handoff: "Ramesh runs a 5-year kirana in Chembur with steady daily UPI inflow (~₹2.8L/mo). Wants stock credit before festive season; prefers supplier-pay. Confirm GST status and shop ownership.",
+      handoff: "Ramesh runs a 5-year kirana in Chembur with steady daily UPI inflow (~₹2.8L/mo). Confirm GST status and shop ownership.",
       /* Hindi overrides for the Shop & trade path */
       hi: {
-        label: "दुकान और व्यापार",
+        label: "दुकान और व्यापार", noun: "दुकानों",
         busiest: "सितंबर (त्योहारों का समय)", slowest: "जुलाई (बारिश)", payers: "860 अलग-अलग ग्राहकों ने पैसे दिए",
         hint: "आपके UPI कलेक्शन और सप्लायर को किए पेमेंट ही आपकी कहानी बता देते हैं।",
         supplier: { t: "Kestrel आपके सप्लायर को सीधे पेमेंट करता है", d: "Kestrel आपके होलसेलर, सामान बेचने वाले या मकान-मालिक को सीधे पेमेंट करता है — ठीक उतना जितना उनके कोटेशन में लिखा है।" },
@@ -1318,6 +1360,13 @@ const DATA = {
           { q: "ग्राहक आम तौर पर पैसे कैसे देते हैं?", o: ["ज़्यादातर UPI / कार्ड", "आधा-आधा कैश", "ज़्यादातर कैश"], why: "कैश में कोई दिक्कत नहीं — इससे बस यह तय होता है कि आपके लिए कौन-सा सबूत सबसे अच्छा रहेगा।" },
           { q: "दुकान कितने समय से चल रही है?", o: ["1 साल से कम", "1–3 साल", "3–5 साल", "5+ साल"], why: "नई दुकानों को पहले छोटी स्टार्टर रकम मिलती है, जो लेन-देन बढ़ने के साथ बढ़ती है।" },
           { q: "क्या दुकान GST में रजिस्टर्ड है?", o: ["हाँ", "नहीं", "पता नहीं"], why: "ज़रूरी नहीं है। GST होने से बस Kestrel ज़्यादा दे पाता है।" },
+          { q: "पैसा किस काम के लिए चाहिए?", opts: [
+            { l: "सीज़न का माल", fit: "सीज़न के माल के लिए फ़्लेक्सिबल लाइन सही है: त्योहार से पहले निकालें, माल बिकने पर लौटाएँ, और जुलाई में कम निकालें।", also: "माल फ़्लेक्सिबल लाइन से ले सकते हैं।" },
+            { l: "दुकान की सजावट या मरम्मत", fit: "सजावट एक बार का खर्च है। टर्म लोन का पैसा सीधे आपके ठेकेदार को जाता है — एक तय EMI और कम ब्याज।", also: "सजावट का पैसा सीधे ठेकेदार को जा सकता है।" },
+            { l: "सामान", s: "फ़्रिज, डिस्प्ले, बिलिंग मशीन", fit: "सामान एक बार की ख़रीद है। टर्म लोन का पैसा सीधे बेचने वाले को जाता है — एक तय EMI और कम ब्याज।", also: "सामान का पैसा सीधे बेचने वाले को जा सकता है।" },
+            { l: "धीमे महीनों का खर्च", fit: "जुलाई में आपकी बिक्री कम होती है। फ़्लेक्सिबल लाइन से सिर्फ़ धीमे महीनों में निकालें, और जितना इस्तेमाल करें सिर्फ़ उसी पर ब्याज दें।", also: "फ़्लेक्सिबल लाइन से जुलाई आराम से निकल जाएगा।" },
+            { l: "दूसरी दुकान खोलना", fit: "दूसरी दुकान को जमने में कुछ महीने लगते हैं। फ़्लेक्सिबल लाइन से ज़रूरत के हिसाब से थोड़ा-थोड़ा निकाल सकते हैं।", also: "दूसरी दुकान के लिए थोड़ा-थोड़ा निकाल सकते हैं।" },
+          ] },
         ],
         mirror: "आपकी दुकान का काम लगातार अच्छा चलता है — लगभग हर दिन पैसे आते हैं, ज़्यादातर UPI से। त्योहारों पर बिक्री बढ़ती है और बारिश में थोड़ी कम होती है। यही भरोसा आपके काम आता है।",
         whyAi: "आपका अंदाज़ा आपकी औसत महीने की कमाई का लगभग 1.6 गुना है। Kestrel के नियम इसे ऐसे तय करते हैं कि सबसे धीमे महीने — जुलाई — में भी किस्त आराम से आपकी कमाई से कम रहे।",
@@ -1330,34 +1379,37 @@ const DATA = {
     clinic: {
       label: "Clinic & practice", short: "Clinic", examples: "Doctor, dentist, CA, architect",
       who: "Dr. Ananya", biz: "dental clinic",
-      avg: 460000, pool: 1200000, defaultDraw: 650000, overAsk: 1800000, step: 10000,
+      avg: 460000, pool: 1200000, defaultDraw: 400000, overAsk: 1800000, step: 10000,
       series: [430, 395, 420, 450, 520, 545],
       busiest: "September (post-monsoon visits)", slowest: "May (summer break)", payers: "Paid by 480 different patients",
-      route: "supplier",
       hint: "Your receipts show us your practice. You'll add equipment or rent quotes when you choose where the money goes.",
-      need: "New dental chair · ₹6,50,000",
       supplier: { t: "Kestrel pays your vendor directly", d: "Kestrel pays your equipment vendor, contractor or landlord — exactly what their quote says." },
       quoteSamples: [
         { vendor: "Sharma Dental Supplies", item: "Dental chair", amount: 650000, gstin: "27AAKCS5521D1Z6" },
         { vendor: "Precision Instruments", item: "Dental tools", amount: 120000, gstin: "27AAECP9014H1Z2" },
         { vendor: "Prime Properties", item: "Clinic rent", amount: 90000, gstin: "27AAJCP7710M1Z8" },
       ],
-      docs: [{ id: "pan", l: "PAN", s: "PAN" }, { id: "aadhaar", l: "Aadhaar (via DigiLocker)", s: "Aadhaar" }, { id: "council", l: "Council registration certificate", s: "Council registration" }, { id: "rent", l: "Clinic rent agreement or ownership proof", s: "Clinic rent agreement or ownership proof" }, { id: "quote", l: "The equipment quote", s: "The equipment quote" }],
+      docs: [{ id: "pan", l: "PAN", s: "PAN" }, { id: "aadhaar", l: "Aadhaar (via DigiLocker)", s: "Aadhaar" }, { id: "council", l: "Council registration certificate", s: "Council registration" }, { id: "rent", l: "Clinic rent agreement or ownership proof", s: "Clinic rent agreement or ownership proof" }],
       noteChips: [{ id: "cash", l: "Some patients pay cash" }],
-      suggest: "term", read: "One big equipment purchase, steady receipts.",
-      fit: "You're buying one big item. A term loan paid straight to the vendor is usually the cheapest way to do it.",
-      fitTermOnly: "Kestrel offers term loans. Paid straight to the vendor, a term loan is usually the cheapest way to buy one big item.",
+      suggest: "term", read: "Steady receipts, professional registration.", noun: "clinics",
+      fit: "Your receipts are steady all year. A term loan gives you one fixed EMI that fits comfortably every month.",
+      fitTermOnly: "Kestrel offers term loans. Your receipts are steady all year, so one fixed EMI fits comfortably every month.",
       seasonal: "Mild dip in May (summer break) — no action needed",
       questions: [
         { id: "council", q: "Are you registered with your professional council?", o: ["Yes", "In progress"], why: "Your registration is what makes practice loans cheaper than general ones." },
         { id: "space", q: "Your practice space is…", o: ["Owned", "Rented", "I visit other clinics"], why: "Any answer works. It only changes which documents we ask for later." },
-        { id: "use", q: "What's the money mainly for?", o: ["New equipment", "Fit-out / renovation", "Running costs"], why: "Equipment can be paid straight to your vendor — at a lower rate." },
+        { id: "purpose", multi: true, help: "helpPurpose", def: "equip", other: true, q: "What's the money for?", opts: [
+          { id: "equip", l: "New equipment", icon: "chair", kind: "term", buy: true, fit: "Equipment is one big buy. A term loan paid straight to the vendor is usually the cheapest way to do it.", also: "The equipment can be paid straight to the vendor at a lower rate." },
+          { id: "fitout", l: "Fit-out or renovation", icon: "roller", kind: "term", buy: true, fit: "A fit-out is a one-time cost. A term loan paid straight to your contractor keeps it to one fixed EMI at a lower rate.", also: "The fit-out can be paid straight to your contractor." },
+          { id: "running", l: "Running costs", icon: "wallet", kind: "flex", fit: "Running costs come and go. A flexible line lets you draw only what you need and pay interest only on that.", also: "Running costs suit a flexible line." },
+          { id: "staff", l: "Hire staff", icon: "people", fit: "New staff take a few months to pay for themselves. A term loan spreads the cost into one fixed EMI you can plan around.", also: "Hiring fits into the same fixed EMI." },
+        ] },
       ],
       mirror: "Your practice earns evenly through the year — patients pay mostly by UPI and card, with a small, predictable dip during the May holidays. A trail this regular is exactly what we like to see.",
-      whyAi: "Your estimate is about 2.6× your average monthly receipts. Practices with council registration and six months of steady receipts qualify for a higher multiple, and equipment paid to a vendor carries less risk.",
-      factors: [["+", "Regular receipts in all 6 months"], ["+", "Professional registration"], ["+", "Equipment purpose — paid to vendor"], ["−", "Single account connected"]],
-      levers: [["Upload the chair quote", "lower vendor rate"], ["Connect your second account", "up to ₹14,00,000"]],
-      handoff: "Dr. Ananya, dentist, steady ~₹4.6L/mo receipts across 480 patients. Needs a ₹6.5L dental chair — route to vendor-pay. Collect vendor quote and council certificate.",
+      whyAi: "Your estimate is about 2.6× your average monthly receipts. Practices with council registration and six months of steady receipts qualify for a higher multiple.",
+      factors: [["+", "Regular receipts in all 6 months"], ["+", "Professional registration"], ["+", "480 different patients — no single one you depend on"], ["−", "Single account connected"]],
+      levers: [["Upload an equipment quote", "lower vendor rate"], ["Connect your second account", "up to ₹14,00,000"]],
+      handoff: "Dr. Ananya, dentist, steady ~₹4.6L/mo receipts across 480 patients. Collect the council certificate.",
     },
     creator: {
       label: "Creator & freelancer", short: "Creator", examples: "YouTube, Instagram, design, consulting",
@@ -1365,7 +1417,6 @@ const DATA = {
       avg: 190000, pool: 300000, defaultDraw: 100000, overAsk: 600000, step: 5000,
       series: [230, 110, 175, 140, 205, 280],
       busiest: "September (festive brand deals)", slowest: "May", payers: "Paid by 9 brands and 3 platforms",
-      route: "bank",
       hint: "Your platform payouts land in your bank — that's your proof.",
       supplier: { t: "Kestrel pays your vendor directly", d: "Kestrel pays your gear store, studio or software vendor — exactly what their quote says." },
       quoteSamples: [
@@ -1376,20 +1427,30 @@ const DATA = {
       docs: [{ id: "pan", l: "PAN", s: "PAN" }, { id: "aadhaar", l: "Aadhaar (via DigiLocker)", s: "Aadhaar" }],
       docsNote: "Nothing else for now. Your payouts are already in your bank trail.",
       noteChips: [{ id: "late", l: "Some brand payments come late" }, { id: "usd", l: "I get paid in USD too" }],
-      suggest: "flex", read: "Bursty income, many payers.",
+      suggest: "flex", read: "Bursty income, many payers.", noun: "creators",
       fit: "Your income comes in bursts. A flexible line costs less in quiet months; a term loan's EMI stays the same every month.",
       fitTermOnly: "Kestrel offers term loans. We've sized your EMI against your quieter months, so it never squeezes you.",
       seasonal: "Bursty income — 2 of 6 months below ₹1.5L; suggest interest-only months",
       questions: [
-        { id: "source", q: "Where does most of your income come from?", o: ["Platform payouts", "Brand deals", "Client projects", "Clients abroad"], why: "Every source counts — they just show up differently in your bank." },
+        { id: "source", multi: true, help: "helpAll", def: "platform", q: "Where does your income come from?", opts: [
+          { id: "platform", l: "Platform payouts", icon: "play" }, { id: "brand", l: "Brand deals", icon: "handshake" },
+          { id: "client", l: "Client projects", icon: "briefcase" }, { id: "abroad", l: "Clients abroad", icon: "globe" },
+        ] },
         { id: "steady", q: "How steady is it?", o: ["Every month", "Most months", "Comes in bursts"], why: "Bursts are normal for creators. Your estimate already takes them into account." },
         { id: "tenure", q: "How long have you been doing this full-time?", o: ["Less than 1 year", "1–3 years", "3+ years"], why: "Newer creators get a starter amount that grows with your trail." },
+        { id: "purpose", multi: true, help: "helpPurpose", def: "gear", other: true, q: "What's the money for?", opts: [
+          { id: "gear", l: "Production gear", s: "camera, lights, mics, editing setup", icon: "camera", kind: "term", buy: true, fit: "Gear can be paid straight to the store, at a lower rate, with one fixed EMI.", also: "Gear can be paid straight to the store." },
+          { id: "studio", l: "Studio or workspace", icon: "mic", fit: "A studio means set-up costs and rent. A flexible line lets you draw as you need it and pay less in quiet months.", also: "The studio can be drawn as you need it." },
+          { id: "gaps", l: "Cover gaps between payouts", icon: "calGap", kind: "flex", fit: "Gaps between payouts suit a flexible line: draw in quiet months, repay when brand deals land.", also: "Gaps between payouts suit a flexible line." },
+          { id: "launch", l: "Launch a product", s: "merch, course, presets", icon: "tag", fit: "A launch costs money before it earns any. A flexible line lets you draw in stages as it takes shape.", also: "The launch can be drawn in stages." },
+          { id: "team", l: "Hire an editor or team", icon: "people", fit: "An editor is a monthly cost. A flexible line lets you cover pay in quiet months and repay in the big ones.", also: "Your editor's pay can be covered in quiet months." },
+        ] },
       ],
       mirror: "Your income comes in bursts — big months when brand deals land, quieter ones in between. Platform payouts keep a steady floor under it. A flexible option could suit this: draw in the quiet months, repay in the big ones.",
       whyAi: "Your estimate is about 1.6× your average month. Because income is bursty, Kestrel sizes it against your quieter months rather than your best ones, so repayments never squeeze you.",
       factors: [["+", "Regular platform payouts every month"], ["+", "9 different brands — not dependent on one"], ["−", "Income varies a lot month to month"], ["−", "Single account connected"]],
       levers: [["Link brand contracts", "up to ₹3,60,000"], ["Connect a second account", "more accurate"]],
-      handoff: "Kabir, full-time YouTuber, ~₹1.9L/mo average but bursty (May low, Sep high). Paid by 9 brands + 3 platforms. Prefers funds to bank. Offer interest-only flexibility.",
+      handoff: "Kabir, full-time YouTuber, ~₹1.9L/mo average but bursty (May low, Sep high). Paid by 9 brands + 3 platforms. Offer interest-only flexibility.",
     },
     local: {
       label: "Local services", short: "Services", examples: "Salon, repair shop, tuition, caterer",
@@ -1397,7 +1458,6 @@ const DATA = {
       avg: 140000, pool: 200000, defaultDraw: 60000, overAsk: 500000, step: 5000,
       series: [142, 138, 112, 118, 150, 180],
       busiest: "September (festive upgrades)", slowest: "June (monsoon)", payers: "Paid by 1,100 different customers",
-      route: "bank",
       hint: "Small UPI payments from customers count — every one of them.",
       supplier: { t: "Kestrel pays your vendor directly", d: "Kestrel pays your parts supplier, tool seller or landlord — exactly what their quote says." },
       quoteSamples: [
@@ -1407,7 +1467,7 @@ const DATA = {
       ],
       docs: [{ id: "pan", l: "PAN", s: "PAN" }, { id: "aadhaar", l: "Aadhaar (via DigiLocker)", s: "Aadhaar" }, { id: "rent", l: "Shop rent agreement or ownership proof (or home address if you work from home)", s: "Shop rent agreement, ownership proof or home address" }, { id: "udyam", l: "Udyam registration, if you have one", s: "Udyam, if you have it" }],
       noteChips: [{ id: "cash", l: "Lots of cash repairs too" }],
-      suggest: "term", read: "Many small UPI payments, steady most months.",
+      suggest: "term", read: "Many small UPI payments, steady most months.", noun: "services",
       fit: "Lots of small payments, steady most months. A term loan with an EMI sized for your slowest month keeps things simple.",
       fitTermOnly: "Kestrel offers term loans. Your EMI is sized for your slowest month, June, so it stays easy.",
       seasonal: "Monsoon dip in June — suggest flexible EMI",
@@ -1415,12 +1475,19 @@ const DATA = {
         { id: "pay", q: "How do customers usually pay?", o: ["Mostly UPI / cards", "About half cash", "Mostly cash"], why: "Cash isn't a problem — it just changes which proof works best for you." },
         { id: "tenure", q: "How long has it been running?", o: ["Less than 1 year", "1–3 years", "3–5 years", "5+ years"], why: "Newer businesses get a starter amount that grows as your trail gets longer." },
         { id: "space", q: "Do you have a shop or space?", o: ["Own", "Rent", "Work from home"], why: "Working from home is fine. This only changes which address proof we ask for." },
+        { id: "purpose", multi: true, help: "helpPurpose", def: "tools", other: true, q: "What's the money for?", opts: [
+          { id: "tools", l: "Tools and equipment", icon: "wrench", kind: "term", buy: true, fit: "Tools are a one-time buy. A term loan paid straight to the seller gives you one fixed EMI at a lower rate.", also: "The tools can be paid straight to the seller." },
+          { id: "setup", l: "Shop setup or renovation", icon: "roller", kind: "term", buy: true, fit: "A shop setup is a one-time cost. A term loan paid straight to your contractor keeps it to one fixed EMI at a lower rate.", also: "The setup can be paid straight to your contractor." },
+          { id: "parts", l: "Spare parts and stock", icon: "boxes", kind: "flex", fit: "Parts and stock turn over fast. A flexible line lets you restock when you need to and repay as repairs come in.", also: "Parts and stock suit a flexible line." },
+          { id: "slow", l: "Cover slow months", icon: "calDown", kind: "flex", fit: "Work slows in June. A flexible line lets you draw only in slow months and pay interest only on what you use.", also: "A flexible line can carry you through June." },
+          { id: "help", l: "Hire help or buy a vehicle", icon: "scooter", kind: "term", buy: true, fit: "A helper or a vehicle is a planned cost. A term loan with an EMI sized for June keeps it simple.", also: "Help or a vehicle fits into one fixed EMI." },
+        ] },
       ],
       mirror: "Your business runs on lots of small payments — over a thousand customers in six months, almost all by UPI. It's busiest around festivals and slows a little in the monsoon. That spread of customers is a real strength.",
       whyAi: "Your estimate is about 1.4× your average month. Many small customers make your income dependable, and Kestrel keeps the limit where your slowest month — June — still covers repayments easily.",
       factors: [["+", "1,100 different customers — very spread out"], ["+", "Money in on most days of the month"], ["−", "No Udyam / GST registration yet"], ["−", "Monsoon dip in June"]],
       levers: [["Register on Udyam (free)", "up to ₹2,40,000"], ["Connect a second account", "more accurate"]],
-      handoff: "Salim runs a mobile repair shop with ~₹1.4L/mo across 1,100 small UPI customers. Wants working capital to bank account. Suggest Udyam registration to lift limit.",
+      handoff: "Salim runs a mobile repair shop with ~₹1.4L/mo across 1,100 small UPI customers. Suggest Udyam registration to lift limit.",
     },
   },
   classify: [
@@ -1466,6 +1533,28 @@ const SVGI = {
   doc: `<svg viewBox="0 0 48 48"><path d="M12 5h17l9 9v27a3 3 0 01-3 3H12a3 3 0 01-3-3V8a3 3 0 013-3z" fill="#CCD3FF"/><path d="M29 5v9h9z" fill="#99A7FF"/><rect x="15" y="20" width="16" height="3" rx="1.5" fill="#99A7FF"/><rect x="15" y="26" width="12" height="3" rx="1.5" fill="#99A7FF"/><path d="M15 36c3-4 5 2 8-1s4 1 6 0" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/></svg>`,
   bankSvg: `<svg viewBox="0 0 48 48"><path d="M24 5l19 10H5z" fill="#99A7FF"/><rect x="5" y="15" width="38" height="3.5" fill="#CCD3FF"/><rect x="9" y="20" width="5" height="15" rx="1.5" fill="#CCD3FF"/><rect x="17.5" y="20" width="5" height="15" rx="1.5" fill="#CCD3FF"/><rect x="26" y="20" width="5" height="15" rx="1.5" fill="#CCD3FF"/><rect x="34.5" y="20" width="5" height="15" rx="1.5" fill="#CCD3FF"/><rect x="5" y="37" width="38" height="5" rx="2" fill="#99A7FF"/><circle cx="24" cy="11" r="2" fill="#fff"/></svg>`,
 };
+/* option icons: 20px duotone, same palette as SVGI (#CCD3FF base, #99A7FF detail, white highlight) */
+const OPTI = {
+  boxes: `<svg viewBox="0 0 24 24"><rect x="7.5" y="2.5" width="9" height="9" rx="1.6" fill="#CCD3FF"/><rect x="10.6" y="2.5" width="2.8" height="3.4" fill="#fff"/><rect x="2.5" y="12" width="9" height="9.5" rx="1.6" fill="#CCD3FF"/><rect x="5.6" y="12" width="2.8" height="3.4" fill="#fff"/><rect x="12.5" y="12" width="9" height="9.5" rx="1.6" fill="#99A7FF"/><rect x="15.6" y="12" width="2.8" height="3.4" fill="#fff"/></svg>`,
+  roller: `<svg viewBox="0 0 24 24"><rect x="2.5" y="3" width="15" height="6.5" rx="2.2" fill="#CCD3FF"/><rect x="4.5" y="4.6" width="8" height="1.6" rx=".8" fill="#fff"/><path d="M17.5 6.2h3v5.3h-8.5v3" fill="none" stroke="#99A7FF" stroke-width="2" stroke-linejoin="round"/><rect x="10" y="14" width="4" height="8" rx="1.6" fill="#99A7FF"/></svg>`,
+  fridge: `<svg viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="3" fill="#CCD3FF"/><rect x="5" y="9" width="14" height="1.6" fill="#99A7FF"/><rect x="7.6" y="4.3" width="1.8" height="3" rx=".9" fill="#99A7FF"/><rect x="7.6" y="12.6" width="1.8" height="5" rx=".9" fill="#99A7FF"/><rect x="12.5" y="4.3" width="4" height="1.4" rx=".7" fill="#fff"/></svg>`,
+  calDown: `<svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16.5" rx="3" fill="#CCD3FF"/><path d="M3 8a3 3 0 013-3h12a3 3 0 013 3v2H3z" fill="#99A7FF"/><rect x="7" y="2.5" width="2" height="4.5" rx="1" fill="#99A7FF"/><rect x="15" y="2.5" width="2" height="4.5" rx="1" fill="#99A7FF"/><circle cx="17.5" cy="7.5" r="1" fill="#fff"/><path d="M12 12.5v6M9.4 16l2.6 2.6 2.6-2.6" fill="none" stroke="#99A7FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+  calGap: `<svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16.5" rx="3" fill="#CCD3FF"/><path d="M3 8a3 3 0 013-3h12a3 3 0 013 3v2H3z" fill="#99A7FF"/><rect x="7" y="2.5" width="2" height="4.5" rx="1" fill="#99A7FF"/><rect x="15" y="2.5" width="2" height="4.5" rx="1" fill="#99A7FF"/><rect x="5.5" y="12.5" width="3.4" height="3" rx="1" fill="#99A7FF"/><rect x="10.3" y="12.5" width="3.4" height="3" rx="1" fill="#fff" stroke="#99A7FF" stroke-width=".9" stroke-dasharray="1.2 1"/><rect x="15.1" y="12.5" width="3.4" height="3" rx="1" fill="#99A7FF"/><rect x="5.5" y="16.8" width="3.4" height="3" rx="1" fill="#99A7FF"/><rect x="10.3" y="16.8" width="3.4" height="3" rx="1" fill="#fff" stroke="#99A7FF" stroke-width=".9" stroke-dasharray="1.2 1"/><rect x="15.1" y="16.8" width="3.4" height="3" rx="1" fill="#99A7FF"/></svg>`,
+  storePlus: `<svg viewBox="0 0 24 24"><path d="M2.5 9l2-5.5h15l2 5.5z" fill="#99A7FF"/><rect x="3.5" y="9" width="17" height="12.5" rx="2" fill="#CCD3FF"/><rect x="6.5" y="13" width="4.5" height="8.5" rx="1" fill="#99A7FF"/><circle cx="17.5" cy="17" r="4.8" fill="#99A7FF"/><path d="M17.5 14.6v4.8M15.1 17h4.8" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/></svg>`,
+  chair: `<svg viewBox="0 0 24 24"><path d="M4.6 3.5c1.4 0 2.5 1 2.8 2.4L8.8 12.5H17a2 2 0 012 2v1.5H8.2a2.2 2.2 0 01-2.1-1.7L3.6 5.8c-.3-1.2.3-2.3 1-2.3z" fill="#CCD3FF"/><path d="M5.6 6l1.6 6.4" stroke="#fff" stroke-width="1.3" stroke-linecap="round"/><rect x="11.2" y="16" width="2.6" height="4" fill="#99A7FF"/><rect x="7" y="19.4" width="11" height="2.6" rx="1.3" fill="#99A7FF"/><path d="M13.5 3.2h5.5v3.6" fill="none" stroke="#99A7FF" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="19" cy="8.6" r="2.2" fill="#99A7FF"/><circle cx="18.4" cy="8" r=".75" fill="#fff"/></svg>`,
+  wallet: `<svg viewBox="0 0 24 24"><path d="M4.5 6.5L15.5 3l1.4 3.5z" fill="#99A7FF"/><rect x="2.5" y="6.5" width="19" height="14" rx="3" fill="#CCD3FF"/><rect x="14" y="11" width="7.5" height="5.5" rx="2" fill="#99A7FF"/><circle cx="17.2" cy="13.75" r="1.3" fill="#fff"/></svg>`,
+  people: `<svg viewBox="0 0 24 24"><circle cx="16.5" cy="8.5" r="3.2" fill="#CCD3FF"/><path d="M13 20.5h9a5 5 0 00-8.6-3.5z" fill="#CCD3FF"/><circle cx="9" cy="7.8" r="3.8" fill="#99A7FF"/><circle cx="7.9" cy="6.8" r="1" fill="#fff"/><path d="M2 20.5a7 7 0 0114 0z" fill="#99A7FF"/></svg>`,
+  camera: `<svg viewBox="0 0 24 24"><path d="M7.5 7.5L9.2 4h5.6l1.7 3.5z" fill="#99A7FF"/><rect x="2" y="7" width="20" height="13.5" rx="3.2" fill="#CCD3FF"/><circle cx="12" cy="13.8" r="4.4" fill="#99A7FF"/><circle cx="12" cy="13.8" r="2.1" fill="#CCD3FF"/><circle cx="11.2" cy="13" r=".8" fill="#fff"/><rect x="17" y="9.4" width="2.6" height="1.6" rx=".8" fill="#fff"/></svg>`,
+  mic: `<svg viewBox="0 0 24 24"><rect x="8.5" y="2" width="7" height="12.5" rx="3.5" fill="#CCD3FF"/><rect x="10.2" y="4.4" width="1.6" height="5.2" rx=".8" fill="#fff"/><path d="M5.5 11a6.5 6.5 0 0013 0" fill="none" stroke="#99A7FF" stroke-width="2" stroke-linecap="round"/><rect x="11" y="17.2" width="2" height="3.4" fill="#99A7FF"/><rect x="7.5" y="20" width="9" height="2.3" rx="1.15" fill="#99A7FF"/></svg>`,
+  tag: `<svg viewBox="0 0 24 24"><path d="M3 4.6C3 3.7 3.7 3 4.6 3h7.2l9.4 9.4a1.8 1.8 0 010 2.5l-6.3 6.3a1.8 1.8 0 01-2.5 0L3 11.8z" fill="#CCD3FF"/><circle cx="8" cy="8" r="2.3" fill="#99A7FF"/><circle cx="7.4" cy="7.4" r=".75" fill="#fff"/><path d="M11 15.5l4.5-4.5" stroke="#99A7FF" stroke-width="1.8" stroke-linecap="round"/></svg>`,
+  play: `<svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="5" fill="#CCD3FF"/><path d="M10 8.3v7.4l6.2-3.7z" fill="#99A7FF" stroke="#99A7FF" stroke-width="1" stroke-linejoin="round"/><rect x="4.6" y="6.4" width="3.2" height="1.5" rx=".75" fill="#fff"/></svg>`,
+  handshake: `<svg viewBox="0 0 24 24"><path d="M4 8l4-2.6 4.4 2L16.6 5 20 7.6v6.2l-6.8 6a2 2 0 01-2.7 0L4 14.4z" fill="#CCD3FF"/><path d="M8.6 7l3.4 1.6" stroke="#fff" stroke-width="1.3" stroke-linecap="round"/><path d="M8.6 13.2l2.6 2.6M10.6 11.2l3 3M12.8 9.4l2.8 2.8" stroke="#99A7FF" stroke-width="1.6" stroke-linecap="round"/><rect x="1" y="6.6" width="3.6" height="8.6" rx="1.3" fill="#99A7FF"/><rect x="19.4" y="6.6" width="3.6" height="8.6" rx="1.3" fill="#99A7FF"/></svg>`,
+  briefcase: `<svg viewBox="0 0 24 24"><path d="M8.6 7V5.6A1.6 1.6 0 0110.2 4h3.6a1.6 1.6 0 011.6 1.6V7" fill="none" stroke="#99A7FF" stroke-width="2"/><rect x="2" y="7" width="20" height="14" rx="3" fill="#CCD3FF"/><rect x="2" y="12.2" width="20" height="1.8" fill="#99A7FF"/><rect x="10" y="11" width="4" height="4.2" rx="1" fill="#fff" stroke="#99A7FF" stroke-width="1"/></svg>`,
+  globe: `<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="#CCD3FF"/><ellipse cx="12" cy="12" rx="4.2" ry="10" fill="none" stroke="#99A7FF" stroke-width="1.6"/><path d="M2.6 8.8h18.8M2.6 15.2h18.8" stroke="#99A7FF" stroke-width="1.6"/><circle cx="7.4" cy="5.8" r="1" fill="#fff"/></svg>`,
+  wrench: `<svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="19" fill="#CCD3FF"/><path d="M29.5 12.5a7 7 0 00-8.8 8.9L12.6 29.5a3 3 0 004.2 4.2l8.1-8.1a7 7 0 008.9-8.8l-4.1 4.1-3.6-.6-.6-3.6z" fill="#99A7FF"/><circle cx="14.8" cy="31.6" r="1.6" fill="#fff"/></svg>`,
+  scooter: `<svg viewBox="0 0 24 24"><path d="M2.8 16a4.5 4.5 0 014.5-4.5h5.7l2.4 4.5z" fill="#CCD3FF"/><rect x="6.2" y="8.6" width="5.6" height="2.6" rx="1.3" fill="#99A7FF"/><path d="M15.2 16l2.2-10h3" fill="none" stroke="#99A7FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="5.8" cy="18" r="3" fill="#99A7FF"/><circle cx="18.4" cy="18" r="3" fill="#99A7FF"/><circle cx="5.8" cy="18" r="1" fill="#fff"/><circle cx="18.4" cy="18" r="1" fill="#fff"/></svg>`,
+  pencil: `<svg viewBox="0 0 24 24"><path d="M4 20l1.1-5.1L15.4 4.6a2.2 2.2 0 013.1 0l.9.9a2.2 2.2 0 010 3.1L9.1 18.9z" fill="#CCD3FF"/><path d="M4 20l1.1-5.1 4 4z" fill="#99A7FF"/><path d="M13.6 6.4l4 4" stroke="#99A7FF" stroke-width="1.8"/><path d="M7.2 15.2l6.4-6.4" stroke="#fff" stroke-width="1.3" stroke-linecap="round"/></svg>`,
+};
 const icon = key => SVGI[key] ? SVGI[key] : `<img src="${KIT_ICONS[key]}" alt="">`;
 const personaIcon = { shop: "shop", clinic: "clinic", creator: "megaphone", local: "local" };
 
@@ -1491,7 +1580,7 @@ const fresh = () => ({
   pan: "", panOk: false, aadhaarOk: false, docs: {}, helpOpen: false, help: null, helpSlot: null, updates: "app",
   aheadHidden: false, chk: {}, notes: [], noteFor: null, noteChips: [], noteText: "", savedFlash: false, resumeSnap: null,
   edge: { newBiz: false, cash: false, overAsk: false, existing: false, returning: false },
-  lenderPreset: "full", payoutPick: false, acctConfirmed: false,
+  lenderPreset: "full", payoutPick: false, acctConfirmed: false, routeChosen: false, purposeDefaultKept: true, otherText: "",
   source: "direct", retDismissed: false, recovered: false, sl: { phone: "", sent: false },
   sheet: null, hist: [], dir: 1, lensTab: "live",
 });
@@ -1515,9 +1604,26 @@ const P = () => {
   const b = PE();
   if (lang() !== "hi" || !b.hi) return b;
   const h = b.hi;
-  return { ...b, ...h, questions: b.questions.map((q, i) => ({ ...q, ...h.questions[i] })), quoteSamples: b.quoteSamples.map((s, i) => ({ ...s, item: h.quoteItems[i] })),
+  return { ...b, ...h, questions: b.questions.map((q, i) => { const hq = h.questions[i] || {}; return { ...q, ...hq, opts: q.opts && q.opts.map((o, j) => ({ ...o, ...((hq.opts || [])[j] || {}) })) }; }), quoteSamples: b.quoteSamples.map((s, i) => ({ ...s, item: h.quoteItems[i] })),
     docs: b.docs.map((d, i) => ({ ...d, ...(h.docs || [])[i] })), noteChips: b.noteChips.map((c, i) => ({ ...c, l: (h.noteChips || [])[i] || c.l })) };
 };
+/* multi-select answers are arrays of option ids; index 0 is the main one */
+const qOpts = q => q.opts ? (q.other ? [...q.opts, { id: "other", l: T("q.other"), icon: "pencil" }] : q.opts) : [];
+const pick = id => { const a = S.answers[id]; return Array.isArray(a) ? a : []; };
+const purposeQ = (p = PE()) => p.questions.find(q => q.id === "purpose");
+const purposeOpts = (p = PE()) => { const q = purposeQ(p); return q ? pick("purpose").map(id => qOpts(q).find(o => o.id === id)).filter(Boolean) : []; };
+const kindOf = o => o.kind || PE().suggest;
+const buyPicked = () => purposeOpts().some(o => o.buy);
+const mainBuy = () => { const m = purposeOpts()[0]; return !!(m && m.buy); };
+const suggestNow = () => { const m = purposeOpts()[0]; return m && m.kind ? m.kind : PE().suggest; };
+function purposeFit(p) {
+  const os = purposeOpts(p), m = os[0];
+  if (!m || !m.fit) return p.fit;
+  const alt = os.slice(1).find(o => o.also && kindOf(o) !== kindOf(m));
+  return m.fit + (alt ? " " + alt.also : "");
+}
+const optLabelE = (q, o) => o.id === "other" ? "Something else" + (S.otherText.trim() ? ` (“${S.otherText.trim()}”)` : "") : o.l + (o.s ? ` (${o.s})` : "");
+const answerE = q => { if (!q.multi) return S.answers[q.id]; const os = pick(q.id).map(id => qOpts(q).find(o => o.id === id)).filter(Boolean); return os.map((o, i) => optLabelE(q, o) + (i === 0 && os.length > 1 ? " (main)" : "")).join(" · "); };
 const isNewBiz = () => S.edge.newBiz || S.answers.tenure === "Less than 1 year";
 const isCash = () => S.edge.cash || S.answers.pay === "Mostly cash";
 const existingOn = () => S.edge.existing && S.phoneVerified;
@@ -1526,20 +1632,22 @@ const idOk = () => S.panOk && S.aadhaarOk;
 const docStatus = id => {
   if (id === "pan") return S.panOk ? "ok" : "pending";
   if (id === "aadhaar") return S.aadhaarOk ? "ok" : "pending";
-  if (id === "quote") return S.quotes.length ? "ok" : routeNow() !== "supplier" ? "na" : S.docs.quote ? "ok" : "pending";
+  if (id === "quote") return S.quotes.length || S.docs.quote ? "ok" : "pending";
   if (id === "gst" && S.answers.gst === "No") return "na";
   return S.docs[id] ? "ok" : "pending";
 };
-const bizDocs = (p = P()) => p.docs.filter(d => d.id !== "pan" && d.id !== "aadhaar" && docStatus(d.id) !== "na");
-const docsProgress = () => { const all = P().docs.filter(d => docStatus(d.id) !== "na"); return { done: all.filter(d => docStatus(d.id) === "ok").length, total: all.length }; };
+/* persona documents, plus a quote when something is being bought */
+const docsOf = (p = P(), en) => { const t = en ? TE : T; return buyPicked() ? [...p.docs, { id: "quote", l: t("q.quoteDoc"), s: t("q.quoteDoc") }] : p.docs; };
+const bizDocs = (p = P()) => docsOf(p).filter(d => d.id !== "pan" && d.id !== "aadhaar" && docStatus(d.id) !== "na");
+const docsProgress = () => { const all = docsOf(P()).filter(d => docStatus(d.id) !== "na"); return { done: all.filter(d => docStatus(d.id) === "ok").length, total: all.length }; };
 /* save & resume — answers only; never account numbers, OTPs or files */
 const SAVE_KEY = "breadcrumb.progress.v1", SAVE_TTL = 7 * 864e5;
-const FLOW = ["landing", "persona", "q0", "q1", "q2", "trail", "mirror", "pool", "route", "lock", "done"];
+const FLOW = ["landing", "persona", "q0", "q1", "q2", "q3", "trail", "mirror", "pool", "route", "lock", "done"];
 function saveProgress() {
   if (!S.persona || ["landing", "persona", "loader"].includes(S.step)) return false;
   const snap = { t: Date.now(), step: S.step, qi: S.qi, persona: S.persona, lang: S.lang, answers: S.answers, trail: S.trail, roughEarn: S.roughEarn, roughAsk: S.roughAsk,
     notes: S.notes, chk: S.chk, product: S.product, route: S.route, draw: S.draw, estimate: offer().max, first: S.name.trim().split(/\s+/)[0] || "",
-    idOk: idOk(), docs: S.docs, updates: S.updates, slot: S.slot, prefFromHelp: !!S.prefFromHelp, refNo: S.refNo, finished: S.step === "done" || S.step === "submitted" };
+    idOk: idOk(), docs: S.docs, updates: S.updates, slot: S.slot, prefFromHelp: !!S.prefFromHelp, refNo: S.refNo, purposeDefaultKept: S.purposeDefaultKept, otherText: S.otherText, routeChosen: S.routeChosen, finished: S.step === "done" || S.step === "submitted" };
   try { localStorage.setItem(SAVE_KEY, JSON.stringify(snap)); return true; } catch (e) { return false; }
 }
 function loadProgress() { try { const v = JSON.parse(localStorage.getItem(SAVE_KEY) || "null"); if (v && Date.now() - v.t < SAVE_TTL) return v; } catch (e) {} return null; }
@@ -1555,11 +1663,12 @@ function restore(sn) {
     recovered: true, retDismissed: true, aheadHidden: true,
   });
   const st = sn.step === "loader" ? "mirror" : sn.step === "submitted" ? "done" : sn.step;
-  S.refNo = sn.refNo || null; S.prefFromHelp = !!sn.prefFromHelp;
+  S.refNo = sn.refNo || null; S.prefFromHelp = !!sn.prefFromHelp; S.purposeDefaultKept = sn.purposeDefaultKept !== false; S.otherText = sn.otherText || ""; S.routeChosen = !!sn.routeChosen;
   if (["pool", "route", "lock", "done"].includes(st)) S.mirror = S.notes.length ? "off" : "ok";
   if (st === "done") { S.saved = true; S.phoneVerified = true; }
   const key = st === "q" ? "q" + (sn.qi || 0) : st;
-  S.hist = FLOW.slice(0, Math.max(0, FLOW.indexOf(key))).filter(k => !(k === "mirror" && S.trail === "rough")).map(k => k[0] === "q" && k.length === 2 ? { step: "q", qi: +k[1] } : { step: k, qi: 0 });
+  const nq = (DATA.personas[sn.persona] || DATA.personas.shop).questions.length;
+  S.hist = FLOW.slice(0, Math.max(0, FLOW.indexOf(key))).filter(k => !(k === "mirror" && S.trail === "rough") && !(/^q\d$/.test(k) && +k[1] >= nq)).map(k => k[0] === "q" && k.length === 2 ? { step: "q", qi: +k[1] } : { step: k, qi: 0 });
   S.step = st; S.qi = sn.qi || 0; S.dir = 1;
 }
 function offer(noBoost) {
@@ -1590,11 +1699,11 @@ const sharedAcct = () => {
   const bi = S.bank != null && !DATA.banks[S.bank].other ? S.bank : 0;
   return { bank: DATA.banks[bi], last4: S.acc.slice(-4) || "4821", type: S.accType, pdf: S.trail === "pdf" };
 };
-const routeNow = () => !vendorPayOn() ? "bank" : S.route || (S.source === "vendor" ? "supplier" : PE().route);
+const routeNow = () => !vendorPayOn() ? "bank" : S.route || (S.source === "vendor" ? "supplier" : "bank");
 const quotesTotal = () => S.quotes.reduce((a, q) => a + q.amount, 0);
 /* Kestrel's products: which are on, which the borrower prefers, what they cost */
 const prodList = () => isNewBiz() ? ["term"] : ["flex", "term"].filter(id => DATA.lender.products[id].enabled);
-const productNow = () => { const l = prodList(); return l.includes(S.product) ? S.product : (l.includes(PE().suggest) ? PE().suggest : l[0]); };
+const productNow = () => { const l = prodList(); return l.includes(S.product) ? S.product : (l.includes(suggestNow()) ? suggestNow() : l[0]); };
 const prodName = id => T("prod." + id + ".name");
 const prodNameE = id => DATA.lender.products[id].name;
 const routeRate = (route, id = productNow()) => DATA.lender.products[id].rate - (route === "supplier" ? DATA.lender.vendorPay.discount : 0);
@@ -1604,18 +1713,18 @@ const r10 = n => Math.round(n / 10) * 10;
 const costLine = (id, d) => id === "term"
   ? T("prod.costTerm", { emi: inr(r10(monthly(d, "term", routeRate("bank", "term")))), n: DATA.lender.products.term.months })
   : T("prod.costFlex", { interest: inr(r10(monthly(d, "flex", routeRate("bank", "flex")))), amt: inr(d) });
-const fitFor = (p, ui) => isNewBiz() ? ui.prod.starterFit : !flexOn() ? p.fitTermOnly : p.fit;
+const fitFor = (p, ui) => isNewBiz() ? ui.prod.starterFit : !flexOn() ? p.fitTermOnly : purposeFit(p);
 function productsBlock(d) {
   const list = prodList(), cur = productNow(), starter = isNewBiz(), p = P();
   // LLM call goes here — explain which of Kestrel's enabled products fits this borrower's cash flow
   return `<div class="lockup sm" style="margin-top:24px">${I.mark(16)}<span>${T("prod.label")}</span></div>
     <h3 class="prod-h">${T("prod.title")}</h3>
-    ${aiCard("fit-" + S.persona + (!flexOn() ? "t" : "") + (starter ? "s" : ""), fitFor(p, DATA.ui[lang()].prod ? DATA.ui[lang()] : DATA.ui.en), T("prod.aiHead"))}
+    ${aiCard("fit-" + S.persona + (!flexOn() ? "t" : "") + (starter ? "s" : "") + pick("purpose").slice(0, 2).join("."), fitFor(p, DATA.ui[lang()].prod ? DATA.ui[lang()] : DATA.ui.en), T("prod.aiHead"))}
     <div class="stack" style="margin-top:12px">${list.map(id => `
       <button class="choice prod ${cur === id ? "sel" : ""}" data-act="product:${id}">
         <span style="flex:1;min-width:0">
           <span class="prod-top"><span class="ttl">${prodName(id)}</span><span class="prod-rate num">${DATA.lender.products[id].rate}${T("prod.pa")}</span></span>
-          ${starter ? `<span class="tag tag-blue" style="margin-top:8px">${T("prod.starterTag")}</span>` : PE().suggest === id ? `<span class="tag tag-green" style="margin-top:8px">${I.check("#14996A", 11)}${T("prod.fitTag")}</span>` : ""}
+          ${starter ? `<span class="tag tag-blue" style="margin-top:8px">${T("prod.starterTag")}</span>` : suggestNow() === id ? `<span class="tag tag-green" style="margin-top:8px">${I.check("#14996A", 11)}${T("prod.fitTag")}</span>` : ""}
           <span class="dsc" style="display:block;margin-top:6px">${T("prod." + id + ".how")}</span>
           <span class="prod-cost num" id="cost-${id}">${costLine(id, d)}</span>
         </span>
@@ -1671,13 +1780,13 @@ const aiCard = (key, text, head) => `<div class="ai"><div class="ai-head"><span 
 const countUp = (key, to) => `<span class="num" data-count="${key}" data-to="${to}">${counted[key] ? inr(to) : "₹0"}</span>`;
 const svgFont = "Inter, 'Noto Sans Devanagari', sans-serif";
 
-function aheadCard(p) {
+function aheadCard(p, compact) {
   const A = T("ahead");
-  if (S.aheadHidden) return `<button class="ahead-min" data-act="ahead:show">${I.info("#2C48FF")}<span>${A.title}</span><b>${A.show}</b></button>`;
+  if (S.aheadHidden || (compact && !S.aheadOpened)) return `<button class="ahead-min" data-act="ahead:show">${I.info("#2C48FF")}<span>${A.title}</span><b>${A.show}</b></button>`;
   return `<div class="card pad ahead">
       <div class="ahead-h"><b>${A.title}</b><button class="link" style="min-height:32px;font-size:13px" data-act="ahead:hide">${A.hide}</button></div>
-      <p class="ahead-list">${p.docs.map(d => d.s).join(" · ")}</p>
-      ${p.docsNote ? `<p class="ahead-m">${p.docsNote}</p>` : ""}
+      <p class="ahead-list">${docsOf(p).map(d => d.s).join(" · ")}</p>
+      ${p.docsNote && docsOf(p).length === p.docs.length ? `<p class="ahead-m">${p.docsNote}</p>` : ""}
       <p class="ahead-b">${A.bold}</p>
       <p class="ahead-m">${A.muted}</p>
     </div>`;
@@ -1756,6 +1865,7 @@ const Screens = {
 
   q() {
     const p = P(), q = p.questions[S.qi], qe = PE().questions[S.qi];
+    if (q.multi) return Screens.qMulti(p, q);
     const selIdx = qe.o.indexOf(S.answers[q.id]);
     return {
       body: `
@@ -1767,6 +1877,32 @@ const Screens = {
       <div class="stack">${q.o.map((o, i) => `<button class="opt ${selIdx === i ? "sel" : ""}" data-act="answer:${q.id}:${i}">${o}<span class="chev">${selIdx === i ? I.check("#2C48FF", 16) : I.chev}</span></button>`).join("")}</div>
       ${foot()}`,
       cta: "",
+    };
+  },
+
+  qMulti(p, q) {
+    if (!Array.isArray(S.answers[q.id])) { S.answers[q.id] = [q.def]; if (q.id === "purpose") S.purposeDefaultKept = true; }
+    const sel = pick(q.id), kept = sel.length === 1 && sel[0] === q.def && (q.id !== "purpose" || S.purposeDefaultKept);
+    const row = o => {
+      const i = sel.indexOf(o.id), on = i >= 0;
+      const tag = !on ? "" : i === 0 ? `<span class="mo-tag">${T("q.main")}</span>` : `<button class="mo-mk" data-act="mmain:${q.id}:${o.id}">${T("q.makeMain")}</button>`;
+      return `<div class="mopt ${on ? "sel" : ""}" role="checkbox" aria-checked="${on}" tabindex="0" data-act="mtog:${q.id}:${o.id}">
+          <span class="mo-box">${on ? I.check("#fff", 13) : ""}</span>
+          <span class="mo-t"><span class="mo-l">${o.l}${tag}</span>${o.s ? `<span class="mo-s">${o.s}</span>` : ""}</span>
+          <span class="mo-i" aria-hidden="true">${OPTI[o.icon] || ""}</span>
+        </div>${o.id === "other" && on ? `<div class="mo-other"><input class="input" id="otherTxt" maxlength="80" placeholder="${T("q.otherPh")}" value="${esc(S.otherText)}" aria-label="${T("q.otherPh")}"></div>` : ""}`;
+    };
+    return {
+      body: `
+      ${S.qi === 0 ? aheadCard(p, true) : ""}
+      <p class="eyebrow">${T("q.eyebrow", { label: p.label, n: S.qi + 1, total: p.questions.length })}</p>
+      <h2 class="h">${q.q}</h2>
+      <p class="q-help">${T("q." + q.help)}</p>
+      ${kept ? `<p class="q-def">${T("q.def", { noun: p.noun })}</p>` : ""}
+      <div class="gap-s"></div>
+      <div class="mstack" role="group" aria-label="${esc(q.q)}">${qOpts(q).map(row).join("")}</div>
+      ${foot()}`,
+      cta: btn(T("common.continue"), "mNext", { dis: !sel.length }),
     };
   },
 
@@ -1877,7 +2013,6 @@ const Screens = {
       <div class="lockup sm">${I.mark(16)}<span>${T("pool.offerFrom")}</span></div>
       ${S.mirror === "off" ? `<div class="notice green" style="margin-top:14px">${I.check("#14996A", 15)}<span>${T("pool.checked")}</span></div>` : ""}
       ${o.over ? `<div class="notice amber" style="margin-top:14px">${I.info("#C9860C")}<span>${T("pool.overAsk", { ask: lakh(o.ask), max: lakh(o.max), link: `<button class="link" style="min-height:0;font-size:14px;display:inline" data-act="sheet:why">${T("pool.overAskLink")}</button>` })}</span></div>` : ""}
-      ${p.need && !starter ? `<div class="notice blue" style="margin-top:14px">${I.spark}<span>${T("pool.need", { need: p.need })}</span></div>` : ""}
       <div class="gap"></div>
       <div class="pool-card">${cardArt()}
         <div class="cardface">
@@ -1905,15 +2040,23 @@ const Screens = {
   route() {
     if (!vendorPayOn()) return Screens.land();
     const p = P(), r = routeNow(), d = drawAmt(), id = productNow(), acct = sharedAcct();
-    const card = (rid, title, desc, badge, extra) => `
-      <button class="choice route ${r === rid ? "sel" : ""}" data-act="route:${rid}">
-        <span class="top"><span class="ico" style="width:44px;height:44px;border-radius:14px">${rid === "supplier" ? icon(S.persona === "clinic" ? "clinic" : "shop") : icon("bankSvg")}</span>
-          <span class="ttl" style="flex:1">${title}</span><span class="radio"></span></span>
-        ${badge ? `<span style="margin-top:12px"><span class="tag tag-green">${badge}</span></span>` : ""}
-        <span class="rate"><b class="num">${routeRate(rid, id)}%</b><span>${T("route.rateLine", { product: prodName(id) })}</span></span>
-        <span class="dsc">${desc}</span>
-        ${extra || ""}
+    const head = (rid, title) => `<span class="top"><span class="ico" style="width:44px;height:44px;border-radius:14px">${rid === "supplier" ? icon(S.persona === "clinic" ? "clinic" : "shop") : icon("bankSvg")}</span>
+          <span class="ttl" style="flex:1">${title}</span><span class="radio"></span></span>`;
+    const rate = rid => `<span class="rate"><b class="num">${routeRate(rid, id)}%</b><span>${T("route.rateLine", { product: prodName(id) })}</span></span>`;
+    const bankCard = `<button class="choice route ${r === "bank" ? "sel" : ""}" role="radio" aria-checked="${r === "bank"}" data-act="route:bank">
+        ${head("bank", T("route.bankT"))}${rate("bank")}
+        <span class="dsc">${T("route.bankD")}</span>
+        ${acct ? `<span class="acct-line">${I.check("#14996A", 11)}${T(acct.pdf ? "route.acctLinePdf" : "route.acctLine", { bank: acct.bank.n, last4: esc(acct.last4) })}</span>` : ""}
       </button>`;
+    const vOpen = r === "supplier";
+    // vendor pay: collapsed to title, rate, tags and "Upload quote" until picked
+    const vendorCard = `<div class="choice route ${vOpen ? "sel" : ""}" role="radio" aria-checked="${vOpen}" tabindex="0" data-act="route:supplier">
+        ${head("supplier", p.supplier.t)}
+        <span class="tags"><span class="tag tag-green">${T("route.lower")}</span>${mainBuy() ? `<span class="tag tag-blue">${T("route.fitsBuy")}</span>` : ""}</span>
+        ${rate("supplier")}
+        ${vOpen ? `<span class="dsc">${p.supplier.d}</span><span class="req-line">${I.pdf.replace(/34/g, "16")}${T("route.req")}</span>`
+          : `<button class="btn btn-secondary btn-sm vq-btn" data-act="vendorUpload">${I.upload}${T("route.uploadQuote")}</button>`}
+      </div>`;
     const saving = r10(monthly(d, id, routeRate("bank", id)) - monthly(d, id, routeRate("supplier", id)));
     return {
       body: `
@@ -1922,10 +2065,9 @@ const Screens = {
       <div class="lockup sm">${I.mark(16)}<span>${T("route.setBy")}</span></div>
       ${vendorPayOn() ? `<p class="sub" style="margin-top:12px">${T("route.save", { save: `<b class="num" style="color:var(--green)">${inr(saving)}${T("route.perMonth")}</b>`, amt: inr(d) })}</p>` : ""}
       <div class="gap"></div>
-      <div class="stack">
-        ${vendorPayOn() ? `${r === "supplier" ? `<div class="quotes-wrap">` : ""}${card("supplier", p.supplier.t, p.supplier.d, T("route.lower"), `<span class="req-line">${I.pdf.replace(/34/g, "16")}${T("route.req")}</span>`)}
-        ${r === "supplier" ? quotesBlock() + `</div>` : ""}` : ""}
-        ${card("bank", T("route.bankT"), T("route.bankD"), "", acct ? `<span class="acct-line">${I.check("#14996A", 11)}${T(acct.pdf ? "route.acctLinePdf" : "route.acctLine", { bank: acct.bank.n, last4: esc(acct.last4) })}</span>` : "")}
+      <div class="stack" role="radiogroup">
+        ${bankCard}
+        ${vOpen ? `<div class="quotes-wrap">${vendorCard}${quotesBlock()}</div>` : vendorCard}
       </div>
       ${foot()}`,
       cta: btn(T("common.continue"), "toLock"),
@@ -2275,9 +2417,12 @@ function liveHTML() {
   const rate = routeRate(r || "bank", pid), mo = monthly(d, pid, rate);
   const quotePending = r === "supplier" && !S.quotes.length;
   const lab = t >= 70 ? (!idOk() ? "Warm · identity pending" : quotePending ? "Sales-ready · quote pending" : "Sales-ready") : t >= 35 ? (!idOk() && stepIndex() >= 4 ? "Warm · identity pending" : "Warm") : "Cold";
-  const pe = PE(), docRows = pe.docs.map(dd => [dd, docStatus(dd.id)]), bizE = bizDocs(pe), bizSent = bizE.filter(dd => docStatus(dd.id) === "ok").length;
+  const pe = PE(), docRows = docsOf(pe, true).map(dd => [dd, docStatus(dd.id)]), bizE = bizDocs(pe), bizSent = bizE.filter(dd => docStatus(dd.id) === "ok").length;
   const pendE = docRows.filter(([dd, st]) => st === "pending" && dd.id !== "pan" && dd.id !== "aadhaar");
-  const routeL = r === "supplier" ? "Vendor pay" : "Bank transfer";
+  const routeL = (r === "supplier" ? "Vendor pay" : "Bank") + (S.routeChosen ? " (chosen)" : " (default)");
+  const pq = purposeQ(pe), pOs = purposeOpts(pe);
+  const purposeL = pq && S.answers.purpose ? (pOs.length ? `${optLabelE(pq, pOs[0])} (main)${pOs.slice(1).map(o => " · " + optLabelE(pq, o)).join("")} · ${S.purposeDefaultKept ? "default, not changed" : "chosen by borrower"}` : "none picked") : "";
+  const purposeSum = pOs.length ? ` Main purpose: ${optLabelE(pq, pOs[0]).replace(/^./, c => c.toLowerCase())}${pOs[1] ? `; also ${optLabelE(pq, pOs[1]).replace(/^./, c => c.toLowerCase())}` : ""}.` : "";
   const quoteL = r === "supplier" ? (S.quotes.length ? `verified (${S.quotes.length})` : "pending") : "Not needed";
   const slotsE = DATA.ui.en.lock.slots;
   const notes = [];
@@ -2308,7 +2453,8 @@ function liveHTML() {
       ${stepIndex() >= 3 ? `<div class="kv" style="margin-top:10px"><span>Preference</span><b style="font-family:Inter">${prodNameE(pid)}${r ? " · " + routeL : ""}</b>${r === "supplier" ? `<span>Quote</span><b style="font-family:Inter">${quoteL}</b>` : ""}</div>` : ""}</div>
     <div class="lens-sec"><div class="lens-k">Persona &amp; Breadcrumb's read</div><div class="lens-v"><b style="font-weight:600">${p.label}</b> → Breadcrumb's read: ${isNewBiz() ? "New business, nurture track." : p.read}${lang() === "hi" ? ` <span class="tag" style="background:var(--navy3);color:var(--lens-ink);height:20px">Viewing in Hindi</span>` : ""}</div>
       <p class="lens-empty" style="margin-top:6px;font-size:12.5px">${fitFor(p, DATA.ui.en)}</p>
-      ${Object.keys(S.answers).length ? `<div class="kv" style="margin-top:12px">${p.questions.filter(q => S.answers[q.id]).map(q => `<span>${q.q.replace(/\?$/, "").replace("…", "").slice(0, 34)}</span><b style="font-family:Inter">${S.answers[q.id]}</b>`).join("")}</div>` : ""}</div>
+      ${purposeL ? `<div class="kv" style="margin-top:12px"><span>Purpose</span><b style="font-family:Inter">${esc(purposeL)}</b></div>` : ""}
+      ${p.questions.some(q => q.id !== "purpose" && S.answers[q.id]) ? `<div class="kv" style="margin-top:12px">${p.questions.filter(q => q.id !== "purpose" && S.answers[q.id]).map(q => `<span>${q.q.replace(/\?$/, "").replace("…", "").slice(0, 34)}</span><b style="font-family:Inter">${esc(answerE(q))}</b>`).join("")}</div>` : ""}</div>
     ${stepIndex() >= 2 && S.step !== "loader" && S.trail !== "rough" ? `<div class="lens-sec"><div class="lens-k">What the borrower saw / what they told us</div>
       <div class="notes">${insightsFor(pe, isCash(), TE).map((x, i) => `<div class="note"><i style="background:${x[0]}"></i><span>${x[1]}${S.chk[i] ? ` <b style="color:#5BE3A8;font-weight:500">· confirmed</b>` : ""}</span></div>`).join("")}
       ${S.notes.map(n => `<div class="note"><i style="background:#FFC45E"></i><span><b style="font-weight:600">Borrower note:</b> ${esc(noteText(n, pe))}${n.about !== "g" ? ` <span style="color:var(--lens-muted)">(on ${["busiest month", "slowest month", "payers"][n.about]})</span>` : ""}</span></div>`).join("")}</div></div>` : ""}
@@ -2323,8 +2469,8 @@ function liveHTML() {
     ${showHandoff ? `<div class="lens-sec"><div class="lens-k">${DATA.lens.handoffTitle} ${S.saved && idOk() ? `<span style="color:#5BE3A8;text-transform:none;letter-spacing:0">· sent to sales queue</span>` : ""}</div>
       <p class="lens-empty" style="margin:-4px 0 10px;font-size:12px">${DATA.lens.routing}</p>
       <div class="handoff"><div class="hd"><span class="nm">${esc(name)}</span><span class="tag" style="background:rgba(91,227,168,.12);color:#5BE3A8">${S.phoneVerified ? "Phone verified" : "Unverified"}</span></div>
-        <div class="kv"><span>${DATA.lens.sourceLabel}</span><b style="font-family:Inter">${source}</b>${existingOn() ? `<span>Customer</span><b style="font-family:Inter">Existing · relationship team</b>` : ""}<span>Persona</span><b style="font-family:Inter">${p.label}</b><span>Verified avg inflow</span><b>${S.trail === "rough" ? "—" : inr(p.avg * (isCash() ? .45 : 1))}</b><span>Estimate</span><b>${inr(o.max)}</b><span>Preferred product</span><b style="font-family:Inter">${prodNameE(pid)}</b><span>Route</span><b style="font-family:Inter">${routeNow() === "supplier" ? "Vendor pay" : "Bank transfer"}</b>${routeNow() === "supplier" ? S.quotes.map(q => `<span>↳ ${esc(q.vendor)}</span><b>${inr(q.amount)}</b>`).join("") : ""}<span>Quote</span><b style="font-family:Inter">${routeNow() === "supplier" ? (S.quotes.length ? `Verified (${S.quotes.length})` : "Pending") : "Not needed"}</b><span>Identity</span><b style="font-family:Inter">${idOk() ? "Verified (PAN + Aadhaar)" : "Pending"}</b><span>Documents</span><b>${bizE.length ? `${bizSent} of ${bizE.length}` : "None needed"}</b><span>Preferred contact</span><b style="font-family:Inter">${S.updates === "call" ? "Call" + (S.slot != null ? ` · ${slotsE[S.slot]}` : "") : "WhatsApp"}${S.prefFromHelp ? " (set by borrower)" : ""}</b><span>Updates</span><b style="font-family:Inter">${S.updates === "call" ? "app + call" : "app + WhatsApp"}</b><span>Assigned to</span><b style="font-family:Inter">Riya (loan officer)</b>${S.phoneVerified ? `<span>Mobile</span><b>+91 ${S.phone.slice(0, 5)} ${S.phone.slice(5)}</b>` : ""}</div>
-        <div class="sum"><span style="color:#99A7FF;font-size:11px;font-weight:600;letter-spacing:.06em;display:block;margin-bottom:4px">AI SUMMARY FOR CALLER</span>${esc(p.handoff.replace(p.who, name))}${S.notes.length ? ` Borrower notes: ${S.notes.map(n => "“" + esc(noteText(n, pe)) + "”").join(", ")}.` : ""}${pendE.length ? ` Ask for the ${pendE.map(([dd]) => dd.s.toLowerCase().replace(/^the /, "").replace(/^gst/, "GST").replace(/^udyam/, "Udyam")).join(" and the ")}.` : ""}${!idOk() ? " Identity not verified yet." : ""}${quotePending ? " Collect the vendor quote on the call." : ""}${lang() === "hi" ? " Prefers Hindi." : ""}</div>
+        <div class="kv"><span>${DATA.lens.sourceLabel}</span><b style="font-family:Inter">${source}</b>${existingOn() ? `<span>Customer</span><b style="font-family:Inter">Existing · relationship team</b>` : ""}<span>Persona</span><b style="font-family:Inter">${p.label}</b>${purposeL ? `<span>Purpose</span><b style="font-family:Inter">${esc(purposeL)}</b>` : ""}<span>Verified avg inflow</span><b>${S.trail === "rough" ? "—" : inr(p.avg * (isCash() ? .45 : 1))}</b><span>Estimate</span><b>${inr(o.max)}</b><span>Preferred product</span><b style="font-family:Inter">${prodNameE(pid)}</b><span>Route</span><b style="font-family:Inter">${(routeNow() === "supplier" ? "Vendor pay" : "Bank") + (S.routeChosen ? " (chosen)" : " (default)")}</b>${routeNow() === "supplier" ? S.quotes.map(q => `<span>↳ ${esc(q.vendor)}</span><b>${inr(q.amount)}</b>`).join("") : ""}<span>Quote</span><b style="font-family:Inter">${routeNow() === "supplier" ? (S.quotes.length ? `Verified (${S.quotes.length})` : "Pending") : "Not needed"}</b><span>Identity</span><b style="font-family:Inter">${idOk() ? "Verified (PAN + Aadhaar)" : "Pending"}</b><span>Documents</span><b>${bizE.length ? `${bizSent} of ${bizE.length}` : "None needed"}</b><span>Preferred contact</span><b style="font-family:Inter">${S.updates === "call" ? "Call" + (S.slot != null ? ` · ${slotsE[S.slot]}` : "") : "WhatsApp"}${S.prefFromHelp ? " (set by borrower)" : ""}</b><span>Updates</span><b style="font-family:Inter">${S.updates === "call" ? "app + call" : "app + WhatsApp"}</b><span>Assigned to</span><b style="font-family:Inter">Riya (loan officer)</b>${S.phoneVerified ? `<span>Mobile</span><b>+91 ${S.phone.slice(0, 5)} ${S.phone.slice(5)}</b>` : ""}</div>
+        <div class="sum"><span style="color:#99A7FF;font-size:11px;font-weight:600;letter-spacing:.06em;display:block;margin-bottom:4px">AI SUMMARY FOR CALLER</span>${esc(p.handoff.replace(p.who, name) + purposeSum)}${S.notes.length ? ` Borrower notes: ${S.notes.map(n => "“" + esc(noteText(n, pe)) + "”").join(", ")}.` : ""}${pendE.length ? ` Ask for the ${pendE.map(([dd]) => dd.s.toLowerCase().replace(/^(the|a) /, "").replace(/^gst/, "GST").replace(/^udyam/, "Udyam")).join(" and the ")}.` : ""}${!idOk() ? " Identity not verified yet." : ""}${quotePending ? " Collect the vendor quote on the call." : ""}${lang() === "hi" ? " Prefers Hindi." : ""}</div>
         <!-- LLM call goes here — one-line caller summary from the lead record -->
       </div></div>` : ""}`;
 }
@@ -2452,6 +2598,7 @@ function bindInputs() {
   const sl = $("#slPh"); if (sl) sl.oninput = e => { e.target.value = e.target.value.replace(/\D/g, "").slice(0, 10); S.sl.phone = e.target.value; $("#slBtn").disabled = S.sl.phone.length !== 10; };
   const pn = $("#pan"); if (pn) pn.oninput = e => { const v = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, "").slice(0, 10); e.target.value = v; S.pan = v; if (/^[A-Z]{5}[0-9]{4}[A-Z]$/.test(v)) { S.panOk = true; render(); return; } const bad = v.length === 10; pn.classList.toggle("bad", bad); $("#panErr").textContent = bad ? T("lock.panErr") : ""; };
   const nt = $("#noteTxt"); if (nt) nt.oninput = e => { S.noteText = e.target.value; $("#noteBtn").disabled = !S.noteChips.length && !S.noteText.trim(); };
+  const ot = $("#otherTxt"); if (ot) ot.oninput = e => { S.otherText = e.target.value; renderLens(); };
   const rg = $("#drawR"); if (rg) rg.oninput = e => { S.draw = +e.target.value; updatePool(); };
 }
 function updatePool() {
@@ -2496,7 +2643,8 @@ function classify(text) {
   const line = hit ? fill(D.clsHit, { label: DATA.personas[id].label, desc: (/^(a|an|the)\s/i.test(desc) ? "" : "a ") + desc.toLowerCase() }) : fill(D.clsMiss, { label: DATA.personas[id].label });
   return { id, line, key: Date.now() };
 }
-const resetPersonaBits = () => { S.answers = {}; S.draw = null; S.route = null; S.product = null; S.quotes = []; };
+const resetPersonaBits = () => { S.answers = {}; S.draw = null; S.route = null; S.routeChosen = false; S.product = null; S.quotes = []; S.purposeDefaultKept = true; S.otherText = ""; };
+const nextQ = () => S.qi < PE().questions.length - 1 ? go("q", { qi: S.qi + 1 }) : go("trail");
 function act(a, el) {
   const [cmd, ...args] = a.split(":"); const arg = args.join(":");
   switch (cmd) {
@@ -2511,9 +2659,21 @@ function act(a, el) {
     case "answer": {
       const [qid, idx] = args; S.answers[qid] = PE().questions[S.qi].o[+idx];
       render();
-      setTimeout(() => { if (S.qi < PE().questions.length - 1) go("q", { qi: S.qi + 1 }); else go("trail"); }, 260);
+      setTimeout(nextQ, 260);
       return;
     }
+    case "mtog": case "mmain": {
+      const [qid, oid] = args, cur = pick(qid).slice(), i = cur.indexOf(oid);
+      if (cmd === "mmain") { if (i > 0) { cur.splice(i, 1); cur.unshift(oid); } }
+      else if (i >= 0) cur.splice(i, 1); else cur.push(oid);
+      S.answers[qid] = cur; if (qid === "purpose") S.purposeDefaultKept = false;
+      const refocus = document.activeElement && document.activeElement.matches(".mopt");
+      render();
+      if (refocus) $(`[data-act="mtog:${qid}:${oid}"]`)?.focus({ preventScroll: true });
+      if (cmd === "mtog" && oid === "other" && i < 0) setTimeout(() => $("#otherTxt")?.focus({ preventScroll: true }), 30);
+      return;
+    }
+    case "mNext": if (!pick(PE().questions[S.qi].id).length) return; return nextQ();
     case "trailOpt": S.sheet = arg === "bank" ? "consent" : arg; if (arg === "bank") { S.consentStage = "ask"; S.otpConsent = ""; } if (arg === "pdf") S.pdfStage = 0; return render();
     case "bank": S.bank = +arg; return render();
     case "consentAllow": S.consentStage = "banks"; return render();
@@ -2535,28 +2695,29 @@ function act(a, el) {
     case "noteChip": S.noteChips = S.noteChips.includes(arg) ? S.noteChips.filter(x => x !== arg) : [...S.noteChips, arg]; return render();
     case "noteSave": if (!S.noteChips.length && !S.noteText.trim()) return; S.notes.push({ about: S.noteFor, chips: S.noteChips, text: S.noteText.trim() }); S.sheet = null; return render();
     case "keepSummary": toast(T("toast.summary")); return;
-    case "ahead": S.aheadHidden = arg === "hide"; return render();
+    case "ahead": S.aheadHidden = arg === "hide"; if (arg === "show") S.aheadOpened = true; return render();
     case "digi": S.sheet = "digi"; render(); setTimeout(() => { if (S.sheet === "digi") { S.aadhaarOk = true; S.sheet = null; render(); toast(T("toast.aadhaar")); } }, 1500); return;
     case "doc": S.docs[arg] = true; render(); toast(T("toast.docSent")); return;
     case "help": S.helpOpen = !S.helpOpen; return render();
     case "helpVia": S.help = +arg; if (S.help === 0) S.helpSlot = null; return render();
     case "helpSlot": S.helpSlot = +arg; return render();
     case "updates": S.updates = arg; if (arg === "app") S.slot = null; saveProgress(); return render();
-    case "remind": { const dd = PE().docs.find(x => x.id === arg); toast(fill(DATA.lens.reminder, { doc: dd.s.toLowerCase().replace(/^the /, "").replace(/^gst/, "GST").replace(/^udyam/, "Udyam"), name: (S.name.trim().split(/\s+/)[0] || PE().who) })); return; }
+    case "remind": { const dd = docsOf(PE(), true).find(x => x.id === arg); toast(fill(DATA.lens.reminder, { doc: dd.s.toLowerCase().replace(/^(the|a) /, "").replace(/^gst/, "GST").replace(/^udyam/, "Udyam"), name: (S.name.trim().split(/\s+/)[0] || PE().who) })); return; }
     case "offGo": S.mirror = "off"; S.sheet = null; return go("pool");
     case "lever": toast(T("toast.lever")); return;
     case "saveLater": S.sl = { phone: S.sl.phone || S.phone, sent: false, mode: arg || "step" }; S.sheet = "saveLater"; render(); setTimeout(() => $("#slPh")?.focus(), 350); return;
     case "slSend": if (S.sl.phone.length !== 10) return; S.sl.sent = true; saveProgress(); return render();
     case "toRoute": return go("route");
-    case "route": S.route = vendorPayOn() ? arg : "bank"; return render();
-    case "preset": S.lenderPreset = arg; applyPreset(); if (!flexOn()) S.product = "term"; if (!vendorPayOn() && S.route === "supplier") S.route = "bank"; return render();
+    case "route": S.route = vendorPayOn() ? arg : "bank"; S.routeChosen = true; return render();
+    case "vendorUpload": S.route = "supplier"; S.routeChosen = true; return act("qAdd");
+    case "preset": S.lenderPreset = arg; applyPreset(); if (!flexOn()) S.product = "term"; if (!vendorPayOn() && S.route === "supplier") { S.route = "bank"; S.routeChosen = false; } return render();
     case "landOk": S.route = "bank"; S.acctConfirmed = true; return go("lock");
     case "changeAcct": S.payoutPick = true; S.consentStage = "banks"; S.sheet = "consent"; return render();
     case "payoutAcc": if (!accOk()) return; S.payoutPick = false; S.sheet = null; render(); toast(T("land.changed")); return;
     case "qAdd": S.qd = { stage: 0, idx: nextSample() }; S.sheet = "quote"; return render();
     case "qPick": S.qd.stage = 1; render(); setTimeout(() => { const b = $("#qBar"); if (b) b.style.width = "100%"; }, 50); setTimeout(() => { if (S.sheet === "quote" && S.qd.stage === 1) { S.qd.stage = 2; render(); } }, 1200); return;
     case "qAnother": { const n = PE().quoteSamples.length; S.qd = { stage: 0, idx: (S.qd.idx + 1) % n }; return render(); }
-    case "qSave": S.quotes.push(quoteFromSample(S.qd.idx)); S.qd = null; S.route = "supplier"; S.sheet = null; syncDrawToQuotes(); render(); toast(T("toast.quoteAdded")); return;
+    case "qSave": S.quotes.push(quoteFromSample(S.qd.idx)); S.qd = null; S.route = "supplier"; S.routeChosen = true; S.sheet = null; syncDrawToQuotes(); render(); toast(T("toast.quoteAdded")); return;
     case "qRemove": S.quotes.splice(+arg, 1); syncDrawToQuotes(); return render();
     case "product": S.product = arg; return render();
     case "toLock": if (!S.route) S.route = routeNow(); return go("lock");
@@ -2589,7 +2750,7 @@ function act(a, el) {
     case "lensTab": S.lensTab = arg; return renderLens();
     case "toggleDemo": $("#demo").classList.toggle("open"); return;
     case "openDemo": closeLens(); $("#demo").classList.add("open"); return;
-    case "source": S.source = arg; if (arg !== "vendor" && S.route === "supplier" && !S.quotes.length) S.route = null; return render();
+    case "source": S.source = arg; if (!S.routeChosen) S.route = null; return render();
     case "edge": {
       S.edge[arg] = !S.edge[arg]; S.draw = null;
       if (arg === "returning") { S.retDismissed = false; return render(); }
@@ -2615,6 +2776,8 @@ document.addEventListener("click", e => {
   act(a, el);
 });
 document.addEventListener("click", e => { if (!e.target.closest("#demo") && !e.target.closest("[data-act]")) $("#demo").classList.remove("open"); }, true);
+/* row-style controls (div with role) behave like buttons for keyboard users */
+document.addEventListener("keydown", e => { const t = e.target; if ((e.key === " " || e.key === "Enter") && t.matches && t.matches("div[data-act][tabindex]")) { e.preventDefault(); act(t.dataset.act, t); } });
 document.addEventListener("keydown", e => { if (e.key === "Escape") { if (S.sheet) act("closeSheet"); closeLens(); $("#demo").classList.remove("open"); } });
 
 render();
