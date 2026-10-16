@@ -384,6 +384,26 @@ input[type=range]::-moz-range-thumb{width:24px;height:24px;border-radius:50%;bac
 .langask{margin-top:14px;padding:14px 16px;border-radius:var(--r-card);background:var(--p7);border:1px solid var(--p6)}
 .langask p{font-size:13px;color:var(--ink2);margin-bottom:10px}
 .langask .chip.hi{font-size:15px}
+.hi-note{display:inline-flex;align-items:center;gap:6px;margin:0 0 12px;padding:6px 12px;border-radius:var(--r-pill);background:var(--p7);border:1px solid var(--p6);font-size:12.5px;color:var(--ink2)}
+.persona-grid + .hi-note,.langask + .hi-note{margin-top:14px}
+.lang-wrap{padding-top:28px}
+.lang-t{display:flex;flex-direction:column;gap:6px}
+.lang-t span{font-size:17px;font-weight:500;color:var(--muted);letter-spacing:0}
+.lang-list{margin-top:28px;gap:12px}
+.lang-opt{min-height:72px}
+.lang-opt .ttl{font-size:17px}
+.lang-g{flex:none;width:44px;height:44px;border-radius:14px;background:var(--p7);color:var(--primary);display:grid;place-items:center;font-weight:700;font-size:19px}
+.lang-foot{margin-top:22px;text-align:center;font-size:13px;color:var(--muted);line-height:1.5}
+.terms-row{display:block;margin-top:6px;font-size:13px;color:var(--muted)}
+.terms-wrap{text-align:center;margin-top:6px}
+.terms-l{min-height:32px;font-size:13px;display:inline-flex}
+.terms-l.on{color:var(--ink)}
+.lang-sw button{white-space:nowrap}
+.topbar.has-lang{grid-template-columns:48px 1fr auto}
+.topbar.has-lang .wordmark{justify-self:start}
+/* with back + 3-way switch the bar is full: keep the crumbs mark, drop the word */
+.topbar.has-lang:not(.home) .wm-t{display:none}
+.lang-sw [lang=hi]{font-family:"Noto Sans Devanagari",Inter,sans-serif}
 .resume{margin-bottom:14px;border-color:var(--p5)}
 .welcome{border-color:var(--green);box-shadow:0 0 0 4px var(--green-soft)}
 .boost{display:flex;justify-content:space-between;align-items:center;margin-top:14px;padding:12px 14px;border-radius:14px;background:var(--green-soft);font-size:13px;color:#0B5A3D}
@@ -648,7 +668,7 @@ input[type=range]::-moz-range-thumb{width:24px;height:24px;border-radius:50%;bac
         <button class="iconbtn" id="backBtn" data-act="back" aria-label="Back">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
         </button>
-        <div class="wordmark"><span class="crumbs"><i></i><i></i><i></i></span>Breadcrumb</div>
+        <div class="wordmark"><span class="crumbs"><i></i><i></i><i></i></span><span class="wm-t">Breadcrumb</span></div>
         <div class="topbar-r" id="langSw"></div>
         <button class="lens-pill" data-act="openLens"><span class="dot"></span>Lender view</button>
       </header>
@@ -708,39 +728,25 @@ const DATA = {
     lenderLine: "Lending partner: Kestrel Finance Ltd (RBI-registered NBFC)",
     lockup: "Lending by Kestrel Finance · RBI-registered NBFC (fictional stand-in)",
   },
-  landing: {
-    eyebrow: "For the self-employed",
-    title: "What can your business borrow? Find out in 45 seconds.",
-    sub: "No forms full of guesses. No CIBIL check. No calls unless you ask.",
-    trust: ["No impact on your credit score", "Nobody calls you uninvited", "You choose what to share"],
-    cta: "Start my trail",
-    howLink: "How does this work?",
-    how: [
-      { t: "Tell us who you are", d: "Pick the kind of work you do. Every question after that is written for you." },
-      { t: "Let your payments speak", d: "Share your bank trail once, with consent. We show you your business the way we see it." },
-      { t: "See what you could get", d: "Kestrel's options, explained for your kind of business." },
+  langSwitch: { en: "EN", hinglish: "Hi-En", hi: "हिं" },
+  langNames: { en: "English", hinglish: "Hinglish", hi: "Hindi" },
+  /* first screen: written in all three languages at once */
+  langScreen: {
+    title: "Choose your language", titleHi: "Apni bhasha chunein",
+    opts: [
+      { id: "en", t: "Continue in English", d: "English", g: "Aa" },
+      { id: "hinglish", t: "Hinglish mein aage badhein", d: "Jaise WhatsApp pe likhte hain", g: "Aa" },
+      { id: "hi", t: "हिंदी में आगे बढ़ें", d: "हिंदी", g: "अ" },
     ],
-    howTitle: "How Breadcrumb works",
-    gotIt: "Got it",
-    heroCard: { brand: "Breadcrumb", label: "Your estimate", savedLabel: "Your saved estimate", amt: "₹ —", final: "Final amount", finalV: "After review", time: "Find out in", timeV: "45 sec" },
-    rangeLine: "Kestrel lends {min} to {max} to self-employed businesses (illustrative).",
-    vendorBanner: { t: "Financing your purchase from Sharma Dental Supplies", d: "Their quote comes with you — we'll pay them directly." },
-    returning: { t: "Welcome back, {name}. You're {n} {steps} from {target}.", there: "there", one: "step", many: "steps", tEst: "your estimate", tFin: "finishing", d: "Pick up where you left off?", cont: "Pick up where I left off", fresh: "Start fresh", doneT: "Welcome back, {name}. Your application is with Kestrel.", status: "Check my application status" },
+    foot: "You can change this anytime · Baad mein kabhi bhi badal sakte hain",
   },
-  personaScreen: {
-    title: "First, what kind of work do you do?",
-    sub: "Your questions, documents and offer will be shaped around this.",
-    freeLabel: "Doesn't fit? Describe it in your words",
-    freePlaceholder: "e.g. I run a mobile repair shop",
-    understood: "Understood",
-    clsHit: "Sounds like **{label}** — {desc}. Got it.",
-    clsMiss: "Closest fit looks like **{label}**. You can pick another above if it isn't right.",
-    continue: "Continue",
-    langAsk: "हिंदी में देखें?",
-    langEn: "Continue in English",
-    langNote: "Prefer Hindi? The rest of your path can be in simple Hindi.",
-  },
-  langSwitch: { en: "EN", hi: "हिं" },
+  /* one-time offer on the persona screen (English + shop/services) */
+  offer: { q: "Hinglish mein dekhein?", yes: "Haan, Hinglish", no: "English hi theek hai" },
+  /* Hindi chosen, but this persona's path is only written in Hinglish so far */
+  hiNote: "Ye hissa abhi Hinglish mein hai.",
+  /* Hinglish summary → full terms in Hindi or English */
+  terms: { label: "Poori terms padhein:", hi: "हिंदी", en: "English", back: "Hinglish summary" },
+
   /* Kestrel Finance's own configuration — products, rates and vendor policy are the lender's */
   lender: {
     products: {
@@ -783,7 +789,39 @@ const DATA = {
       steps: ["Who", "About", "Trail", "Options", "Lock"],
       footer: "Prototype for demonstration. Kestrel Finance Ltd is fictional. Amounts, rates and fees are illustrative, not an offer.",
       lakh: "lakh",
-      common: { continue: "Continue", gotIt: "Got it", back: "Back", pa: "p.a.", saved: "Saved", later: "Save and continue later" },
+      common: { continue: "Continue", gotIt: "Got it", back: "Back", pa: "p.a.", saved: "Saved", later: "Save and continue later", close: "Close" },
+      landing: {
+    eyebrow: "For the self-employed",
+    title: "What can your business borrow? Find out in 45 seconds.",
+    sub: "No forms full of guesses. No CIBIL check. No calls unless you ask.",
+    trust: ["No impact on your credit score", "Nobody calls you uninvited", "You choose what to share"],
+    cta: "Start my trail",
+    howLink: "How does this work?",
+    how: [
+      { t: "Tell us who you are", d: "Pick the kind of work you do. Every question after that is written for you." },
+      { t: "Let your payments speak", d: "Share your bank trail once, with consent. We show you your business the way we see it." },
+      { t: "See what you could get", d: "Kestrel's options, explained for your kind of business." },
+    ],
+    howTitle: "How Breadcrumb works",
+    gotIt: "Got it",
+    heroCard: { brand: "Breadcrumb", label: "Your estimate", savedLabel: "Your saved estimate", amt: "₹ —", final: "Final amount", finalV: "After review", time: "Find out in", timeV: "45 sec" },
+    rangeLine: "Kestrel lends {min} to {max} to self-employed businesses (illustrative).",
+    vendorBanner: { t: "Financing your purchase from Sharma Dental Supplies", d: "Their quote comes with you — we'll pay them directly." },
+    tagline: "Your business already left a trail. Let's follow it.",
+    lenderLine: "Lending partner: Kestrel Finance Ltd (RBI-registered NBFC)",
+    lockup: "Lending by Kestrel Finance · RBI-registered NBFC (fictional stand-in)",
+    returning: { t: "Welcome back, {name}. You're {n} {steps} from {target}.", there: "there", one: "step", many: "steps", tEst: "your estimate", tFin: "finishing", d: "Pick up where you left off?", cont: "Pick up where I left off", fresh: "Start fresh", doneT: "Welcome back, {name}. Your application is with Kestrel.", status: "Check my application status" },
+  },
+      personaScreen: {
+        title: "What do you do?",
+        sub: "Your questions, documents and offer will be shaped around this.",
+        freeLabel: "Doesn't fit? Describe it in your words",
+        freePlaceholder: "e.g. I run a mobile repair shop",
+        understood: "Understood",
+        clsHit: "Got it: **{label}** — {desc}.",
+        clsMiss: "Closest fit: **{label}**. You can pick another above if it isn't right.",
+        continue: "Continue",
+      },
       ahead: { title: "What Kestrel will need later", bold: "You don't need any of it to see your estimate.", muted: "Finishing takes about 5 minutes once you decide to go ahead.", hide: "Hide", show: "Show" },
       q: { eyebrow: "{label} · {n} of {total}", helpPurpose: "Pick all that apply. Your main reason first.", helpAll: "Pick all that apply.",
         def: "We've ticked the most common one for {noun} like yours. Change it if it's not you.",
@@ -1029,14 +1067,328 @@ const DATA = {
       },
     },
 
+    /* Hinglish: romanised Hindi, written the way people type on WhatsApp */
+    hinglish: {
+      steps: ["Aap", "Sawaal", "Trail", "Options", "Pakka"],
+      footer: "Ye sirf demo hai. Kestrel Finance Ltd asli company nahi hai. Amount, rate aur fees sirf example hain, offer nahi.",
+      lakh: "lakh",
+      common: { continue: "Aage badhein", gotIt: "Theek hai", back: "Peeche", pa: "saal ka", saved: "Save ho gaya", later: "Save karein, baad mein karein", close: "Band karein" },
+      landing: {
+        eyebrow: "Apna kaam karne walon ke liye",
+        title: "Aapka business kitna loan le sakta hai? 45 second mein jaaniye.",
+        sub: "Guess wale form nahi. CIBIL check nahi. Aap na kahein to koi call nahi.",
+        trust: ["Credit score par koi asar nahi", "Bina pooche koi call nahi", "Kya share karna hai, aap chunein"],
+        cta: "Mera trail shuru karein",
+        howLink: "Ye kaise kaam karta hai?",
+        how: [
+          { t: "Batayein aap kya kaam karte hain", d: "Apna kaam chunein. Aage ke sawaal aapke hisaab se honge." },
+          { t: "Payments ko bolne dein", d: "Consent ke saath ek baar bank trail share karein. Hum dikhayenge ki aapka business kaisa dikhta hai." },
+          { t: "Dekhein kya mil sakta hai", d: "Kestrel ke options, aapke business ke hisaab se samjhaye hue." },
+        ],
+        howTitle: "Breadcrumb kaise kaam karta hai",
+        gotIt: "Theek hai",
+        heroCard: { brand: "Breadcrumb", label: "Aapka estimate", savedLabel: "Aapka saved estimate", amt: "₹ —", final: "Final amount", finalV: "Review ke baad", time: "Jaaniye", timeV: "45 sec" },
+        rangeLine: "Kestrel apna kaam karne walon ko {min} se {max} tak deta hai (example).",
+        vendorBanner: { t: "Sharma Dental Supplies se kharid ke liye loan", d: "Unka quote aapke saath aayega. Hum unhe seedha pay karenge." },
+        returning: { t: "Namaste {name}! {target} tak bas {n} {steps} baaki.", there: "ji", one: "step", many: "step", tEst: "Estimate", tFin: "Application poori hone", d: "Jahan chhoda tha, wahin se shuru karein?", cont: "Jahan chhoda tha, wahin se", fresh: "Naye sire se shuru", doneT: "Namaste {name}! Aapki application Kestrel ke paas hai.", status: "Application ka status dekhein" },
+        tagline: "Aapke business ne pehle se trail chhoda hai. Chaliye use follow karein.",
+        lenderLine: "Lending partner: Kestrel Finance Ltd (RBI-registered NBFC)",
+        lockup: "Loan: Kestrel Finance · RBI-registered NBFC (fictional)",
+      },
+      personaScreen: {
+        title: "Aap kya kaam karte hain?",
+        sub: "Aage ke sawaal, documents aur offer isi hisaab se honge.",
+        freeLabel: "Inmein nahi? Apne words mein batayein",
+        freePlaceholder: "Jaise: meri mobile repair ki dukaan hai",
+        understood: "Samajh gaye",
+        clsHit: "Samajh gaye: **{label}** — {desc}.",
+        clsMiss: "Sabse kareeb: **{label}**. Sahi na ho to upar se doosra chunein.",
+        continue: "Aage badhein",
+      },
+      ahead: { title: "Kestrel ko baad mein kya chahiye", bold: "Estimate dekhne ke liye inmein se kuch nahi chahiye.", muted: "Aage badhna ho to bas 5 minute lagenge.", hide: "Chhupayein", show: "Dikhayein" },
+      q: { eyebrow: "{label} · {n}/{total}", helpPurpose: "Jitne lagte hain, sab chunein. Sabse zaroori pehle.", helpAll: "Jitne lagte hain, sab chunein.",
+        def: "{noun} ke liye sabse common wala tick kar diya hai. Aap par na lage to badal dein.",
+        main: "Main", makeMain: "Main banayein", other: "Kuch aur", otherPh: "Thode words mein batayein",
+        quoteDoc: "Quote ya bill, agar hai to" },
+      trail: {
+        title: "Aapka business khud bolega.",
+        sub: "Number guess mat kijiye. Aapke payments ka trail hum padh lenge.",
+        recommended: "(best)",
+        options: {
+          bank: { t: "Mera bank connect karein", d: "Sabse sahi · 30 second · RBI ke Account Aggregator se", badge: "Best estimate" },
+          pdf: { t: "Bank statement PDF upload karein", d: "Business account ke pichhle 6 mahine" },
+          rough: { t: "Bas rough idea chahiye", d: "2 chhote sawaal. Estimate ki range badi hogi." },
+        },
+        bankLead: "Hum sirf pichhle 6 mahine ke transactions padhte hain. Bas eligibility check ke liye.",
+        safety: ["Sirf eligibility check ke liye", "Sirf padhna — koi paisa nahi hila sakta", "Ruk gaye to 30 din mein delete"],
+        readOnly: "Sirf padhna. Hum aapke account se kabhi paisa nahi nikaal sakte.",
+      },
+      consent: {
+        title: "Breadcrumb aapka bank statement padhna chahta hai",
+        sub: "Eligibility ke liye business account ke 6 mahine ke transactions chahiye. Ye RBI ke Account Aggregator se hota hai.",
+        share: { t: "Aap kya share kar rahe hain", d: "1 account · 6 mahine ke transactions · sirf ek baar" },
+        use: { t: "Sirf eligibility ke liye", d: "Sirf estimate ke liye. Marketing nahi, bechna nahi, Kestrel ke bahar share nahi" },
+        kestrel: { t: "Sirf Kestrel Finance ke saath", d: "Aapka lender, RBI-registered NBFC. Aur koi nahi dekhega." },
+        not: { t: "Hum ye NAHI dekhenge", d: "Contacts, SMS, photos nahi. CIBIL check nahi. Paisa kabhi nahi hila sakte" },
+        del: { t: "30 din baad delete", d: "Aage nahi badhe to data apne aap delete ho jayega" },
+        promise: "Aapki jaankari sirf eligibility ke liye hai. Galat use nahi hogi. Consent kabhi bhi wapas le sakte hain.",
+        agree: "Theek hai, aage badhein", notNow: "Abhi nahi",
+        lenderLine: "Lending partner: Kestrel Finance Ltd (RBI-registered NBFC)",
+        stepLabel: "Step {n}/3 · {label}",
+        stepNames: ["Bank chunein", "Account daalein", "OTP se verify"],
+        aa: "Account Aggregator consent",
+        banksTitle: "Business account kis bank mein hai?",
+        otherBank: "Doosra bank",
+        accSub: "Wo account daalein jismein business ka payment aata hai. Ise sirf {bank} mein account dhoondhne ke liye use karenge.",
+        accType: "Account type", accTypes: ["Current", "Savings"],
+        accNo: "Account number", accNoPh: "9 se 18 digit",
+        accNo2: "Account number dobara daalein", accNo2Ph: "Same hona chahiye",
+        accErr: "Account number match nahi ho rahe",
+        accSafe: "Sirf padhna. Account number se koi paisa nahi nikaal sakta.",
+        sendOtp: "OTP bhejein", diffBank: "Doosra bank chunein",
+        accLine: "{type} account ••{last4}", accLineD: "Transactions · 6 mahine · sirf ek baar",
+        otpLabel: "Is account se jude mobile {mobile} par aaya code daalein",
+        demoAny: "(demo mein koi bhi 6 digit)",
+        shareOnce: "Ek baar share karein", changeAcc: "Account number badlein",
+      },
+      pdf: {
+        title: "Bank statement upload karein",
+        sub: "Main business account ka PDF, pichhle 6 mahine. Password wali file bhi chalegi.",
+        choose: "PDF chunein", limit: "10 MB tak", chooseBtn: "File chunein",
+        file: "statement_apr26-sep26.pdf",
+        reading: "Padh rahe hain…", found: "6 mahine · 1,164 transactions mile",
+        safe: "Hum sirf transactions padhte hain. Aage nahi badhe to 30 din mein delete.",
+        use: "Ye statement use karein",
+      },
+      rough: {
+        title: "Bas rough idea", sub: "Do chhote tap. Estimate ek range hogi, ek number nahi.",
+        earnLabel: "Har mahine lagbhag kitna aata hai?", earn: ["₹1 lakh se kam", "₹1–3 lakh", "₹3–5 lakh", "₹5 lakh+"],
+        askLabel: "Kitna chahiye?", ask: ["₹2 lakh tak", "₹2–5 lakh", "₹5–10 lakh", "₹10 lakh+"],
+        go: "Mera estimate dikhayein",
+      },
+      loader: {
+        lines: ["6 mahine ke payments padh rahe hain…", "Aapka busy season dhoondh rahe hain…", "Estimate nikaal rahe hain…"],
+        rough: ["Aapke jawab padh rahe hain…", "Aap jaise business se mila rahe hain…", "Rough estimate nikaal rahe hain…"],
+        sub: "Aapka data encrypted hai, sirf padha ja sakta hai", subRough: "Sirf aapki batayi baaton se",
+      },
+      months: ["Apr", "May", "Jun", "Jul", "Aug", "Sep"],
+      mirror: {
+        title: "Hum aapka business aise dekhte hain.",
+        avg: "Average paisa aaya", seen: " (bank mein dikha)", perMonth: "har mahine",
+        fromStatement: "Statement se", bankVerified: "Bank-verified", sixMonths: "6 mahine", thin: "Kam trail",
+        best: "Best mahina", slowest: "Sabse dheema", moneyIn: "Paisa aaya",
+        busiestP: "Sabse busy: {v}", slowestP: "Sabse dheema: {v}", cashPayers: "Zyada tar customers cash dete hain",
+        cashNotice: "<b>Trail kam hai — zyada paisa cash mein aata hai.</b> Baad mein GST ya doosra account jodein, aur milega. Raasta band nahi hai.",
+        cashSummary: "Aapka trail kam hai. Zyada paisa cash mein aata hai, isliye bank ko business ka thoda hissa hi dikhta hai. Koi baat nahi. Abhi estimate chhota hai. GST ya doosra account jodne se baaki bhi dikhega.",
+        aiHead: "Seedhi baat", ok: "Sahi hai", off: "Kuch galat hai",
+        title2: "Kestrel aapka business aise dekhega.",
+        sub2: "Check kar lijiye. Kuch chhoota ho to batayein. Ye application ke saath Kestrel ko jayega.",
+        right: "Kya ye sahi hai?", addCtx: "Kuch jodein", addBank: "Jo bank nahi dikha sakta, wo jodein",
+        okCont: "Haan, sahi hai, aage badhein", withNotes: "Mere notes ke saath aage badhein", keep: "Ye summary rakh lein",
+        noteAdded: "Shukriya — offer pakka hone se pehle ek insaan ise check karega.", yourNotes: "Aapke notes",
+      },
+      note: {
+        title: "Kuch jodein", sub: "Ye application ke saath Kestrel ko jayega. Ek insaan ise padhega.",
+        about: "Iske baare mein: {v}", aboutG: "Aapke business ke baare mein",
+        ph: "Aur kuch? Jaise: har mahine ₹40–60k cash bhi aata hai", add: "Note jodein",
+      },
+      off: {
+        title: "Kya galat lag raha hai?", sub: "Ek line mein batayein. Kuch pakka hone se pehle ek insaan check karega.",
+        ph: "Jaise: September mein ek baar ka family transfer bhi tha", go: "Bhejein aur aage badhein",
+      },
+      pool: {
+        starterTitle: "Shuruaat ke liye ye starter amount hai.",
+        title: "Aap {amt} tak ke eligible ho sakte hain",
+        labels: { verified: "Aapke verified trail se", rough: "Rough estimate", thin: "Kam trail se estimate", starter: "Starter amount" },
+        likely: "Lagbhag {lo} – {hi}",
+        offerFrom: "Kestrel Finance ka estimate · final amount review ke baad",
+        checked: "Shukriya — offer pakka hone se pehle ek insaan ise check karega.",
+        overAsk: "Aapne <b>{ask}</b> maanga tha. Aaj Kestrel ka estimate <b>{max}</b> hai — {link}.",
+        overAskLink: "aur kaise milega, yahan dekhein",
+        cardStarter: "Starter amount", cardPool: "Aapka estimate",
+        available: "Maximum", final: "Final amount", finalV: "Kestrel ke review ke baad",
+        sliderQ: "Abhi kitna chahiye?",
+        growTitle: "6 mahine mein ise aise badhayein",
+        checklist: ["Business ke saare payment ek account mein lein", "Udyam par register karein (free, 10 minute)", "3 mahine starter amount time par chukayein", "Wapas aakar connect karein — limit aksar 3–5 guna badhti hai"],
+        whyLink: "Yahi amount kyun?",
+        fees: "<b>Fees, seedhi baat:</b> Kestrel Finance tay karta hai. Sign se pehle Key Fact Statement mein dikhegi. In options par jaldi chukane ka charge nahi (example).",
+        saveLater: "Save karein, baad mein poora karein",
+      },
+      prod: {
+        label: "Products aur rate Kestrel Finance tay karta hai (example)",
+        title: "Kestrel ke options jo aapko suit karte hain",
+        aiHead: "Ye kyun suit karte hain",
+        fitTag: "Aapke business ke liye sahi", starterTag: "Starter option", pa: "% saal ka",
+        flex: { name: "Flexible business line", how: "Jitna nikaalein, sirf us par interest. Chukayein aur phir nikaalein." },
+        term: { name: "Business term loan", how: "Ek baar mein poora amount. 24 mahine fixed EMI." },
+        costFlex: "{amt} par lagbhag {interest} mahine ka interest",
+        costTerm: "EMI lagbhag {emi}/mahina, {n} mahine",
+        starterFit: "Naye business ke liye Kestrel ka starter option ek chhota term loan hai. Ek fixed EMI — plan karna aasaan, aur trail bhi banta hai.",
+        pref: "Ye aapki pasand hai. Product Kestrel Finance review mein pakka karega.",
+      },
+      why: {
+        title: "{amt} hi kyun?", sub: "Amount rules se tay hota hai. Yahan seedhi baat mein.",
+        head: "Aapka estimate, seedhi baat", counted: "Kis baat se farak pada", unlock: "Aur kaise milega",
+        aiNew: "Aapka business 1 saal se naya hai, isliye Kestrel chhote starter amount se shuru karta hai. Ye rule se tay hai. 6 mahine ke trail aur time par payment ke baad estimate dobara banega — aksar kai guna bada.",
+        aiRough: "Ye range hai, kyunki ye aapke jawabon par hai, bank trail par nahi. Bank connect karne mein 30 second lagte hain. Aksar ek pakka number mil jata hai.",
+        fGst: "GST registered", fNoGst: "Abhi GST nahi",
+        fCash: "Zyada kamai cash mein — bank ko kam dikhta hai", fNew: "Business 1 saal se naya", fRough: "Aapke jawabon par, bank trail par nahi",
+        leverRough: ["Mera bank connect karein", "30 second mein pakka number"],
+      },
+      route: {
+        title: "Approve hua to paisa kahan bhejein?",
+        sub: "Jo theek lage, chunein. Baad mein badal sakte hain. Kestrel Finance ke review se pehle kuch pakka nahi.",
+        save: "Vendor ko seedha pay karne se {amt} par lagbhag {save} bachenge, Kestrel ke rate par.", perMonth: "/mahina",
+        lower: "Kam rate · Kestrel ki policy", rateLine: "saal ka · {product}", fitsBuy: "Aapki kharid ke liye sahi",
+        req: "Har vendor ka quote chahiye",
+        bankT: "Kestrel aapke bank account mein bhejega", bankD: "Business ki jo bhi zaroorat ho, us mein lagayein.",
+        setBy: "Payout options aur rate Kestrel Finance tay karta hai.",
+        bankOnly: "Approve hua paisa Kestrel aapke business account mein bhejega.",
+        acctLine: "{bank} ••{last4} mein (jo account aapne share kiya)",
+        acctLinePdf: "{bank} ••{last4} mein (aapke statement se)",
+        quotesT: "Vendor quotes", optional: "Abhi zaroori nahi", added: "{n} jode",
+        empty: "Ready ho to har vendor ka quote ya bill upload karein, jaise chair, tool ya kiraya. Nahi to baad mein call karne wale ko de dena.",
+        uploadQuote: "Quote upload karein", addAnother: "Ek aur vendor jodein",
+        total: "Vendors ko total payment", gstOk: "GST verified",
+        overPool: "Aapke quotes estimate se {diff} zyada hain — baaki khud dein, ya GST jodkar aur paayein.",
+      },
+      land: {
+        title: "Approve hua to paisa aapke business account mein aayega.",
+        sub: "Kestrel Finance se baat aur sign ke bina kuch nahi hoga. Aage aisa hoga.",
+        steps: ["Kestrel aapse 2 baatein pakki karega, call ya WhatsApp par — jo aap agle step mein chunein", "Aap Key Fact Statement padhkar sign karenge", "2 working days mein paisa account mein"],
+        acct: "{bank} ••{last4} · {type}",
+        acctShared: "Wahi account jo aapne pehle share kiya", acctPdf: "Aapke upload kiye statement se",
+        change: "Doosra account use karein", useAcc: "Yahi account use karein", changed: "Account badal gaya",
+        rough: "Account aap Kestrel ke call par pakka karenge. Abhi daalne ki zaroorat nahi.",
+        repay: "EMI bhi isi account se jayegi. Alag se kuch set nahi karna.",
+        terms: "Time aur terms Kestrel ke hain (example).",
+        cta: "Haan, yahi account", ctaRough: "Aage badhein",
+      },
+      quote: {
+        title: "Vendor ka quote upload karein",
+        sub: "Hum ise padhkar vendor ko seedha pay karenge — utna hi jitna quote mein hai. Aapki haan ke bina kuch nahi jayega.",
+        drop: "Quote ya bill upload karein", dropD: "PDF ya photo · 10 MB tak",
+        reading: "Quote padh rahe hain…", aiHead: "Aapke quote se padha",
+        aiLine: "Ye {vendor} ka {item} ke liye {amt} ka quote hai. Unka GST number sahi hai.",
+        item: "Saamaan", amount: "Amount", vendor: "Vendor", gst: "Vendor GST", gstOk: "Verified",
+        over: "Ye quote estimate se {diff} zyada hai — baaki khud dein, ya GST jodkar aur paayein.",
+        add: "Quote jodein", another: "Doosri file upload karein",
+      },
+      lock: {
+        title: "Application poori karein",
+        sub: "Pehchaan verify karte hi estimate 7 din hold rahega. Kuch sign nahi hota.",
+        name: "Aapka naam", namePh: "Jaise PAN par hai", mobile: "Mobile number",
+        sendOtp: "OTP bhejein", resend: "Dobara bhejein", verified: "Number verified",
+        otpLabel: "6 digit code daalein", demoAny: "(demo mein koi bhi 6 digit)",
+        idT: "Apni pehchaan verify karein", idSub: "Ek minute lagega. Isi se estimate hold hota hai aur Kestrel tak jaata hai.",
+        pan: "PAN", panPh: "ABCDE1234F", panHint: "(demo mein ABCDE1234F jaisa koi bhi PAN)", panOk: "PAN verified",
+        aadhaarBtn: "DigiLocker se Aadhaar verify karein", aadhaarOk: "Aadhaar verified",
+        prog: "{done}/{total} ho gaye · aapka {amt} estimate 7 din hold hai",
+        docsT: "Aapke documents", snap: "Photo ya upload", sent: "Kestrel ko bhej diya",
+        docsNote: "Files seedhe Kestrel Finance ko jaati hain. Breadcrumb inhe nahi rakhta.",
+        docsMore: "Bade amount ke liye Kestrel ITR ya audited financials bhi maang sakta hai.",
+        help: "Document mein atke? Kestrel ki Riya madad karegi.", helpHow: "Riya aapse kaise baat kare?", helpOpts: ["WhatsApp", "Call karein"],
+        helpDone: "Riya aapse {how} par baat karegi.",
+        pickTime: "Time chunein", slots: ["Aaj shaam", "Kal subah", "Kal shaam"],
+        nextT: "Aage kya hoga",
+        tl: [
+          { w: "Aaj", d: "Estimate hold hai, kuch sign nahi hua" },
+          { w: "Phir", d: "Kestrel documents check karega (kuch chhoota to maangega)" },
+          { w: "Final se pehle", d: "Loan officer ek baar call karke 2 baatein pakki kar sakta hai (self-employed loan mein har lender aisa karta hai)" },
+          { w: "Aakhir mein", d: "Key Fact Statement padhkar sign karein. Phir ek din cancel karne ka mauka, bina penalty" },
+        ],
+        cta: "Application poori karein", later: "Baad mein karunga. WhatsApp par link bhejein",
+        left: "Poora karne ke liye: {items}", need: { name: "aapka naam", phone: "mobile verify", pan: "PAN", aadhaar: "Aadhaar" },
+        blocked: "Ye jodne ke baad poora hoga: {items}",
+        panErr: "Ye PAN nahi lagta. 5 letter, 4 number, phir 1 letter.",
+        welcome: {
+          t: "Wapas swagat hai — aap pehle se Kestrel Finance ke customer hain.", d: "Time par payment ki history aapke kaam aayegi.",
+          pool: "Aapka estimate", here: "Yahin aage badhein", app: "Kestrel app kholein",
+          applied: "Payment history jud gayi · ab aapka estimate {amt} hai",
+        },
+      },
+      submitted: {
+        title: "Application submit ho gayi", sub: "Kestrel Finance ke paas aapki application hai. Kuch sign nahi hua, aur aapke bina kuch nahi hoga.",
+        ref: "Reference", hold: "Aapka {amt} estimate {date} tak hold hai.",
+        nextT: "Aage kya hoga",
+        next: ["Kestrel documents check karega, kuch chhoota to maangega", "Riya, aapki loan officer, ek baar call karke 2 baatein pakki kar sakti hai", "Key Fact Statement padhein, aur tabhi sign karein jab aage badhna ho"],
+        cta: "Application ka status dekhein",
+      },
+      digi: { title: "DigiLocker", connecting: "DigiLocker se jod rahe hain…", sub: "Aapki marzi se Aadhaar details Kestrel Finance ko ja rahi hain." },
+      done: {
+        title: "Aapki application Kestrel ke paas hai.", sub: "Kuch sign nahi hua. Har update yahan dikhega.",
+        track: [
+          { t: "Estimate hold", d: "Aapka {amt} estimate {date} tak hold hai." },
+          { t: "Documents check", d: "Kestrel aapke documents check kar raha hai. Kuch chhoota to maangega." },
+          { t: "Verification", d: "Loan officer ek baar call karke 2 baatein pakki kar sakta hai." },
+          { t: "Decision", d: "Final amount, product aur rate Kestrel tay karega." },
+          { t: "Key Fact Statement sign", d: "Har fee seedhi baat mein padhein, phir ek din cancel ka mauka." },
+        ],
+        now: "Abhi",
+        officerT: "Aapki Kestrel loan officer: Riya", officerS: "Kestrel Finance",
+        officerD: "Kestrel ka decision Riya batayegi. Har update yahan bhi dikhega.",
+        updT: "Update kaise dein?", upd: ["App + WhatsApp mein", "Call karein"],
+        updSaved: "Pehle se save: Riya aapse {how} par baat karegi. Yahan badal sakte hain.",
+        work: "Aapka kaam", poolRow: "Estimate", est: " (est.)", first: "Aapko chahiye", prod: "Pasand ka product", to: "Paisa kahan jayega",
+        vendors: "{n} vendor, seedha payment", vendorsNone: "Aapke vendors, seedha payment · quote baad mein", bank: "Aapka bank account",
+        identity: "Pehchaan", verified: "Verified", docs: "Documents", docsN: "{n}/{total} bheje", docsNone: "Aur kuch nahi chahiye",
+        pendingT: "Abhi bhejna baaki", sendNow: "Abhi bhejein",
+        share: "Apne CA ke saath share karein", over: "Shuru se karein",
+      },
+      saveLater: {
+        title: "Save karein, baad mein karein", sub: "Bas mobile number. Ab tak ka sab save rahega.",
+        mobile: "Mobile number", note: "WhatsApp par link bhejenge. Koi call nahi karega.", send: "Mujhe link bhejein",
+        noId: "Aapke jawab 7 din rakhenge. Pehchaan verify hone par estimate hold hoga.",
+        doneT: "WhatsApp par link bhej diya", doneD: "+91 {mobile} par WhatsApp dekhein. Estimate 7 din save rahega.",
+        doneD2: "+91 {mobile} par WhatsApp dekhein. Aapke jawab 7 din rakhe jayenge.", close: "Theek hai",
+      },
+      toast: {
+        verified: "Number verified", codeSent: "+91 {m} par code bheja", aaSent: "Is account se jude mobile par code bheja",
+        lever: "Save hua — offer save karne ke baad ise jod sakte hain", quoteAdded: "Quote jud gaya — is vendor ko seedha payment hoga",
+        shareCA: "Link copy hua — sirf summary dikhegi, 7 din mein expire", app: "Kestrel app khul raha hai… (demo)",
+        summary: "Save hua. CA ke saath kabhi bhi share kar sakte hain.", aadhaar: "Aadhaar verified", docSent: "Kestrel ko bhej diya",
+      },
+    },
     hi: {
       steps: ["आप", "जानकारी", "लेन-देन", "विकल्प", "पक्का"],
       footer: "यह सिर्फ़ डेमो है। Kestrel Finance Ltd असली कंपनी नहीं है। रकम, ब्याज दर और फ़ीस सिर्फ़ उदाहरण हैं, कोई ऑफ़र नहीं।",
       lakh: "लाख",
-      common: { continue: "आगे बढ़ें", gotIt: "ठीक है", back: "पीछे", pa: "सालाना", saved: "सेव हो गया", later: "सेव करें, बाद में जारी रखें" },
+      common: { continue: "आगे बढ़ें", gotIt: "ठीक है", back: "पीछे", pa: "सालाना", saved: "सेव हो गया", later: "सेव करें, बाद में जारी रखें", close: "बंद करें" },
+      landing: {
+        eyebrow: "अपना काम करने वालों के लिए",
+        title: "आपका कारोबार कितना लोन ले सकता है? 45 सेकंड में जानें।",
+        sub: "अंदाज़े वाले फ़ॉर्म नहीं। CIBIL जाँच नहीं। आप न कहें तो कोई कॉल नहीं।",
+        trust: ["आपके क्रेडिट स्कोर पर कोई असर नहीं", "बिना पूछे कोई कॉल नहीं", "क्या शेयर करना है, आप तय करें"],
+        cta: "शुरू करें",
+        howLink: "यह कैसे काम करता है?",
+        how: [
+          { t: "बताएँ आप क्या काम करते हैं", d: "अपना काम चुनें। आगे के सारे सवाल आपके हिसाब से होंगे।" },
+          { t: "आपके पेमेंट खुद बोलें", d: "अपनी सहमति से एक बार बैंक का लेन-देन शेयर करें। हम दिखाएँगे कि आपका कारोबार कैसा दिखता है।" },
+          { t: "देखें क्या मिल सकता है", d: "Kestrel के विकल्प, आपके कारोबार के हिसाब से समझाए हुए।" },
+        ],
+        howTitle: "Breadcrumb कैसे काम करता है",
+        gotIt: "ठीक है",
+        heroCard: { brand: "Breadcrumb", label: "आपका अंदाज़ा", savedLabel: "आपका सेव किया अंदाज़ा", amt: "₹ —", final: "पक्की रकम", finalV: "जाँच के बाद", time: "जानें", timeV: "45 सेकंड" },
+        rangeLine: "Kestrel अपना काम करने वालों को {min} से {max} तक देता है (उदाहरण)।",
+        vendorBanner: { t: "Sharma Dental Supplies से ख़रीद के लिए लोन", d: "उनका कोटेशन आपके साथ आएगा — हम उन्हें सीधे पेमेंट करेंगे।" },
+        returning: { t: "नमस्ते {name}! {target} तक बस {n} {steps} बाकी।", there: "जी", one: "स्टेप", many: "स्टेप", tEst: "अंदाज़े", tFin: "आवेदन पूरा होने", d: "जहाँ छोड़ा था, वहीं से शुरू करें?", cont: "जहाँ छोड़ा था, वहीं से", fresh: "नए सिरे से शुरू करें", doneT: "नमस्ते {name}! आपका आवेदन Kestrel के पास है।", status: "आवेदन का स्टेटस देखें" },
+        tagline: "आपके कारोबार ने पहले ही एक निशान छोड़ा है। चलिए उसे पढ़ें।",
+        lenderLine: "लोन देने वाला: Kestrel Finance Ltd (RBI में रजिस्टर्ड NBFC)",
+        lockup: "लोन: Kestrel Finance · RBI में रजिस्टर्ड NBFC (काल्पनिक)",
+      },
+      personaScreen: {
+        title: "आप क्या काम करते हैं?",
+        sub: "आगे के सवाल, दस्तावेज़ और ऑफ़र इसी हिसाब से होंगे।",
+        freeLabel: "इनमें नहीं? अपने शब्दों में बताएँ",
+        freePlaceholder: "जैसे: मेरी मोबाइल रिपेयर की दुकान है",
+        understood: "समझ गए",
+        clsHit: "समझ गए: **{label}** — {desc}।",
+        clsMiss: "सबसे करीब: **{label}**। सही न हो तो ऊपर से दूसरा चुनें।",
+        continue: "आगे बढ़ें",
+      },
       ahead: { title: "Kestrel को बाद में क्या चाहिए होगा", bold: "अपना अंदाज़ा देखने के लिए इनमें से कुछ नहीं चाहिए।", muted: "आगे बढ़ने का फ़ैसला करने पर पूरा करने में लगभग 5 मिनट लगते हैं।", hide: "छिपाएँ", show: "दिखाएँ" },
       q: { eyebrow: "{label} · सवाल {n}/{total}", helpPurpose: "जो भी लागू हों, सब चुनें। सबसे ज़रूरी कारण पहले।", helpAll: "जो भी लागू हों, सब चुनें।",
-        def: "आप जैसी {noun} के लिए हमने सबसे आम विकल्प चुन दिया है। अगर यह आप पर लागू नहीं होता, तो बदल दें।",
+        def: "{noun} के लिए हमने सबसे आम विकल्प चुन दिया है। अगर यह आप पर लागू नहीं होता, तो बदल दें।",
         main: "मुख्य", makeMain: "मुख्य बनाएँ", other: "कुछ और", otherPh: "कुछ शब्दों में बताएँ",
         quoteDoc: "कोटेशन या बिल, अगर है" },
       trail: {
@@ -1312,7 +1664,7 @@ const DATA = {
 
   personas: {
     shop: {
-      label: "Shop & trade", short: "Shop", examples: "Kirana, wholesale, boutique, hardware",
+      label: "Shop & trade", short: "Shop", name: "I sell things", tag: "Shop", examples: "Kirana, clothes, hardware, wholesale",
       who: "Ramesh", biz: "kirana store, Chembur",
       avg: 280000, pool: 450000, defaultDraw: 150000, overAsk: 800000, step: 5000,
       series: [290, 275, 250, 215, 280, 370],
@@ -1347,9 +1699,36 @@ const DATA = {
       factors: [["+", "6 months of steady UPI income"], ["+", "860 different customers — no single one you depend on"], ["gst", ""], ["−", "July dip of about 25%"]],
       levers: [["Add GST details", "up to ₹5,20,000"], ["Connect a second account", "more accurate"]],
       handoff: "Ramesh runs a 5-year kirana in Chembur with steady daily UPI inflow (~₹2.8L/mo). Confirm GST status and shop ownership.",
+      hinglish: {
+        name: "Meri dukaan hai", examples: "Kirana, kapde, hardware, wholesale", tag: "Dukaan", noun: "Aap jaisi dukaanon",
+        busiest: "September (tyohar ka season)", slowest: "July (baarish)", payers: "860 alag customers ne pay kiya",
+        hint: "Aapke UPI collection aur supplier payments hi aapki kahani batate hain.",
+        supplier: { t: "Kestrel aapke vendor ko seedha pay karega", d: "Kestrel aapke wholesaler, saamaan wale ya makaan-maalik ko pay karega — utna hi jitna unke quote mein hai." },
+        quoteItems: ["Mahine ka maal", "Dukaan ka kiraya", "Display fridge"],
+        docs: [{ l: "PAN", s: "PAN" }, { l: "Aadhaar (DigiLocker se)", s: "Aadhaar" }, { l: "Dukaan ka rent agreement ya ownership proof", s: "Rent agreement ya ownership proof" }, { l: "GST certificate, agar hai", s: "GST, agar hai" }],
+        noteChips: ["Cash bhi aata hai", "July hamesha dheema rehta hai (baarish)", "Ek mahine ek baar ka bada transfer tha"],
+        questions: [
+          { q: "Customers zyada tar kaise pay karte hain?", o: ["Zyada tar UPI / card", "Aadha cash", "Zyada tar cash"], why: "Cash koi problem nahi. Bas ye tay hota hai ki kaunsa proof best rahega." },
+          { q: "Dukaan kitne saal se chal rahi hai?", o: ["1 saal se kam", "1–3 saal", "3–5 saal", "5+ saal"], why: "Nayi dukaan ko pehle chhota starter amount milta hai. Trail badhne par ye badhta hai." },
+          { q: "Kya GST registered hai?", o: ["Haan", "Nahi", "Pata nahi"], why: "Zaroori nahi. GST se bas Kestrel zyada de pata hai." },
+          { q: "Paisa kis kaam ke liye chahiye?", opts: [
+            { l: "Season ka maal", fit: "Season ke maal ke liye flexible line sahi hai. Tyohar se pehle nikaalein, bikne par chukayein, July mein kam nikaalein.", also: "Maal flexible line se le sakte hain." },
+            { l: "Dukaan ka fit-out ya renovation", fit: "Fit-out ek baar ka kharcha hai. Term loan ka paisa seedha contractor ko. Ek fixed EMI, kam rate.", also: "Fit-out ka paisa seedha contractor ko ja sakta hai." },
+            { l: "Equipment", s: "fridge, display, billing machine", fit: "Equipment ek baar ki kharid hai. Term loan ka paisa seedha seller ko. Ek fixed EMI, kam rate.", also: "Equipment ka paisa seedha seller ko ja sakta hai." },
+            { l: "Dheeme mahinon ka kharcha", fit: "July mein sale kam hoti hai. Flexible line se sirf dheeme mahine nikaalein. Jitna use karein, utne par interest.", also: "Flexible line se July aaram se nikal jayega." },
+            { l: "Doosri dukaan kholna", fit: "Doosri dukaan jamne mein kuch mahine lagte hain. Flexible line se thoda-thoda nikaal sakte hain.", also: "Doosri dukaan ke liye thoda-thoda nikaal sakte hain." },
+          ] },
+        ],
+        mirror: "Aapki dukaan steady chalti hai. Lagbhag har din paisa aata hai, zyada tar UPI se. Tyohar par sale badhti hai, baarish mein thodi kam. Yahi consistency aapke kaam aati hai.",
+        whyAi: "Aapka estimate aapki average mahine ki kamai ka lagbhag 1.6 guna hai. Kestrel ke rule aise hain ki sabse dheeme mahine, July, mein bhi EMI aaram se kamai se kam rahe.",
+        factors: [["+", "6 mahine se lagatar UPI kamai"], ["+", "860 alag customers — kisi ek par depend nahi"], ["gst", ""], ["−", "July mein lagbhag 25% kami"]],
+        levers: [["GST details jodein", "₹5,20,000 tak"], ["Doosra account jodein", "aur sahi estimate"]],
+        fit: "July mein aapki sale kam hoti hai. Flexible line se dheeme mahine kam nikaal sakte hain. Term loan mein ek fixed EMI hai, plan karna aasaan.",
+        fitTermOnly: "Kestrel term loan deta hai. Humne EMI aisi rakhi hai ki July mein bhi aaram se bhar sakein.",
+      },
       /* Hindi overrides for the Shop & trade path */
       hi: {
-        label: "दुकान और व्यापार", noun: "दुकानों",
+        label: "दुकान और व्यापार", name: "मेरी दुकान है", examples: "किराना, कपड़े, हार्डवेयर, होलसेल", tag: "दुकान", noun: "आप जैसी दुकानों",
         busiest: "सितंबर (त्योहारों का समय)", slowest: "जुलाई (बारिश)", payers: "860 अलग-अलग ग्राहकों ने पैसे दिए",
         hint: "आपके UPI कलेक्शन और सप्लायर को किए पेमेंट ही आपकी कहानी बता देते हैं।",
         supplier: { t: "Kestrel आपके सप्लायर को सीधे पेमेंट करता है", d: "Kestrel आपके होलसेलर, सामान बेचने वाले या मकान-मालिक को सीधे पेमेंट करता है — ठीक उतना जितना उनके कोटेशन में लिखा है।" },
@@ -1377,7 +1756,7 @@ const DATA = {
       },
     },
     clinic: {
-      label: "Clinic & practice", short: "Clinic", examples: "Doctor, dentist, CA, architect",
+      label: "Clinic & practice", short: "Clinic", name: "I'm a doctor, CA or professional", tag: "Professional", examples: "Doctor, dentist, CA, architect",
       who: "Dr. Ananya", biz: "dental clinic",
       avg: 460000, pool: 1200000, defaultDraw: 400000, overAsk: 1800000, step: 10000,
       series: [430, 395, 420, 450, 520, 545],
@@ -1410,9 +1789,35 @@ const DATA = {
       factors: [["+", "Regular receipts in all 6 months"], ["+", "Professional registration"], ["+", "480 different patients — no single one you depend on"], ["−", "Single account connected"]],
       levers: [["Upload an equipment quote", "lower vendor rate"], ["Connect your second account", "up to ₹14,00,000"]],
       handoff: "Dr. Ananya, dentist, steady ~₹4.6L/mo receipts across 480 patients. Collect the council certificate.",
+      hinglish: {
+        name: "Main professional hoon", examples: "Doctor, dentist, CA, architect", tag: "Professional", noun: "Aap jaise clinics",
+        busiest: "September (baarish ke baad visits)", slowest: "May (garmi ki chhutti)", payers: "480 alag patients ne pay kiya",
+        hint: "Aapki receipts se practice dikhti hai. Paisa kahan jaye, ye chunte waqt equipment ya rent ke quotes jodein.",
+        supplier: { t: "Kestrel aapke vendor ko seedha pay karega", d: "Kestrel aapke equipment vendor, contractor ya makaan-maalik ko pay karega — utna hi jitna unke quote mein hai." },
+        quoteItems: ["Dental chair", "Dental tools", "Clinic ka kiraya"],
+        docs: [{ l: "PAN", s: "PAN" }, { l: "Aadhaar (DigiLocker se)", s: "Aadhaar" }, { l: "Council registration certificate", s: "Council registration" }, { l: "Clinic ka rent agreement ya ownership proof", s: "Rent agreement ya ownership proof" }],
+        noteChips: ["Kuch patients cash dete hain"],
+        questions: [
+          { q: "Kya aap professional council mein registered hain?", o: ["Haan", "Process mein hai"], why: "Registration se practice loan general loan se sasta padta hai." },
+          { q: "Aapki practice ki jagah…", o: ["Apni hai", "Kiraye par", "Doosre clinics mein jaata hoon"], why: "Koi bhi jawab chalega. Bas baad ke documents badalte hain." },
+          { q: "Paisa kis kaam ke liye chahiye?", opts: [
+            { l: "Naya equipment", fit: "Equipment ek badi kharid hai. Term loan ka paisa seedha vendor ko — aksar sabse sasta tareeka.", also: "Equipment ka paisa seedha vendor ko, kam rate par." },
+            { l: "Fit-out ya renovation", fit: "Fit-out ek baar ka kharcha hai. Term loan ka paisa seedha contractor ko. Ek fixed EMI, kam rate.", also: "Fit-out ka paisa seedha contractor ko ja sakta hai." },
+            { l: "Roz ke kharche", fit: "Roz ke kharche aate-jaate rehte hain. Flexible line se jitna chahiye utna nikaalein, usi par interest.", also: "Roz ke kharche flexible line se chal jayenge." },
+            { l: "Staff rakhna", fit: "Naya staff kuch mahine mein kamai dene lagta hai. Term loan se kharcha ek fixed EMI mein bant jata hai.", also: "Staff ka kharcha bhi isi fixed EMI mein aa jayega." },
+          ] },
+        ],
+        mirror: "Aapki practice saal bhar barabar kamati hai. Patients zyada tar UPI aur card se pay karte hain. May ki chhutti mein thodi kami aati hai. Itna regular trail hi hum dekhna chahte hain.",
+        whyAi: "Aapka estimate average mahine ki receipts ka lagbhag 2.6 guna hai. Council registration aur 6 mahine ki steady receipts wali practice ko zyada multiple milta hai.",
+        factors: [["+", "Saare 6 mahine regular receipts"], ["+", "Professional registration"], ["+", "480 alag patients — kisi ek par depend nahi"], ["−", "Sirf ek account connect"]],
+        levers: [["Equipment ka quote upload karein", "vendor ka kam rate"], ["Doosra account connect karein", "₹14,00,000 tak"]],
+        fit: "Aapki receipts saal bhar steady hain. Term loan mein ek fixed EMI, jo har mahine aaram se bharegi.",
+        fitTermOnly: "Kestrel term loan deta hai. Receipts saal bhar steady hain, to ek fixed EMI aaram se bharegi.",
+      },
+      hi: { name: "मैं प्रोफ़ेशनल हूँ", examples: "डॉक्टर, डेंटिस्ट, CA, आर्किटेक्ट" },
     },
     creator: {
-      label: "Creator & freelancer", short: "Creator", examples: "YouTube, Instagram, design, consulting",
+      label: "Creator & freelancer", short: "Creator", name: "I create content or freelance", tag: "Creator", examples: "YouTube, Instagram, design, consulting",
       who: "Kabir", biz: "YouTube + brand deals",
       avg: 190000, pool: 300000, defaultDraw: 100000, overAsk: 600000, step: 5000,
       series: [230, 110, 175, 140, 205, 280],
@@ -1451,9 +1856,38 @@ const DATA = {
       factors: [["+", "Regular platform payouts every month"], ["+", "9 different brands — not dependent on one"], ["−", "Income varies a lot month to month"], ["−", "Single account connected"]],
       levers: [["Link brand contracts", "up to ₹3,60,000"], ["Connect a second account", "more accurate"]],
       handoff: "Kabir, full-time YouTuber, ~₹1.9L/mo average but bursty (May low, Sep high). Paid by 9 brands + 3 platforms. Offer interest-only flexibility.",
+      hinglish: {
+        name: "Main content banata hoon ya freelance karta hoon", examples: "YouTube, Instagram, design", tag: "Creator", noun: "Aap jaise creators",
+        busiest: "September (tyohar ke brand deals)", slowest: "May", payers: "9 brands aur 3 platforms ne pay kiya",
+        hint: "Platform payouts aapke bank mein aate hain — wahi aapka proof hai.",
+        supplier: { t: "Kestrel aapke vendor ko seedha pay karega", d: "Kestrel aapke gear store, studio ya software vendor ko pay karega — utna hi jitna unke quote mein hai." },
+        quoteItems: ["Camera aur lens kit", "Editing workstation", "Studio ka kiraya"],
+        docs: [{ l: "PAN", s: "PAN" }, { l: "Aadhaar (DigiLocker se)", s: "Aadhaar" }],
+        docsNote: "Abhi aur kuch nahi. Aapke payouts bank trail mein pehle se hain.",
+        noteChips: ["Kuch brand payments late aate hain", "USD mein bhi payment aata hai"],
+        questions: [
+          { q: "Aapki kamai kahan se aati hai?", opts: [{ l: "Platform payouts" }, { l: "Brand deals" }, { l: "Client projects" }, { l: "Abroad ke clients" }] },
+          { q: "Kamai kitni steady hai?", o: ["Har mahine", "Zyada tar mahine", "Kabhi zyada, kabhi kam"], why: "Creators ke liye ye normal hai. Estimate mein ye pehle se gina hai." },
+          { q: "Full-time kitne saal se kar rahe hain?", o: ["1 saal se kam", "1–3 saal", "3+ saal"], why: "Naye creators ko starter amount milta hai. Trail ke saath ye badhta hai." },
+          { q: "Paisa kis kaam ke liye chahiye?", opts: [
+            { l: "Production gear", s: "camera, lights, mic, editing setup", fit: "Gear ka paisa seedha store ko, kam rate par, ek fixed EMI ke saath.", also: "Gear ka paisa seedha store ko ja sakta hai." },
+            { l: "Studio ya workspace", fit: "Studio mein setup aur kiraya dono lagte hain. Flexible line se zaroorat par nikaalein, dheeme mahine kam chukayein.", also: "Studio ke liye zaroorat par nikaal sakte hain." },
+            { l: "Payouts ke beech ka gap", fit: "Payouts ke beech ke gap ke liye flexible line sahi hai. Dheeme mahine nikaalein, brand deal aane par chukayein.", also: "Payouts ke gap ke liye flexible line sahi hai." },
+            { l: "Product launch", s: "merch, course, presets", fit: "Launch pehle kharcha karata hai, kamai baad mein. Flexible line se thoda-thoda nikaalein.", also: "Launch ke liye thoda-thoda nikaal sakte hain." },
+            { l: "Editor ya team rakhna", fit: "Editor har mahine ka kharcha hai. Flexible line se dheeme mahine salary dein, bade mahine chukayein.", also: "Editor ki salary dheeme mahine cover ho jayegi." },
+          ] },
+        ],
+        mirror: "Aapki kamai kabhi zyada, kabhi kam aati hai. Brand deal wale mahine bade, beech mein dheeme. Platform payouts ek steady base dete hain. Flexible option suit kar sakta hai: dheeme mahine nikaalein, bade mahine chukayein.",
+        whyAi: "Aapka estimate average mahine ka lagbhag 1.6 guna hai. Kamai upar-neeche hoti hai, isliye Kestrel dheeme mahinon ke hisaab se size karta hai. EMI kabhi bhaari nahi padegi.",
+        factors: [["+", "Har mahine regular platform payouts"], ["+", "9 alag brands — kisi ek par depend nahi"], ["−", "Kamai mahine-mahine bahut badalti hai"], ["−", "Sirf ek account connect"]],
+        levers: [["Brand contracts jodein", "₹3,60,000 tak"], ["Doosra account connect karein", "aur sahi estimate"]],
+        fit: "Aapki kamai kabhi zyada, kabhi kam aati hai. Flexible line dheeme mahine sasti padti hai. Term loan ki EMI har mahine same rehti hai.",
+        fitTermOnly: "Kestrel term loan deta hai. EMI aapke dheeme mahinon ke hisaab se rakhi hai, bhaari nahi padegi.",
+      },
+      hi: { name: "मैं कंटेंट बनाता हूँ या फ़्रीलांस करता हूँ", examples: "YouTube, Instagram, डिज़ाइन" },
     },
     local: {
-      label: "Local services", short: "Services", examples: "Salon, repair shop, tuition, caterer",
+      label: "Local services", short: "Services", name: "I do work for customers", tag: "Services", examples: "Salon, repair, tuition, tailor, caterer",
       who: "Salim", biz: "mobile repair shop",
       avg: 140000, pool: 200000, defaultDraw: 60000, overAsk: 500000, step: 5000,
       series: [142, 138, 112, 118, 150, 180],
@@ -1488,6 +1922,60 @@ const DATA = {
       factors: [["+", "1,100 different customers — very spread out"], ["+", "Money in on most days of the month"], ["−", "No Udyam / GST registration yet"], ["−", "Monsoon dip in June"]],
       levers: [["Register on Udyam (free)", "up to ₹2,40,000"], ["Connect a second account", "more accurate"]],
       handoff: "Salim runs a mobile repair shop with ~₹1.4L/mo across 1,100 small UPI customers. Suggest Udyam registration to lift limit.",
+      hinglish: {
+        name: "Main service deta hoon", examples: "Salon, repair, tuition, darzi, catering", tag: "Service", noun: "Aap jaise service walon",
+        busiest: "September (tyohar mein upgrade)", slowest: "June (baarish)", payers: "1,100 alag customers ne pay kiya",
+        hint: "Customers ke chhote UPI payment bhi ginte hain — har ek.",
+        supplier: { t: "Kestrel aapke vendor ko seedha pay karega", d: "Kestrel aapke parts supplier, tool wale ya makaan-maalik ko pay karega — utna hi jitna unke quote mein hai." },
+        quoteItems: ["Phone parts aur screens", "Repair bench aur tools", "Dukaan ka kiraya"],
+        docs: [{ l: "PAN", s: "PAN" }, { l: "Aadhaar (DigiLocker se)", s: "Aadhaar" }, { l: "Dukaan ka rent agreement ya ownership proof (ghar se kaam ho to ghar ka address)", s: "Rent agreement, ownership proof ya ghar ka address" }, { l: "Udyam registration, agar hai", s: "Udyam, agar hai" }],
+        noteChips: ["Cash wali repair bhi bahut hai"],
+        questions: [
+          { q: "Customers zyada tar kaise pay karte hain?", o: ["Zyada tar UPI / card", "Aadha cash", "Zyada tar cash"], why: "Cash koi problem nahi. Bas ye tay hota hai ki kaunsa proof best rahega." },
+          { q: "Kaam kitne saal se chal raha hai?", o: ["1 saal se kam", "1–3 saal", "3–5 saal", "5+ saal"], why: "Naye kaam ko pehle chhota starter amount milta hai. Trail badhne par ye badhta hai." },
+          { q: "Kya dukaan ya jagah hai?", o: ["Apni", "Kiraye par", "Ghar se kaam"], why: "Ghar se kaam bhi chalega. Bas address proof badalta hai." },
+          { q: "Paisa kis kaam ke liye chahiye?", opts: [
+            { l: "Tools aur equipment", fit: "Tools ek baar ki kharid hain. Term loan ka paisa seedha seller ko. Ek fixed EMI, kam rate.", also: "Tools ka paisa seedha seller ko ja sakta hai." },
+            { l: "Dukaan setup ya renovation", fit: "Dukaan setup ek baar ka kharcha hai. Term loan ka paisa seedha contractor ko. Ek fixed EMI, kam rate.", also: "Setup ka paisa seedha contractor ko ja sakta hai." },
+            { l: "Spare parts aur stock", fit: "Parts aur stock jaldi bikte hain. Flexible line se zaroorat par maal lein, repair ki kamai se chukayein.", also: "Parts aur stock flexible line se le sakte hain." },
+            { l: "Dheeme mahinon ka kharcha", fit: "June mein kaam dheema hota hai. Flexible line se sirf dheeme mahine nikaalein. Jitna use karein, utne par interest.", also: "Flexible line se June aaram se nikal jayega." },
+            { l: "Helper rakhna ya gaadi lena", fit: "Helper ya gaadi planned kharcha hai. June ke hisaab se rakhi EMI wala term loan sabse simple hai.", also: "Helper ya gaadi ek fixed EMI mein aa jayegi." },
+          ] },
+        ],
+        mirror: "Aapka kaam bahut saare chhote payments par chalta hai. 6 mahine mein 1,000 se zyada customers, lagbhag sab UPI se. Tyohar par sabse busy, baarish mein thoda dheema. Itne saare customers aapki taakat hain.",
+        whyAi: "Aapka estimate average mahine ka lagbhag 1.4 guna hai. Bahut saare chhote customers se kamai pakki rehti hai. Kestrel limit aisi rakhta hai ki sabse dheema mahina, June, bhi EMI aaram se cover kare.",
+        factors: [["+", "1,100 alag customers — bahut faile hue"], ["+", "Mahine ke zyada tar din paisa aata hai"], ["−", "Abhi Udyam / GST registration nahi"], ["−", "June mein baarish ki kami"]],
+        levers: [["Udyam par register karein (free)", "₹2,40,000 tak"], ["Doosra account connect karein", "aur sahi estimate"]],
+        fit: "Bahut saare chhote payments, zyada tar mahine steady. Sabse dheeme mahine ke hisaab se EMI wala term loan simple rahega.",
+        fitTermOnly: "Kestrel term loan deta hai. EMI sabse dheeme mahine, June, ke hisaab se hai. Aaram se bharegi.",
+      },
+      hi: {
+        label: "स्थानीय सर्विस", name: "मैं सर्विस देता हूँ", examples: "सैलून, रिपेयर, ट्यूशन, दर्ज़ी, कैटरिंग", tag: "सर्विस", noun: "आप जैसे सर्विस वालों",
+        busiest: "सितंबर (त्योहारों में अपग्रेड)", slowest: "जून (बारिश)", payers: "1,100 अलग-अलग ग्राहकों ने पैसे दिए",
+        hint: "ग्राहकों के छोटे-छोटे UPI पेमेंट भी गिने जाते हैं — हर एक।",
+        supplier: { t: "Kestrel आपके सप्लायर को सीधे पेमेंट करता है", d: "Kestrel आपके पार्ट्स सप्लायर, औज़ार बेचने वाले या मकान-मालिक को सीधे पेमेंट करता है — ठीक उतना जितना उनके कोटेशन में लिखा है।" },
+        quoteItems: ["फ़ोन के पार्ट्स और स्क्रीन", "रिपेयर बेंच और औज़ार", "दुकान का किराया"],
+        docs: [{ l: "PAN", s: "PAN" }, { l: "आधार (DigiLocker से)", s: "आधार" }, { l: "दुकान का किराया-नामा या मालिकाना सबूत (घर से काम करते हों तो घर का पता)", s: "किराया-नामा, मालिकाना सबूत या घर का पता" }, { l: "Udyam रजिस्ट्रेशन, अगर है", s: "Udyam, अगर है" }],
+        noteChips: ["कैश वाली रिपेयर भी बहुत होती है"],
+        questions: [
+          { q: "ग्राहक आम तौर पर पैसे कैसे देते हैं?", o: ["ज़्यादातर UPI / कार्ड", "आधा-आधा कैश", "ज़्यादातर कैश"], why: "कैश में कोई दिक्कत नहीं — इससे बस यह तय होता है कि आपके लिए कौन-सा सबूत सबसे अच्छा रहेगा।" },
+          { q: "काम कितने समय से चल रहा है?", o: ["1 साल से कम", "1–3 साल", "3–5 साल", "5+ साल"], why: "नए काम को पहले छोटी स्टार्टर रकम मिलती है, जो लेन-देन बढ़ने के साथ बढ़ती है।" },
+          { q: "क्या आपकी दुकान या जगह है?", o: ["अपनी", "किराये पर", "घर से काम"], why: "घर से काम करना भी ठीक है। इससे बस पते का सबूत बदलता है।" },
+          { q: "पैसा किस काम के लिए चाहिए?", opts: [
+            { l: "औज़ार और सामान", fit: "औज़ार एक बार की ख़रीद हैं। टर्म लोन का पैसा सीधे बेचने वाले को जाता है — एक तय EMI और कम ब्याज।", also: "औज़ार का पैसा सीधे बेचने वाले को जा सकता है।" },
+            { l: "दुकान का सेटअप या मरम्मत", fit: "दुकान का सेटअप एक बार का खर्च है। टर्म लोन का पैसा सीधे ठेकेदार को जाता है — एक तय EMI और कम ब्याज।", also: "सेटअप का पैसा सीधे ठेकेदार को जा सकता है।" },
+            { l: "स्पेयर पार्ट्स और माल", fit: "पार्ट्स और माल जल्दी बिकते हैं। फ़्लेक्सिबल लाइन से ज़रूरत पर माल लें, रिपेयर की कमाई से लौटाएँ।", also: "पार्ट्स और माल फ़्लेक्सिबल लाइन से ले सकते हैं।" },
+            { l: "धीमे महीनों का खर्च", fit: "जून में काम धीमा होता है। फ़्लेक्सिबल लाइन से सिर्फ़ धीमे महीनों में निकालें, और जितना इस्तेमाल करें सिर्फ़ उसी पर ब्याज दें।", also: "फ़्लेक्सिबल लाइन से जून आराम से निकल जाएगा।" },
+            { l: "हेल्पर रखना या गाड़ी लेना", fit: "हेल्पर या गाड़ी एक सोचा-समझा खर्च है। जून के हिसाब से तय EMI वाला टर्म लोन सबसे आसान रहेगा।", also: "हेल्पर या गाड़ी एक तय EMI में आ जाएगी।" },
+          ] },
+        ],
+        mirror: "आपका काम ढेर सारे छोटे पेमेंट पर चलता है — छह महीनों में हज़ार से ज़्यादा ग्राहक, लगभग सभी UPI से। त्योहारों पर सबसे ज़्यादा काम होता है और बारिश में थोड़ा धीमा। इतने सारे ग्राहक आपकी असली ताक़त हैं।",
+        whyAi: "आपका अंदाज़ा आपकी औसत महीने की कमाई का लगभग 1.4 गुना है। बहुत सारे छोटे ग्राहकों से कमाई भरोसेमंद रहती है, और Kestrel लिमिट ऐसी रखता है कि सबसे धीमे महीने — जून — में भी किस्त आराम से भरी जा सके।",
+        factors: [["+", "1,100 अलग-अलग ग्राहक — काफ़ी फैले हुए"], ["+", "महीने के ज़्यादातर दिनों में पैसा आता है"], ["−", "अभी Udyam / GST रजिस्ट्रेशन नहीं"], ["−", "जून में बारिश की वजह से कमी"]],
+        levers: [["Udyam पर रजिस्टर करें (मुफ़्त)", "₹2,40,000 तक"], ["दूसरा खाता जोड़ें", "और सही अंदाज़ा"]],
+        fit: "ढेर सारे छोटे पेमेंट, ज़्यादातर महीने एक जैसे। सबसे धीमे महीने के हिसाब से तय EMI वाला टर्म लोन सबसे आसान रहेगा।",
+        fitTermOnly: "Kestrel टर्म लोन देता है। आपकी EMI सबसे धीमे महीने — जून — के हिसाब से तय है, इसलिए आराम से भरी जा सकती है।",
+      },
     },
   },
   classify: [
@@ -1573,7 +2061,7 @@ I.mark = (s = 18) => `<svg width="${s}" height="${s}" viewBox="0 0 20 20" aria-h
    State
    ========================================================= */
 const fresh = () => ({
-  step: "landing", qi: 0, persona: null, answers: {}, freeText: "", classified: null, lang: "en",
+  step: "lang", qi: 0, persona: null, answers: {}, freeText: "", classified: null, lang: null, offerDone: false, termsLang: {},
   trail: null, bank: null, consentStage: "ask", acc: "", acc2: "", accType: 0, otpConsent: "", pdfStage: 0, roughEarn: null, roughAsk: null,
   mirror: null, offNote: "", draw: null, route: null, product: null, quotes: [], qd: null,
   name: "", phone: "", otpSent: false, otp: "", phoneVerified: false, contact: null, slot: null, saved: false, welcomeAck: false,
@@ -1590,7 +2078,18 @@ const counted = {}; // count-up done per key
 let renderToken = 0;
 
 /* ---------- copy lookup (English / Hindi) ---------- */
-const lang = () => (S.persona === "shop" && S.lang === "hi" && S.step !== "landing" && S.step !== "persona") ? "hi" : "en";
+/* language: en · hinglish · hi. Hindi is written for shop + services; other paths show Hinglish with a note */
+let LANG_OVR = null;
+const hasHi = k => !!(DATA.personas[k] && DATA.personas[k].hi && DATA.personas[k].hi.questions);
+const baseLang = () => { const l = S.lang || "en"; return l === "hi" && S.persona && !hasHi(S.persona) && !["lang", "landing", "persona"].includes(S.step) ? "hinglish" : l; };
+const lang = () => LANG_OVR || baseLang();
+const hiNoteOn = () => S.lang === "hi" && !!S.persona && !hasHi(S.persona) && !["lang", "landing"].includes(S.step);
+const withLang = (l, fn) => { const prev = LANG_OVR; LANG_OVR = l || null; try { return fn(); } finally { LANG_OVR = prev; } };
+/* the chosen language is kept on its own, so it survives until "Reset demo" or "Start fresh" */
+const LANG_KEY = "breadcrumb.lang.v1";
+const saveLang = () => { try { if (S.lang) localStorage.setItem(LANG_KEY, S.lang); } catch (e) {} };
+const loadLang = () => { try { const v = localStorage.getItem(LANG_KEY); return ["en", "hinglish", "hi"].includes(v) ? v : null; } catch (e) { return null; } };
+const clearLang = () => { try { localStorage.removeItem(LANG_KEY); } catch (e) {} };
 const dig = (o, path) => path.split(".").reduce((a, k) => (a == null ? a : a[k]), o);
 const fill = (s, v) => typeof s === "string" && v ? s.replace(/\{(\w+)\}/g, (m, k) => (v[k] != null ? v[k] : m)) : s;
 const T = (path, v) => { const x = dig(DATA.ui[lang()], path); return fill(x != null ? x : dig(DATA.ui.en, path), v); };
@@ -1600,13 +2099,14 @@ const fmtDiff = n => n >= 100000 ? lakh(n) : inr(n);
 
 /* ---------- derived ---------- */
 const PE = () => DATA.personas[S.persona] || DATA.personas.shop;
-const P = () => {
-  const b = PE();
-  if (lang() !== "hi" || !b.hi) return b;
-  const h = b.hi;
+const personaIn = (k, l) => {
+  const b = DATA.personas[k] || DATA.personas.shop, h = l !== "en" && b[l];
+  if (!h) return b;
+  if (!h.questions) return { ...b, name: h.name || b.name, examples: h.examples || b.examples };
   return { ...b, ...h, questions: b.questions.map((q, i) => { const hq = h.questions[i] || {}; return { ...q, ...hq, opts: q.opts && q.opts.map((o, j) => ({ ...o, ...((hq.opts || [])[j] || {}) })) }; }), quoteSamples: b.quoteSamples.map((s, i) => ({ ...s, item: h.quoteItems[i] })),
     docs: b.docs.map((d, i) => ({ ...d, ...(h.docs || [])[i] })), noteChips: b.noteChips.map((c, i) => ({ ...c, l: (h.noteChips || [])[i] || c.l })) };
 };
+const P = () => personaIn(S.persona || "shop", lang());
 /* multi-select answers are arrays of option ids; index 0 is the main one */
 const qOpts = q => q.opts ? (q.other ? [...q.opts, { id: "other", l: T("q.other"), icon: "pencil" }] : q.opts) : [];
 const pick = id => { const a = S.answers[id]; return Array.isArray(a) ? a : []; };
@@ -1655,9 +2155,9 @@ function clearProgress() { try { localStorage.removeItem(SAVE_KEY); } catch (e) 
 const stepsLeft = st => { const i = { q: 1, trail: 2, mirror: 2, pool: 3, route: 3, lock: 4, submitted: 5, done: 5 }[st] ?? 0; return i < 3 ? { n: 3 - i, est: true } : { n: Math.max(1, 5 - i), est: false }; };
 const demoSnap = () => ({ demo: true, step: "pool", qi: 0, persona: S.persona || "shop", answers: S.answers, trail: S.trail || "bank", first: S.name.trim().split(/\s+/)[0] || "", estimate: DATA.personas[S.persona || "shop"].pool });
 function restore(sn) {
-  const keep = { edge: S.edge, lenderPreset: S.lenderPreset, source: S.source, lensTab: S.lensTab };
+  const keep = { edge: S.edge, lenderPreset: S.lenderPreset, source: S.source, lensTab: S.lensTab, offerDone: true };
   S = Object.assign(fresh(), keep, {
-    persona: sn.persona, lang: sn.lang || "en", answers: sn.answers || {}, trail: sn.trail || "bank", roughEarn: sn.roughEarn ?? null, roughAsk: sn.roughAsk ?? null,
+    persona: sn.persona, lang: sn.lang || S.lang || "en", answers: sn.answers || {}, trail: sn.trail || "bank", roughEarn: sn.roughEarn ?? null, roughAsk: sn.roughAsk ?? null,
     notes: sn.notes || [], chk: sn.chk || {}, product: sn.product ?? null, route: sn.route ?? null, draw: sn.draw ?? null, name: sn.first || "",
     panOk: !!sn.idOk, aadhaarOk: !!sn.idOk, docs: sn.docs || {}, updates: sn.updates || "app", slot: sn.slot ?? null,
     recovered: true, retDismissed: true, aheadHidden: true,
@@ -1748,7 +2248,7 @@ function quotesBlock() {
   </div>`;
 }
 const confidence = () => S.trail === "bank" ? ["Bank-verified via AA (6 months)", "ok"] : S.trail === "pdf" ? ["Statement-verified (6 months)", "ok"] : S.trail === "rough" ? ["Self-declared (rough)", "warn"] : ["Self-declared", "warn"];
-const stepIndex = () => ({ landing: -1, persona: 0, q: 1, trail: 2, loader: 2, mirror: 2, pool: 3, route: 3, lock: 4, submitted: 5, done: 5 })[S.step];
+const stepIndex = () => ({ lang: -1, landing: -1, persona: 0, q: 1, trail: 2, loader: 2, mirror: 2, pool: 3, route: 3, lock: 4, submitted: 5, done: 5 })[S.step];
 
 function score() {
   const sig = [
@@ -1794,8 +2294,25 @@ function aheadCard(p, compact) {
 const insightsFor = (p, cash, t) => [["#14996A", t("mirror.busiestP", { v: p.busiest })], ["#C9860C", t("mirror.slowestP", { v: p.slowest })], ["#2C48FF", cash ? t("mirror.cashPayers") : p.payers]];
 const noteText = (n, p) => [...n.chips.map(id => (p.noteChips.find(c => c.id === id) || {}).l).filter(Boolean), n.text].filter(Boolean).join(". ");
 const Screens = {
+  lang() {
+    const G = DATA.langScreen;
+    return {
+      body: `
+      <div class="lang-wrap">
+        <h1 class="h lang-t">${G.title}<span lang="hi">${G.titleHi}</span></h1>
+        <div class="stack lang-list">${G.opts.map(o => `
+          <button class="choice lang-opt" data-act="pickLang:${o.id}" ${o.id === "hi" ? 'lang="hi"' : ""}>
+            <span style="flex:1;min-width:0"><span class="ttl" style="display:block">${o.t}</span><span class="dsc" style="display:block">${o.d}</span></span>
+            <span class="lang-g" aria-hidden="true">${o.g}</span>
+          </button>`).join("")}</div>
+        <p class="lang-foot">${G.foot}</p>
+      </div>`,
+      cta: "",
+    };
+  },
+
   landing() {
-    const L = DATA.landing, H = L.heroCard, R = L.returning;
+    const L = T("landing"), H = L.heroCard, R = L.returning;
     const snap = S.retDismissed ? null : (loadProgress() || (S.edge.returning ? demoSnap() : null));
     S.resumeSnap = snap;
     const nm = snap && snap.first ? esc(snap.first) : R.there;
@@ -1812,7 +2329,7 @@ const Screens = {
     const rg = DATA.lender.range;
     return {
       body: `
-      <div class="lockup">${I.mark()}<span>${DATA.brand.lockup}</span></div>
+      <div class="lockup">${I.mark()}<span>${L.lockup}</span></div>
       ${S.source === "vendor" ? `<div class="notice blue" style="margin-bottom:12px">${icon("clinic").replace("<svg", "<svg width='22' height='22'")}<span><b>${L.vendorBanner.t}</b><br>${L.vendorBanner.d}</span></div>` : ""}
       ${resume}
       <div class="hero-visual">
@@ -1837,12 +2354,12 @@ const Screens = {
   },
 
   persona() {
-    const D = DATA.personaScreen;
-    const cards = Object.entries(DATA.personas).map(([k, p]) => `
+    const D = T("personaScreen"), O = DATA.offer;
+    const cards = Object.keys(DATA.personas).map(k => [k, personaIn(k, lang())]).map(([k, p]) => `
       <button class="choice persona ${S.persona === k ? "sel" : ""}" data-act="persona:${k}">
         <span class="tick">${I.check("#fff", 12)}</span>
         <span class="ico">${icon(personaIcon[k])}</span>
-        <span><span class="ttl" style="display:block">${p.label}</span><span class="dsc" style="display:block">${p.examples}</span></span>
+        <span><span class="ttl" style="display:block">${p.name}</span><span class="dsc" style="display:block">${p.examples}</span></span>
       </button>`).join("");
     const cls = S.classified;
     return {
@@ -1850,7 +2367,8 @@ const Screens = {
       <h2 class="h">${D.title}</h2><p class="sub">${D.sub}</p>
       <div class="gap"></div>
       <div class="persona-grid">${cards}</div>
-      ${S.persona === "shop" ? `<div class="langask"><p>${D.langNote}</p><div class="chips"><button class="chip sel hi" data-act="lang:hi:go">${D.langAsk}</button><button class="chip" data-act="lang:en:go">${D.langEn}</button></div></div>` : ""}
+      ${S.lang === "en" && !S.offerDone && ["shop", "local"].includes(S.persona) ? `<div class="langask"><p>${O.q}</p><div class="chips"><button class="chip sel" data-act="lang:hinglish:go">${O.yes}</button><button class="chip" data-act="lang:en:go">${O.no}</button></div></div>` : ""}
+      ${hiNoteOn() ? `<p class="hi-note">${DATA.hiNote}</p>` : ""}
       <p class="label-s" style="margin-top:22px">${D.freeLabel}</p>
       <div class="input-row">
         <input class="input" id="freeText" placeholder="${D.freePlaceholder}" value="${esc(S.freeText)}" autocomplete="off">
@@ -1870,7 +2388,7 @@ const Screens = {
     return {
       body: `
       ${S.qi === 0 ? aheadCard(p) : ""}
-      <p class="eyebrow">${T("q.eyebrow", { label: p.label, n: S.qi + 1, total: p.questions.length })}</p>
+      <p class="eyebrow">${T("q.eyebrow", { label: p.tag, n: S.qi + 1, total: p.questions.length })}</p>
       <h2 class="h">${q.q}</h2>
       ${why(q.why)}
       <div class="gap-l"></div>
@@ -1895,7 +2413,7 @@ const Screens = {
     return {
       body: `
       ${S.qi === 0 ? aheadCard(p, true) : ""}
-      <p class="eyebrow">${T("q.eyebrow", { label: p.label, n: S.qi + 1, total: p.questions.length })}</p>
+      <p class="eyebrow">${T("q.eyebrow", { label: p.tag, n: S.qi + 1, total: p.questions.length })}</p>
       <h2 class="h">${q.q}</h2>
       <p class="q-help">${T("q." + q.help)}</p>
       ${kept ? `<p class="q-def">${T("q.def", { noun: p.noun })}</p>` : ""}
@@ -2031,7 +2549,7 @@ const Screens = {
           <div class="stack" style="gap:10px;margin-top:12px">${T("pool.checklist").map((c, i) => `<div style="display:flex;gap:12px;font-size:14px;color:var(--ink2)"><span class="how"><span class="n" style="width:24px;height:24px;font-size:12px">${i + 1}</span></span>${c}</div>`).join("")}</div>
         </div>` : ""}
       <div style="margin-top:6px"><button class="link" data-act="sheet:why">${I.info("#2C48FF")}${T("pool.whyLink")}</button></div>
-      <div class="fees card pad" style="margin-top:4px">${I.info("#6F7490")}<span>${T("pool.fees")}</span></div>
+      <div class="fees card pad" style="margin-top:4px">${I.info("#6F7490")}<span>${withLang(S.termsLang.fees, () => T("pool.fees"))}${termsLinks("fees")}</span></div>
       ${foot()}`,
       cta: btn(T("common.continue"), "toRoute"),
     };
@@ -2213,7 +2731,7 @@ const Screens = {
       <div class="chips">${D.upd.map((t, i) => { const v = i ? "call" : "app"; return `<button class="chip ${S.updates === v ? "sel" : ""}" data-act="updates:${v}">${t}</button>`; }).join("")}</div>
       ${S.updates === "call" ? `<p class="label-s">${T("lock.pickTime")}</p><div class="chips">${T("lock.slots").map((t, i) => `<button class="chip ${S.slot === i ? "sel" : ""}" data-act="slot:${i}">${t}</button>`).join("")}</div>` : ""}
       <div class="card pad rows" style="margin-top:18px">
-        <div class="r"><span>${D.work}</span><b>${p.label}</b></div>
+        <div class="r"><span>${D.work}</span><b>${p.name}</b></div>
         <div class="r"><span>${D.poolRow}</span><b class="num">${inr(o.max)}${o.low ? D.est : ""}</b></div>
         <div class="r"><span>${D.first}</span><b class="num">${inr(drawAmt())}</b></div>
         <div class="r"><span>${D.prod}</span><b>${prodName(productNow())}</b></div>
@@ -2233,12 +2751,19 @@ const Screens = {
   },
 };
 /* ---------- sheets ---------- */
+/* Hinglish shows a short summary; the full terms open in Hindi or English for that block only */
+function termsLinks(which) {
+  if (baseLang() !== "hinglish") return "";
+  const X = DATA.terms, cur = S.termsLang[which];
+  const b = (l, txt) => `<button class="link terms-l ${cur === l ? "on" : ""}" data-act="terms:${which}:${l}" ${l === "hi" ? 'lang="hi"' : ""}>${txt}</button>`;
+  return `<span class="terms-row">${cur ? b("", X.back) : `${X.label} ${b("hi", X.hi)} · ${b("en", X.en)}`}</span>`;
+}
 const Sheets = {
   how() {
-    const L = DATA.landing;
-    return `<h3>${L.howTitle}</h3><p class="sub">${DATA.brand.tagline}</p>
+    const L = T("landing");
+    return `<h3>${L.howTitle}</h3><p class="sub">${L.tagline}</p>
       <div class="step-steps">${L.how.map((h, i) => `<div class="how"><span class="n">${i + 1}</span><div><b>${h.t}</b><span>${h.d}</span></div></div>`).join("")}</div>
-      <div class="notice blue" style="margin-top:20px">${I.lock()}<span>${DATA.brand.lenderLine}</span></div>
+      <div class="notice blue" style="margin-top:20px">${I.lock()}<span>${L.lenderLine}</span></div>
       <div style="height:16px"></div>${btn(L.gotIt, "closeSheet")}`;
   },
   consent() {
@@ -2262,7 +2787,8 @@ const Sheets = {
         <div class="notice green" style="margin-top:14px">${I.check("#14996A", 15)}<span>${c("promise")}</span></div>
         <div style="height:18px"></div>${btn(c("agree"), "consentAllow")}
         <button class="btn btn-ghost" style="width:100%" data-act="closeSheet">${c("notNow")}</button>
-        <p class="why" style="justify-content:center;font-size:12px;margin-top:4px">${I.info()}<span>${c("lenderLine")}</span></p>`;
+        <p class="why" style="justify-content:center;font-size:12px;margin-top:4px">${I.info()}<span>${c("lenderLine")}</span></p>
+        <p class="terms-wrap">${termsLinks("consent")}</p>`;
     }
     if (st === "banks") {
       return `${stepper}<h3>${c("banksTitle")}</h3>
@@ -2451,7 +2977,7 @@ function liveHTML() {
     <div class="lens-sec"><div class="lens-k">Data confidence</div><div class="conf"><span class="pill ${ck}">${conf}</span></div>
       ${S.trail && S.trail !== "rough" ? `<div class="kv" style="margin-top:12px"><span>Verified avg inflow</span><b class="num">${inr(p.avg * (isCash() ? .45 : 1))}/mo</b><span>Months of trail</span><b>6</b></div>` : ""}
       ${stepIndex() >= 3 ? `<div class="kv" style="margin-top:10px"><span>Preference</span><b style="font-family:Inter">${prodNameE(pid)}${r ? " · " + routeL : ""}</b>${r === "supplier" ? `<span>Quote</span><b style="font-family:Inter">${quoteL}</b>` : ""}</div>` : ""}</div>
-    <div class="lens-sec"><div class="lens-k">Persona &amp; Breadcrumb's read</div><div class="lens-v"><b style="font-weight:600">${p.label}</b> → Breadcrumb's read: ${isNewBiz() ? "New business, nurture track." : p.read}${lang() === "hi" ? ` <span class="tag" style="background:var(--navy3);color:var(--lens-ink);height:20px">Viewing in Hindi</span>` : ""}</div>
+    <div class="lens-sec"><div class="lens-k">Persona &amp; Breadcrumb's read</div><div class="lens-v"><b style="font-weight:600">${p.label}</b> → Breadcrumb's read: ${isNewBiz() ? "New business, nurture track." : p.read}${S.lang && S.lang !== "en" ? ` <span class="tag" style="background:var(--navy3);color:var(--lens-ink);height:20px">Viewing in ${DATA.langNames[lang()]}</span>` : ""}</div>
       <p class="lens-empty" style="margin-top:6px;font-size:12.5px">${fitFor(p, DATA.ui.en)}</p>
       ${purposeL ? `<div class="kv" style="margin-top:12px"><span>Purpose</span><b style="font-family:Inter">${esc(purposeL)}</b></div>` : ""}
       ${p.questions.some(q => q.id !== "purpose" && S.answers[q.id]) ? `<div class="kv" style="margin-top:12px">${p.questions.filter(q => q.id !== "purpose" && S.answers[q.id]).map(q => `<span>${q.q.replace(/\?$/, "").replace("…", "").slice(0, 34)}</span><b style="font-family:Inter">${esc(answerE(q))}</b>`).join("")}</div>` : ""}</div>
@@ -2470,7 +2996,7 @@ function liveHTML() {
       <p class="lens-empty" style="margin:-4px 0 10px;font-size:12px">${DATA.lens.routing}</p>
       <div class="handoff"><div class="hd"><span class="nm">${esc(name)}</span><span class="tag" style="background:rgba(91,227,168,.12);color:#5BE3A8">${S.phoneVerified ? "Phone verified" : "Unverified"}</span></div>
         <div class="kv"><span>${DATA.lens.sourceLabel}</span><b style="font-family:Inter">${source}</b>${existingOn() ? `<span>Customer</span><b style="font-family:Inter">Existing · relationship team</b>` : ""}<span>Persona</span><b style="font-family:Inter">${p.label}</b>${purposeL ? `<span>Purpose</span><b style="font-family:Inter">${esc(purposeL)}</b>` : ""}<span>Verified avg inflow</span><b>${S.trail === "rough" ? "—" : inr(p.avg * (isCash() ? .45 : 1))}</b><span>Estimate</span><b>${inr(o.max)}</b><span>Preferred product</span><b style="font-family:Inter">${prodNameE(pid)}</b><span>Route</span><b style="font-family:Inter">${(routeNow() === "supplier" ? "Vendor pay" : "Bank") + (S.routeChosen ? " (chosen)" : " (default)")}</b>${routeNow() === "supplier" ? S.quotes.map(q => `<span>↳ ${esc(q.vendor)}</span><b>${inr(q.amount)}</b>`).join("") : ""}<span>Quote</span><b style="font-family:Inter">${routeNow() === "supplier" ? (S.quotes.length ? `Verified (${S.quotes.length})` : "Pending") : "Not needed"}</b><span>Identity</span><b style="font-family:Inter">${idOk() ? "Verified (PAN + Aadhaar)" : "Pending"}</b><span>Documents</span><b>${bizE.length ? `${bizSent} of ${bizE.length}` : "None needed"}</b><span>Preferred contact</span><b style="font-family:Inter">${S.updates === "call" ? "Call" + (S.slot != null ? ` · ${slotsE[S.slot]}` : "") : "WhatsApp"}${S.prefFromHelp ? " (set by borrower)" : ""}</b><span>Updates</span><b style="font-family:Inter">${S.updates === "call" ? "app + call" : "app + WhatsApp"}</b><span>Assigned to</span><b style="font-family:Inter">Riya (loan officer)</b>${S.phoneVerified ? `<span>Mobile</span><b>+91 ${S.phone.slice(0, 5)} ${S.phone.slice(5)}</b>` : ""}</div>
-        <div class="sum"><span style="color:#99A7FF;font-size:11px;font-weight:600;letter-spacing:.06em;display:block;margin-bottom:4px">AI SUMMARY FOR CALLER</span>${esc(p.handoff.replace(p.who, name) + purposeSum)}${S.notes.length ? ` Borrower notes: ${S.notes.map(n => "“" + esc(noteText(n, pe)) + "”").join(", ")}.` : ""}${pendE.length ? ` Ask for the ${pendE.map(([dd]) => dd.s.toLowerCase().replace(/^(the|a) /, "").replace(/^gst/, "GST").replace(/^udyam/, "Udyam")).join(" and the ")}.` : ""}${!idOk() ? " Identity not verified yet." : ""}${quotePending ? " Collect the vendor quote on the call." : ""}${lang() === "hi" ? " Prefers Hindi." : ""}</div>
+        <div class="sum"><span style="color:#99A7FF;font-size:11px;font-weight:600;letter-spacing:.06em;display:block;margin-bottom:4px">AI SUMMARY FOR CALLER</span>${esc(p.handoff.replace(p.who, name) + purposeSum)}${S.notes.length ? ` Borrower notes: ${S.notes.map(n => "“" + esc(noteText(n, pe)) + "”").join(", ")}.` : ""}${pendE.length ? ` Ask for the ${pendE.map(([dd]) => dd.s.toLowerCase().replace(/^(the|a) /, "").replace(/^gst/, "GST").replace(/^udyam/, "Udyam")).join(" and the ")}.` : ""}${!idOk() ? " Identity not verified yet." : ""}${quotePending ? " Collect the vendor quote on the call." : ""}${S.lang === "hi" ? (lang() === "hi" ? " Prefers Hindi." : " Prefers Hindi (path shown in Hinglish).") : S.lang === "hinglish" ? " Prefers Hinglish." : ""}</div>
         <!-- LLM call goes here — one-line caller summary from the lead record -->
       </div></div>` : ""}`;
 }
@@ -2484,7 +3010,7 @@ function demoHTML() {
     <h4>Borrower situations</h4>
     ${tg("overAsk", "Asked for more than eligible")}${tg("returning", "Returning visitor")}
     <h4>Source</h4><div class="chips">${DATA.sources.map(s => `<button class="chip ${S.source === s.id ? "sel" : ""}" data-act="source:${s.id}">${s.l}</button>`).join("")}</div>
-    <h4>Jump to</h4><div class="chips">${[["persona", "Who"], ["trail", "Trail"], ["mirror", "Mirror"], ["pool", "Options"], ["lock", "Lock"]].map(([s, l]) => `<button class="chip" data-act="jump:${s}">${l}</button>`).join("")}</div>
+    <h4>Jump to</h4><div class="chips">${[["lang", "Language screen"], ["persona", "Who"], ["trail", "Trail"], ["mirror", "Mirror"], ["pool", "Options"], ["lock", "Lock"]].map(([s, l]) => `<button class="chip" data-act="jump:${s}">${l}</button>`).join("")}</div>
     <div style="height:14px"></div><button class="btn btn-secondary" style="height:44px;font-size:14px" data-act="reset">Reset demo</button>`;
 }
 
@@ -2499,8 +3025,8 @@ function progressHTML() {
     ${S.savedFlash ? `<span class="saved-tick" role="status">${I.check("#14996A", 11)}${T("common.saved")}</span>` : ""}`;
 }
 function langSwHTML() {
-  if (S.persona !== "shop" || S.step === "landing" || S.step === "persona") return "";
-  return `<span class="lang-sw" role="group" aria-label="Language">${["en", "hi"].map(l => `<button class="${S.lang === l ? "on" : ""}" data-act="lang:${l}">${DATA.langSwitch[l]}</button>`).join("")}</span>`;
+  if (S.step === "lang" || !S.lang) return "";
+  return `<span class="lang-sw" role="group" aria-label="Language">${["en", "hinglish", "hi"].map(l => `<button class="${S.lang === l ? "on" : ""}" data-act="lang:${l}" title="${DATA.langNames[l]}" ${l === "hi" ? 'lang="hi"' : ""}>${DATA.langSwitch[l]}</button>`).join("")}</span>`;
 }
 
 /* ---------- main render ---------- */
@@ -2514,15 +3040,16 @@ function render() {
   const isNew = key !== lastStepKey;
   const prevTop = scroll.scrollTop;
   $("#app").setAttribute("lang", lang() === "hi" ? "hi" : "en");
-  scroll.innerHTML = `<div class="screen ${isNew ? (S.dir > 0 ? "enter" : "enter-back") : ""}">${scr.body}</div>`;
+  const note = hiNoteOn() && S.step !== "persona" ? `<p class="hi-note">${DATA.hiNote}</p>` : "";
+  scroll.innerHTML = `<div class="screen ${isNew ? (S.dir > 0 ? "enter" : "enter-back") : ""}">${note}${scr.body}</div>`;
   if (isNew) scroll.scrollTop = 0; else scroll.scrollTop = prevTop;
   lastStepKey = key;
   S.savedFlash = isNew && saveProgress();
   $("#cta").innerHTML = scr.cta;
   if (!isNew) saveProgress();
-  const pr = $("#progress"); pr.innerHTML = progressHTML(); pr.classList.toggle("hide", S.step === "landing");
+  const pr = $("#progress"); pr.innerHTML = progressHTML(); pr.classList.toggle("hide", S.step === "landing" || S.step === "lang");
   $("#langSw").innerHTML = langSwHTML(); $(".topbar").classList.toggle("has-lang", !!langSwHTML());
-  const back = $("#backBtn"); back.disabled = S.step === "landing" || S.step === "loader" || S.step === "done" || S.step === "submitted"; $(".topbar").classList.toggle("home", S.step === "landing" || S.step === "done" || S.step === "submitted");
+  const back = $("#backBtn"); back.disabled = S.step === "lang" || S.step === "landing" || S.step === "loader" || S.step === "done" || S.step === "submitted"; $(".topbar").classList.toggle("home", S.step === "lang" || S.step === "landing" || S.step === "done" || S.step === "submitted");
   back.setAttribute("aria-label", T("common.back"));
   renderSheet();
   renderLens();
@@ -2534,7 +3061,7 @@ function render() {
 }
 function renderSheet() {
   const layer = $("#sheetLayer");
-  if (S.sheet) { $("#sheet").innerHTML = `<div class="grab"></div><button class="iconbtn sheet-close" data-act="closeSheet" aria-label="Close">${I.close}</button>${Sheets[S.sheet]()}`; requestAnimationFrame(() => layer.classList.add("open")); }
+  if (S.sheet) { const inner = withLang(S.sheet === "consent" && S.consentStage === "ask" ? S.termsLang.consent : null, () => Sheets[S.sheet]()); $("#sheet").innerHTML = `<div class="grab"></div><button class="iconbtn sheet-close" data-act="closeSheet" aria-label="${T("common.close")}">${I.close}</button><div lang="${withLang(S.sheet === "consent" && S.consentStage === "ask" ? S.termsLang.consent : null, () => lang() === "hi" ? "hi" : "en")}">${inner}</div>`; requestAnimationFrame(() => layer.classList.add("open")); }
   else layer.classList.remove("open");
 }
 function renderLens() { const h = lensHTML(); $("#lensBody").innerHTML = h; $("#lensBodyM").innerHTML = h; }
@@ -2636,11 +3163,11 @@ function back() {
 function classify(text) {
   // LLM call goes here — classify the free-text business description into a persona
   const t = text.trim(); if (!t) return null;
-  const D = DATA.personaScreen;
+  const D = T("personaScreen");
   const hit = DATA.classify.find(c => c.re.test(t));
   const id = hit ? hit.p : "local";
   const desc = t.replace(/^(i\s+(run|own|have|am|do)\s+(a|an)?\s*|i'?m\s+(a|an)\s+)/i, "").replace(/[.!]+$/, "");
-  const line = hit ? fill(D.clsHit, { label: DATA.personas[id].label, desc: (/^(a|an|the)\s/i.test(desc) ? "" : "a ") + desc.toLowerCase() }) : fill(D.clsMiss, { label: DATA.personas[id].label });
+  const line = hit ? fill(D.clsHit, { label: personaIn(id, lang()).name, desc: (/^(a|an|the)\s/i.test(desc) ? "" : "a ") + desc.toLowerCase() }) : fill(D.clsMiss, { label: personaIn(id, lang()).name });
   return { id, line, key: Date.now() };
 }
 const resetPersonaBits = () => { S.answers = {}; S.draw = null; S.route = null; S.routeChosen = false; S.product = null; S.quotes = []; S.purposeDefaultKept = true; S.otherText = ""; };
@@ -2653,9 +3180,11 @@ function act(a, el) {
     case "sheet": S.sheet = arg; if (arg === "consent") S.consentStage = "ask"; if (arg === "pdf") S.pdfStage = 0; return render();
     case "closeSheet": if (S.sheet === "digi") return; S.sheet = null; S.payoutPick = false; return render();
     case "persona": if (S.persona !== arg) resetPersonaBits(); S.persona = arg; return render();
-    case "lang": { S.lang = args[0]; if (args[1] === "go") return go("q", { qi: 0 }); return render(); }
+    case "lang": { S.lang = args[0]; S.termsLang = {}; saveLang(); saveProgress(); if (args[1] === "go") { S.offerDone = true; return go("q", { qi: 0 }); } return render(); }
+    case "pickLang": S.lang = arg; S.termsLang = {}; saveLang(); return go("landing", { noHist: true });
+    case "terms": S.termsLang = { ...S.termsLang, [args[0]]: args[1] || null }; return render();
     case "classify": { const c = classify(S.freeText); if (!c) return; S.classified = { ...c, id: c.id + c.key }; if (S.persona !== c.id) resetPersonaBits(); S.persona = c.id; render(); setTimeout(() => scrollInScreen($('#scroll .ai')), 60); return; }
-    case "toQuestions": return go("q", { qi: 0 });
+    case "toQuestions": S.offerDone = true; return go("q", { qi: 0 });
     case "answer": {
       const [qid, idx] = args; S.answers[qid] = PE().questions[S.qi].o[+idx];
       render();
@@ -2743,8 +3272,8 @@ function act(a, el) {
     case "toStatus": return go("done", { noHist: true });
     case "shareCA": toast(T("toast.shareCA")); return;
     case "resume": { const sn = S.resumeSnap || loadProgress() || demoSnap(); restore(sn); return render(); }
-    case "retFresh": clearProgress(); S.retDismissed = true; S.edge.returning = false; return render();
-    case "reset": Object.keys(typed).forEach(k => delete typed[k]); Object.keys(counted).forEach(k => delete counted[k]); clearProgress(); S = fresh(); applyPreset(); lastStepKey = null; $("#demo").classList.remove("open"); closeLens(); return render();
+    case "retFresh": clearProgress(); clearLang(); S.retDismissed = true; S.edge.returning = false; S.lang = null; S.hist = []; S.step = "lang"; lastStepKey = null; return render();
+    case "reset": Object.keys(typed).forEach(k => delete typed[k]); Object.keys(counted).forEach(k => delete counted[k]); clearProgress(); clearLang(); S = fresh(); applyPreset(); lastStepKey = null; $("#demo").classList.remove("open"); closeLens(); return render();
     case "openLens": $("#lensSheet").classList.add("open"); return;
     case "closeLens": return closeLens();
     case "lensTab": S.lensTab = arg; return renderLens();
@@ -2757,8 +3286,10 @@ function act(a, el) {
       if (arg === "existing") { S.welcomeAck = false; return render(); }
       if (!S.persona) S.persona = "shop"; return render();
     }
-    case "demoP": S.persona = arg; resetPersonaBits(); S.trail = S.trail || "bank"; S.hist = [{ step: "landing", qi: 0 }, { step: "persona", qi: 0 }, { step: "trail", qi: 0 }]; S.dir = 1; S.step = "mirror"; S.mirror = null; return render();
+    case "demoP": if (!S.lang) S.lang = "en"; S.persona = arg; resetPersonaBits(); S.trail = S.trail || "bank"; S.hist = [{ step: "landing", qi: 0 }, { step: "persona", qi: 0 }, { step: "trail", qi: 0 }]; S.dir = 1; S.step = "mirror"; S.mirror = null; return render();
     case "jump": {
+      if (arg === "lang") { S.sheet = null; return go("lang"); }
+      if (!S.lang) S.lang = "en";
       if (!S.persona) S.persona = "shop";
       if (["mirror", "pool", "lock"].includes(arg) && !S.trail) S.trail = "bank";
       if (arg === "lock" && !S.route) S.route = routeNow();
@@ -2780,6 +3311,7 @@ document.addEventListener("click", e => { if (!e.target.closest("#demo") && !e.t
 document.addEventListener("keydown", e => { const t = e.target; if ((e.key === " " || e.key === "Enter") && t.matches && t.matches("div[data-act][tabindex]")) { e.preventDefault(); act(t.dataset.act, t); } });
 document.addEventListener("keydown", e => { if (e.key === "Escape") { if (S.sheet) act("closeSheet"); closeLens(); $("#demo").classList.remove("open"); } });
 
+{ const l = loadLang() || (loadProgress() || {}).lang; if (l) { S.lang = l; S.step = "landing"; } }
 render();
 </script>
 </body>
